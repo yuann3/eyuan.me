@@ -7,36 +7,37 @@ import Pagination from "@/components/Pagination";
 import { getAllPosts, getUniqueTags, sortMDByDate, sortMDByPinned } from "@/utils";
 
 export const getStaticPaths = (async ({ paginate }) => {
-    const allPosts = await getAllPosts('blog', true);
-    const allPostsByDate = sortMDByDate(allPosts);
-    const allPostsByPinned = sortMDByPinned(allPostsByDate);
-    const tags = getUniqueTags(allPosts);
-    return paginate(allPostsByPinned, { props: { tags }, pageSize: 10 });
+	// grab all posts besides drafts and hidden ones
+	const allPosts = await getAllPosts(true);
+	const allPostsByDate = sortMDByDate(allPosts);
+	const allPostsByPinned = sortMDByPinned(allPostsByDate);
+	const tags = getUniqueTags(allPosts);
+	return paginate(allPostsByPinned, { props: { tags }, pageSize: 10 });
 }) satisfies GetStaticPaths;
 
 interface Props {
-    page: Page<CollectionEntry<"blog">>;
-    tags: string[];
+	page: Page<CollectionEntry<"blog">>;
+	tags: string[];
 }
 
 const { page, tags } = Astro.props;
 
 const meta = {
-    title: "Blog Posts",
-    description: "Read my collection of blog posts",
+	title: "Posts",
+	description: "Read my collection of posts and the things that interest me",
 };
 
 const paginationProps = {
 	...(page.url.prev && {
 		prevUrl: {
 			url: page.url.prev,
-			text: `← Previous Posts`,
+			text: `? Previous Posts`,
 		},
 	}),
 	...(page.url.next && {
 		nextUrl: {
 			url: page.url.next,
-			text: `Next Posts →`,
+			text: `Next Posts ?`,
 		},
 	}),
 };
