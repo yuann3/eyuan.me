@@ -1,6 +1,6 @@
 ---
 title: 'So, Here we go again'
-description: 'Feels new yet familar'
+description: 'Feels new yet familiar'
 pubDate: 'Jul 01 2024'
 slug: first
 heroImage: 
