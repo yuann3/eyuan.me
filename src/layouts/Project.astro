@@ -3,7 +3,6 @@ import { siteConfig } from '../consts';
 import SidebarLayout from './Sidebar.astro';
 import SocialMediaLinks from '@/components/SocialMediaLinks';
 import TOC from '@/components/TableOfContents';
-import { Icon } from "astro-icon";
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -46,17 +45,16 @@ const articleDate = pubDate.toISOString();
 			{ stack && 
 				<li class="project-frontmatter-item">
 					<small>STACK</small>
-					<ul class="inline-flex gap-2 sm:gap-4">
-						{stack.map((s: string) => ( 
-							<li>
-								<Icon 
-									class="h-6 w-6 text-textColor" 
-									name={`vscode-icons:file-type-${s.toLowerCase()}`} 
-									focusable="false"
-								title={s}
-								/>
-							</li>
-						))}
+					<ul class="inline-flex flex-wrap gap-2 sm:gap-4">
+						{stack.map((s: string) => {
+							return (
+								<li>
+									<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-accent/10 text-accent">
+										{s}
+									</span>
+								</li>
+							);
+						})}
 					</ul>
 				</li> 
 			}
