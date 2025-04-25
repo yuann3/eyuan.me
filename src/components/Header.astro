@@ -1,7 +1,6 @@
 ---
 import HeaderLink from './HeaderLink.astro';
 import { siteConfig, NAV_LINKS } from '../consts';
-import ThemeToggle from '../components/ThemeToggle.astro';
 
 const url = new URL(Astro.request.url);
 ---
@@ -16,7 +15,7 @@ const url = new URL(Astro.request.url);
 	</div>
 
 	<nav 
-		class="mt-4 bg-surface/95 sm:bg-bgColor absolute hidden top-8 w-full sm:block sm:static sm:mt-0 group-[.menu-open]:z-50 group-[.menu-open]:flex group-[.menu-open]:bg-bgColor" 
+		class="mt-4 bg-surface sm:bg-bgColor absolute hidden top-8 w-full sm:block sm:static sm:mt-0 group-[.menu-open]:z-50 group-[.menu-open]:flex group-[.menu-open]:bg-bgColor" 
 		id="navigation-menu" 
 		aria-label="main menu"
 		>
@@ -48,8 +47,6 @@ const url = new URL(Astro.request.url);
 	</nav>
 
 	<div class="flex gap-2 items-center justify-center">
-		<ThemeToggle/>
-
 		<nav-button>
 			<div class="sm:hidden">
 				<span class="sr-only">open main menu</span>
@@ -74,7 +71,6 @@ const url = new URL(Astro.request.url);
 				</button>
 			</div>
 		</nav-button>
-
 	</div>
 </header>
 

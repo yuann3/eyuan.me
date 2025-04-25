@@ -14,10 +14,7 @@ export default defineConfig({
     syntaxHighlight: 'shiki',
     shikiConfig: {
       // https://docs.astro.build/en/guides/markdown-content/#syntax-highlighting
-      themes: {
-        light: 'catppuccin-mocha',
-        dark: 'catppuccin-latte',
-      },
+      theme: 'catppuccin-latte'
     }
   },
 });

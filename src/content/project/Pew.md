@@ -1,7 +1,7 @@
 ---
 title: 'Pew'
 description: 'A lightweight CLI tool for dumping your codebase into a single file, perfect to work with LLMs'
-pubDate: 'Jun 30 2024'
+pubDate: 'April 3 2025'
 heroImage:
     url: 'https://github.com/user-attachments/assets/da8e796f-6fab-4e47-8f02-11764d9117a1'
     alt: 'Pew'

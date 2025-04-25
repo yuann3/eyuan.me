@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../../layouts/Base.astro';
+import ProjectPreview from "../../components/ProjectPreview.astro";
+import { getAllProjects, sortProjectsByOrder } from "../../utils";
+
+// Get all projects
+const allProjects = await getAllProjects();
+const sortedProjects = sortProjectsByOrder(allProjects);
+---
+
+<BaseLayout title="Projects" description="All of Yiyuan Li's projects">
+	<section>
+		<h1 class="title"># Projects</h1>
+		<p class="mb-6">A collection of all my projects. Each one represents a different learning experience and technology exploration.</p>
+		
+		<ul class="space-y-6">
+			{sortedProjects.map(project => <ProjectPreview project={project}/>)}
+		</ul>
+	</section>
+</BaseLayout> 

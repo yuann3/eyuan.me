@@ -1,46 +1,18 @@
 ---
 import BaseLayout from '../layouts/Base.astro';
-import PostPreview from "@/components/blog/PostPreviewB";
-import SocialMediaLinks from "@/components/SocialMediaLinks";
-import { getAllPosts, sortMDByDate, sortMDByPinned } from "@/utils";
+import PostPreview from "../components/blog/PostPreviewB.astro";
+import ProjectPreview from "../components/ProjectPreview.astro";
+import SocialMediaLinks from "../components/SocialMediaLinks.astro";
+import { getAllPosts, getAllProjects, sortMDByDate, sortMDByPinned, sortProjectsByOrder } from "../utils";
 
-const MAX_POSTS = 10;
+const MAX_POSTS = 5;
 const allPosts = await getAllPosts();
 const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS);
 const allPostsByPinned = sortMDByPinned(allPostsByDate);
 
-const tech: Array<{ title: string; desc: string; href: string }> = [
-	{
-		title: "Astro",
-		desc: "Build fast websites, faster.",
-		href: "https://astro.build",
-	},
-	{
-		title: "Astro Assets",
-		desc: "Built-in optimized asset support.",
-		href: "https://docs.astro.build/en/guides/assets/",
-	},
-	{
-		title: "Tailwind CSS",
-		desc: "Rapidly build modern websites without ever leaving your HTML.",
-		href: "https://tailwindcss.com",
-	},
-	{
-		title: "Markdown",
-		desc: "Simple and easy-to-use markup language.",
-		href: "https://www.markdownguide.org/",
-	},
-	{
-		title: "MDX",
-		desc: "Markdown for the component era.",
-		href: "https://mdxjs.com/",
-	},
-	{
-		title: "Astro Icon",
-		desc: "An easy to use Icon component for Astro.",
-		href: "https://github.com/natemoo-re/astro-icon#readme",
-	},
-];
+// Get all projects
+const allProjects = await getAllProjects();
+const sortedProjects = sortProjectsByOrder(allProjects);
 
 ---
 
@@ -59,7 +31,7 @@ const tech: Array<{ title: string; desc: string; href: string }> = [
 		</p>
 
 		<p class="mb-4 sm:mb-8">
-		<a href="/YiyuanLi_CV.pdf">Im Currently looking for job as backend developer, you can find my CV by click Here</a>
+		I'm currently looking for a job as a backend developer, you can find my CV by <a href="/YiyuanLi_CV.pdf" class="cody-link">clicking here</a>
 	    </p>
 		<div>
 			<span>Hit me up:</span>
@@ -67,33 +39,71 @@ const tech: Array<{ title: string; desc: string; href: string }> = [
 		</div>
 	</section>
 
-	<section class="mt-8 sm:mt-16">
-		<h2 class="title">Posts</h2>
+	<section class="mt-12 sm:mt-16">
+		<div class="flex justify-between items-center mb-6">
+			<h2 class="title">Projects Index</h2>
+			<a href="/project" class="text-accent hover:text-accent-2 transition-colors text-sm">#index</a>
+		</div>
+		
+		<p class="mb-4">
+			Projects Index is a index that contains a list of all my personal projects. Major categories are highlighted below.
+		</p>
+
+		<div class="flex items-start justify-between flex-col md:flex-row gap-12">
+			<div class="w-full md:w-1/2">
+				<h3 class="title text-lg mb-3">Backend Development</h3>
+				<p class="mb-4">I enjoy working on backend systems and infrastructure.</p>
+				<ul class="list-disc ml-6 space-y-2">
+					<li>
+						<a href="/project/hrust" class="cody-link">HRust</a>
+						<p class="text-sm mt-1">A small HTTP server that is written in Rust</p>
+					</li>
+					
+				</ul>
+				
+				<h3 class="title text-lg mt-8 mb-3">Language Implementation</h3>
+				<p class="mb-4">Projects exploring programming language implementation and concepts.</p>
+				<ul class="list-disc ml-6 space-y-2">
+					<li>
+						<a href="/project/ruskey" class="cody-link">Ruskey</a>
+						<p class="text-sm mt-1">A rust interpreter implementation of custom language Monkey</p>
+					</li>
+					<li>
+						<a href="/project/ylib" class="cody-link">Ylib</a>
+						<p class="text-sm mt-1">C Standard library rewrite</p>
+					</li>
+				</ul>
+			</div>
+			
+			<div class="w-full md:w-1/2">
+				<h3 class="title text-lg mb-3">Graphics & Visualization</h3>
+				<p class="mb-4">Projects focused on graphics programming and visualization techniques.</p>
+				<ul class="list-disc ml-6 space-y-2">
+					<li>
+						<a href="/project/rayrust" class="cody-link">RayRust</a>
+						<p class="text-sm mt-1">Just a ray tracer in Rust</p>
+					</li>
+				</ul>
+				
+				<h3 class="title text-lg mt-8 mb-3">Tools & Utilities</h3>
+				<p class="mb-4">Helpful tools and utilities I've built to improve workflows.</p>
+				<ul class="list-disc ml-6 space-y-2">
+					<li>
+						<a href="/project/pew" class="cody-link">Pew</a>
+						<p class="text-sm mt-1">A lightweight CLI tool for dumping your codebase into a single file, perfect to work with LLMs</p>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</section>
+
+	<section class="mt-12 sm:mt-16">
+		<div class="flex justify-between items-center mb-4">
+			<h2 class="title">Recent Posts</h2>
+			<a href="/blog" class="text-sm text-accent hover:text-accent-2 transition-colors">View All →</a>
+		</div>
 		<ul class="space-y-4 sm:space-y-2">
 			{allPostsByPinned.map(p => <PostPreview post={p}/>)}
 		</ul>
 	</section>
-
-  <!--
-	<section class="mt-16">
-			<h2 class="title">Technologies</h2>
-			<ul class="space-y-4 sm:space-y-2">
-				{
-					tech.map(({ href, title, desc }) => (
-						<li>
-							<a
-								href={href}
-								target="_blank"
-								rel="noopener noreferrer"
-								class="cody-link inline-block"
-							>
-								{title}
-							</a>: 
-							<p class="inline-block sm:mt-2">{desc}</p>
-						</li>
-					))
-				}
-			</ul>
-		</section>
-  -->
 </BaseLayout>

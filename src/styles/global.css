@@ -5,27 +5,16 @@
 @layer base {
   :root {
     color-scheme: light;
-    /* Gruvbox Material Light */
-    --theme-bg: #fbf1c7;
-    --theme-text: #654735;
-    --theme-accent: #c35e0a;
-    --theme-accent-2: #6f8352;
-    --theme-surface: #f2e5bc;
-    --theme-quote: #c35e0a;
-    --theme-highlight: #e78a4e;
+    /* New Color Palette */
+    --theme-bg: #FDFBEE;
+    --theme-text: #015551;
+    --theme-accent: #57B4BA;
+    --theme-accent-2: #FE4F2D;
+    --theme-surface: #57B4BA20;
+    --theme-quote: #015551;
+    --theme-highlight: #FE4F2D;
   }
 
-  :root.dark {
-    color-scheme: dark;
-    /* Gruvbox Material Dark */
-    --theme-bg: #282828;
-    --theme-text: #d4be98;
-    --theme-accent: #e78a4e;
-    --theme-accent-2: #a9b665;
-    --theme-surface: #32302f;
-    --theme-quote: #e78a4e;
-    --theme-highlight: #e78a4e;
-  }
   html {
     @apply scroll-smooth;
   }
@@ -51,7 +40,7 @@
 }
 
 .prose-cody :where(code):not(:where([class~=not-prose],[class~=not-prose] *)) {
-  @apply bg-accent !text-surface px-1 py-0;
+  @apply bg-opacity-10 bg-accent-2 !text-accent-2 px-1 py-0 border border-accent-2 border-opacity-30 rounded;
 }
 
 .prose :where(code):not(:where([class~="not-prose"],[class~="not-prose"] *))::before{
@@ -124,7 +113,7 @@
  */
 
 .tag {
-  @apply bg-accent px-1 py-0 text-bgColor font-semibold text-sm;
+  @apply bg-accent-2 px-1 py-0 text-bgColor font-semibold text-sm;
 }
 
 .tag:before {
@@ -146,17 +135,17 @@
   background-image: linear-gradient(
   transparent,
   transparent 4px,
-  var(--theme-accent) 4px,
-  var(--theme-accent)
+  var(--theme-accent-2) 4px,
+  var(--theme-accent-2)
   );
 }
 
 .cody-bg {
-  @apply p-4 bg-surface;
+  @apply p-4 bg-surface rounded-sm;
 }
 
 .cody-copy-code {
-  @apply absolute top-2 right-2 bg-accent text-bgColor p-0.5 border border-accent hover:bg-bgColor hover:text-accent transition-all duration-200 text-sm;
+  @apply absolute top-2 right-2 bg-accent-2 text-bgColor p-0.5 border border-accent-2 hover:bg-bgColor hover:text-accent-2 transition-all duration-200 text-sm;
 }
 
 .title:before {
@@ -169,15 +158,15 @@
 }
 
 hr {
-  @apply border-accent border-dashed my-6;
+  @apply border-accent-2 border-dashed my-6;
 }
 
 ::selection {
-  @apply bg-highlight text-bgColor;
+  @apply bg-accent-2 text-bgColor;
 }
 
 ::-moz-selection {
-  @apply bg-highlight text-bgColor;
+  @apply bg-accent-2 text-bgColor;
 }
 
 .fade-in {

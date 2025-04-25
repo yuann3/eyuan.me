@@ -49,7 +49,7 @@ const articleDate = pubDate.toISOString();
 						{stack.map((s: string) => {
 							return (
 								<li>
-									<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-accent/10 text-accent">
+									<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-accent bg-opacity-10 text-accent">
 										{s}
 									</span>
 								</li>
@@ -74,7 +74,7 @@ const articleDate = pubDate.toISOString();
 
 		<hr/>
 
-		<div class="prose dark:prose-invert prose-sm prose-headings:font-semibold prose-headings:ml-4 prose-headings:before:absolute prose-headings:before:-ms-4 prose-headings:before:text-accent prose-headings:before:content-['#'] prose-th:before:content-none">
+		<div class="prose prose-sm prose-headings:font-semibold prose-headings:ml-4 prose-headings:before:absolute prose-headings:before:-ms-4 prose-headings:before:text-accent-2 prose-headings:before:content-['#'] prose-th:before:content-none prose-a:text-accent-2">
 			<slot />
 		</div>
 
@@ -84,7 +84,7 @@ const articleDate = pubDate.toISOString();
 			<h2 class="font-semibold text-lg text-textColor">{siteConfig.profile.author}</h2>
 			{siteConfig.profile.description && (<p>{siteConfig.profile.description}</p>)}
 			<SocialMediaLinks/>
-			<span class="!my-4 text-accent" aria-hidden>---</span>
+			<span class="!my-4 text-accent-2" aria-hidden>---</span>
 			<p>
 				{description}
 			</p>
@@ -95,7 +95,7 @@ const articleDate = pubDate.toISOString();
 
 <style>
 	small {
-		@apply text-bgColor px-1 bg-accent mr-2 font-semibold min-w-[95px];
+		@apply text-bgColor px-1 bg-accent-2 mr-2 font-semibold min-w-[95px];
 	}
 
 	.project-frontmatter-item {

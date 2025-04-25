@@ -25,3 +25,9 @@ export {
   getUniqueByProperty,
   getUniqueWithCountByProperty,
 } from "./frontmatter"
+
+export {
+  getAllProjects,
+  sortProjectsByDate,
+  sortProjectsByOrder
+} from "./project";
