@@ -23,7 +23,7 @@ export const siteConfig: Config = {
   lang: "en-US",
   profile: {
     author: "Yiyuan Li",
-    description: "Embrace each line of progress, for every bug fixed brings you closer to your goal"
+    description: "sooooo yupp, just do things"
   }
 }
 
@@ -41,12 +41,12 @@ export const socialLinks: Array<SocialLink> = [
   {
     icon: "mdi:instagram",
     friendlyName: "Instagram",
-    link: "https://www.instagram.com/yiyuanl3/",
+    link: "https://www.instagram.com/eyuan3/",
   },
   {
     icon: "mdi:twitter",
     friendlyName: "Twitter",
-    link: "https://twitter.com/LeeLyiyuane",
+    link: "https://twitter.com/eeuan3",
   },
   {
     icon: "mdi:email",
