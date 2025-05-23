@@ -1,9 +1,9 @@
 ---
-title: 'sequel'
+title: 'Sequel'
 description: 'A from-scratch SQLite parser and query engine written in Rust'
 pubDate: 'May 23 2025'
 heroImage:
-    url: 'https://github.com/user-attachments/assets/92e15a16-dcc9-45b3-9c5a-93fc98e06b58'
+    url: 'https://github.com/user-attachments/assets/03bba877-2e89-40b4-aa50-b0f4d153aefe'
     alt: 'sequel'
 platform: All 
 stack: ["Rust"]
