@@ -1,6 +1,6 @@
 ---
 title: 'sequel'
-description: 'A rust interpreter implementation of custom language Monkey'
+description: 'A from-scratch SQLite parser and query engine written in Rust'
 pubDate: 'May 23 2025'
 heroImage:
     url: 'https://github.com/user-attachments/assets/92e15a16-dcc9-45b3-9c5a-93fc98e06b58'
@@ -23,7 +23,7 @@ A no-bullshit, from-scratch SQLite parser and query engine clone written in Rust
   * `.tables`, `.dbinfo`
   * `SELECT ... FROM ...`
   * `SELECT COUNT(*) FROM ...`
-  * `WHERE country = '...’` (only basic equality for now, cuz no point doing it)
+  * `WHERE country = '...’` (only basic equality for now, cuz no point doing others)
 * Index optimization with B-tree traversal (yes, it’s fast af)
 
 ## Usage
