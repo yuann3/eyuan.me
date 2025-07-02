@@ -1,5 +1,5 @@
 ---
-title: 'shell'
+title: 'Shell'
 description: 'shell - single binary shell'
 pubDate: 'Jul 02 2025'
 platform: All 
