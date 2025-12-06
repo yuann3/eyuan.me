@@ -4,7 +4,8 @@ export default {
 	theme: {
 		fontFamily: {
 			'mono': ['IBM Plex Mono', 'monospace'],
-			'display': ['Silkscreen', 'cursive']
+			'display': ['Silkscreen', 'cursive'],
+			'ascii': ['JetBrains Mono', 'monospace']
 		},
 		extend: {
 			colors: {

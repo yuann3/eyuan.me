@@ -20,6 +20,10 @@ const { title = "", description = siteConfig.description, image, articleDate } =
 		<BaseHead title={title} description={description} image={image} articleDate={articleDate} />
 	</head>
 	<body>
+		<div id="ascii-bg" aria-hidden="true">
+			<canvas id="ascii-canvas"></canvas>
+		</div>
+
 		<Header/>
 		<main>
 			<slot/>
@@ -27,3 +31,72 @@ const { title = "", description = siteConfig.description, image, articleDate } =
 		<Footer/>
 	</body>
 </html>
+
+<style>
+	#ascii-bg {
+		position: fixed;
+		inset: 0;
+		pointer-events: none;
+		z-index: -10;
+		overflow: hidden;
+	}
+
+	#ascii-canvas {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+<script>
+	// ASCII background animation
+	const canvas = document.getElementById('ascii-canvas') as HTMLCanvasElement;
+	if (canvas) {
+		const ctx = canvas.getContext('2d');
+		if (ctx) {
+			const chars = ' .:-=+*#%@';
+			const fontSize = 10;
+			let frame = 0;
+
+			function resize() {
+				canvas.width = window.innerWidth;
+				canvas.height = window.innerHeight;
+			}
+
+			function render() {
+				if (!ctx) return;
+
+				const width = Math.ceil(canvas.width / (fontSize * 0.6)) + 1;
+				const height = Math.ceil(canvas.height / fontSize) + 1;
+
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				ctx.font = `${fontSize}px monospace`;
+				ctx.fillStyle = 'rgba(0, 0, 0, 0.06)';
+
+				for (let y = 0; y < height; y++) {
+					let line = '';
+					for (let x = 0; x < width; x++) {
+						const wave1 = Math.sin(x * 0.08 + frame * 0.01) * 0.3;
+						const wave2 = Math.cos(y * 0.1 + frame * 0.008) * 0.25;
+						const wave3 = Math.sin((x + y) * 0.05 - frame * 0.006) * 0.2;
+						const noise = wave1 + wave2 + wave3;
+						const density = Math.max(0, Math.min(1, 0.3 + noise));
+						const charIndex = Math.floor(density * (chars.length - 1));
+						line += chars[charIndex];
+					}
+					ctx.fillText(line, 0, (y + 1) * fontSize);
+				}
+
+				frame++;
+				requestAnimationFrame(render);
+			}
+
+			resize();
+			window.addEventListener('resize', resize);
+			render();
+		}
+	}
+
+</script>

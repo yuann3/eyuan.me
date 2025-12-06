@@ -41,21 +41,21 @@ export const socialLinks: Array<SocialLink> = [
   {
     icon: "mdi:instagram",
     friendlyName: "Instagram",
-    link: "https://www.instagram.com/eyuan3/",
+    link: "https://www.instagram.com/eeuan3/",
   },
   {
     icon: "mdi:twitter",
     friendlyName: "Twitter",
-    link: "https://twitter.com/eeuan3",
+    link: "https://twitter.com/eyuann3",
   },
   {
     icon: "mdi:email",
-    friendlyName: "email",
+    friendlyName: "Email",
     link: "mailto:yy@eyuan.me",
   },
   {
     icon: "mdi:rss",
-    friendlyName: "rss",
+    friendlyName: "Rss",
     link: "/rss.xml"
   }
 ];

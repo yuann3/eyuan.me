@@ -90,3 +90,98 @@ const articleDate = pubDate.toISOString();
 		@apply flex flex-wrap items-center gap-1;
 	}
 </style>
+
+<script>
+	function convertImageToAscii(img: HTMLImageElement) {
+		if (img.dataset.asciiProcessed) return;
+		img.dataset.asciiProcessed = 'true';
+
+		const chars = ' .,:;i1tfLCG08@';
+		const cellSize = 4;
+
+		const wrapper = document.createElement('div');
+		wrapper.className = 'ascii-img-wrapper';
+		wrapper.style.cssText = `
+			position: relative;
+			display: inline-block;
+			border: 1px solid black;
+			background: var(--theme-bg);
+			overflow: hidden;
+		`;
+
+		const pre = document.createElement('pre');
+		pre.className = 'ascii-img';
+		pre.style.cssText = `
+			font-family: monospace;
+			font-size: 6px;
+			line-height: 0.8;
+			letter-spacing: 0;
+			margin: 0;
+			padding: 4px;
+			color: #111;
+			background: var(--theme-bg);
+		`;
+
+		const tempCanvas = document.createElement('canvas');
+		const tempCtx = tempCanvas.getContext('2d');
+		if (!tempCtx) return;
+
+		const processImage = () => {
+			const maxWidth = 400;
+			const scale = Math.min(1, maxWidth / img.naturalWidth);
+			const width = Math.floor(img.naturalWidth * scale);
+			const height = Math.floor(img.naturalHeight * scale);
+
+			tempCanvas.width = width;
+			tempCanvas.height = height;
+			tempCtx.drawImage(img, 0, 0, width, height);
+
+			const imageData = tempCtx.getImageData(0, 0, width, height);
+			const pixels = imageData.data;
+
+			let ascii = '';
+			for (let y = 0; y < height; y += cellSize) {
+				for (let x = 0; x < width; x += cellSize / 2) {
+					const idx = (y * width + x) * 4;
+					const r = pixels[idx];
+					const g = pixels[idx + 1];
+					const b = pixels[idx + 2];
+					const brightness = (r + g + b) / 3;
+					const charIdx = Math.floor((brightness / 255) * (chars.length - 1));
+					ascii += chars[charIdx];
+				}
+				ascii += '\n';
+			}
+
+			pre.textContent = ascii;
+			wrapper.style.width = img.style.width || 'auto';
+			wrapper.style.maxWidth = '100%';
+
+			img.parentNode?.insertBefore(wrapper, img);
+			wrapper.appendChild(pre);
+			img.style.display = 'none';
+			wrapper.appendChild(img);
+		};
+
+		if (img.complete) {
+			processImage();
+		} else {
+			img.onload = processImage;
+		}
+	}
+
+	function processAllImages() {
+		const images = document.querySelectorAll('article img') as NodeListOf<HTMLImageElement>;
+		images.forEach(img => {
+			if (!img.dataset.noAscii) {
+				convertImageToAscii(img);
+			}
+		});
+	}
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', processAllImages);
+	} else {
+		processAllImages();
+	}
+</script>
