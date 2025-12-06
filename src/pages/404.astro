@@ -3,33 +3,32 @@ import BaseLayout from '../layouts/Base.astro';
 ---
 
 <BaseLayout title="404">
-	<section class="flex justify-center items-center h-80 border-dashed border border-accent ">
-		<div  class="flex-col gap-2 text-8xl p-4 h-min">
-			<span id="status-code"> 404</span>
-			<div class="border-b-2 border-accent w-full border-solid blink mt-1"></div>
+	<section class="flex flex-col justify-center items-center h-80 border border-black p-8">
+		<pre class="font-display text-4xl mb-4">
+    _  _    ___  _  _
+   | || |  / _ \| || |
+   | || |_| | | | || |_
+   |__   _| | | |__   _|
+      |_| | |_| |  |_|
+           \___/
+		</pre>
+		<div class="text-center">
+			<p class="mb-4 font-display">FILE NOT FOUND</p>
+			<p class="text-muted text-sm mb-4">The requested resource could not be located.</p>
+			<a href="/" class="border border-black px-4 py-2 hover:bg-black hover:text-bgColor inline-block">
+				[return home]
+			</a>
 		</div>
-		<span>Looks like you're lost! You sure you know where you're going?</span>
+		<div class="blink mt-4 w-4 h-6 bg-black"></div>
 	</section>
 </BaseLayout>
 
 <style>
-	#status-code:before {
-		content: "./";
-		@apply -mr-16 text-accent-2;
-	}
- 
 	.blink {
-		animation: blink-animation 1.5s steps(2, start) infinite;
-		-webkit-animation: blink-animation 1.5s steps(2, start) infinite;
+		animation: blink-animation 1s steps(2, start) infinite;
 	}
 
 	@keyframes blink-animation {
-		to {
-			visibility: hidden;
-		}
-	}
-
-	@-webkit-keyframes blink-animation {
 		to {
 			visibility: hidden;
 		}

@@ -1,7 +1,5 @@
 ---
-import { siteConfig } from '../consts';
-import SidebarLayout from './Sidebar.astro';
-import SocialMediaLinks from '@/components/SocialMediaLinks';
+import BaseLayout from './Base.astro';
 import TOC from '@/components/TableOfContents';
 import type { CollectionEntry } from 'astro:content';
 
@@ -10,7 +8,7 @@ interface Props {
 }
 
 const { project } = Astro.props
-const { 
+const {
 	data: {
 		title,
 		pubDate,
@@ -24,81 +22,71 @@ const {
 const { headings } = project.render && await project.render();
 const articleDate = pubDate.toISOString();
 ---
-<SidebarLayout title={title} description={description} articleDate={articleDate}>
-	<section class="cody-bg space-y-2 sm:space-y-4">
-		<h2 class="title">{title}</h2>
+<BaseLayout title={title} description={description} articleDate={articleDate}>
+	<article class="max-w-3xl mx-auto">
+		<header class="border border-black p-4 mb-6">
+			<h1 class="font-display text-2xl mb-4">{title}</h1>
 
-		{
-			heroImage && 
-			<div class="aspect-h-9 aspect-w-16 mb-6 w-full">
-				<img src={heroImage.url} alt={heroImage.alt} />
-			</div>
-		}
-
-		<ul class="space-y-2">
-			{ platform && 
-				<li class="project-frontmatter-item">
-					<small>PLATFORM</small>
-					<span>{platform}</span>
-				</li>
+			{
+				heroImage &&
+				<div class="aspect-h-9 aspect-w-16 mb-4 w-full">
+					<img src={heroImage.url} alt={heroImage.alt} class="border border-black" />
+				</div>
 			}
-			{ stack && 
-				<li class="project-frontmatter-item">
-					<small>STACK</small>
-					<ul class="inline-flex flex-wrap gap-2 sm:gap-4">
-						{stack.map((s: string) => {
-							return (
-								<li>
-									<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-accent bg-opacity-10 text-accent">
-										{s}
-									</span>
+
+			<ul class="space-y-2 text-sm">
+				{ platform &&
+					<li class="project-info">
+						<span class="label">[PLATFORM]</span>
+						<span>{platform}</span>
+					</li>
+				}
+				{ stack &&
+					<li class="project-info">
+						<span class="label">[STACK]</span>
+						<ul class="inline-flex flex-wrap gap-1">
+							{stack.map((s: string) => (
+								<li class="border border-black px-1 text-xs hover:bg-black hover:text-bgColor">
+									{s}
 								</li>
-							);
-						})}
-					</ul>
-				</li> 
-			}
-			{ website &&
-				<li class="project-frontmatter-item">
-					<small>WEBSITE</small>
-					<a href={website} target="_blank" class="cody-link">{website}</a>
-				</li>
-			}
-			{ github && 
-				<li class="project-frontmatter-item">
-					<small>GITHUB</small>
-					<a href={github} target="_blank" class="cody-link">{github}</a>
-				</li>
-			}
-		</ul>
+							))}
+						</ul>
+					</li>
+				}
+				{ website &&
+					<li class="project-info">
+						<span class="label">[WEBSITE]</span>
+						<a href={website} target="_blank" class="cody-link">{website}</a>
+					</li>
+				}
+				{ github &&
+					<li class="project-info">
+						<span class="label">[GITHUB]</span>
+						<a href={github} target="_blank" class="cody-link">{github}</a>
+					</li>
+				}
+			</ul>
+		</header>
 
-		<hr/>
+		{!!headings.length && (
+			<details class="border border-black p-4 mb-6">
+				<summary class="font-bold cursor-pointer hover:bg-black hover:text-bgColor px-1 -mx-1 w-fit">Table of Contents</summary>
+				<TOC headings={headings} />
+			</details>
+		)}
 
-		<div class="prose prose-sm prose-headings:font-semibold prose-headings:ml-4 prose-headings:before:absolute prose-headings:before:-ms-4 prose-headings:before:text-accent-2 prose-headings:before:content-['#'] prose-th:before:content-none prose-a:text-accent-2">
+		<main class="prose prose-cody prose-sm prose-headings:font-bold prose-headings:font-display prose-headings:before:content-['#'] prose-headings:before:mr-2 prose-headings:before:text-muted prose-th:before:content-none">
 			<slot />
-		</div>
-
-	</section>
-	<aside slot="sidebar">
-		<div class="flex flex-col space-y-2">
-			<h2 class="font-semibold text-lg text-textColor">{siteConfig.profile.author}</h2>
-			{siteConfig.profile.description && (<p>{siteConfig.profile.description}</p>)}
-			<SocialMediaLinks/>
-			<span class="!my-4 text-accent-2" aria-hidden>---</span>
-			<p>
-				{description}
-			</p>
-		</div>
-		{!!headings.length && <TOC headings={headings} />}
-	</aside>	
-</SidebarLayout>
+		</main>
+	</article>
+</BaseLayout>
 
 <style>
-	small {
-		@apply text-bgColor px-1 bg-accent-2 mr-2 font-semibold min-w-[95px];
+	.label {
+		@apply text-muted font-mono mr-2 text-xs;
 	}
 
-	.project-frontmatter-item {
-		@apply flex flex-col gap-x-0 sm:flex-row;
+	.project-info {
+		@apply flex flex-wrap items-center gap-1;
 	}
 </style>

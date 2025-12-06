@@ -3,7 +3,8 @@ export default {
 	content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
 	theme: {
 		fontFamily: {
-			'mono': ['Space Mono', 'monospace']
+			'mono': ['IBM Plex Mono', 'monospace'],
+			'display': ['Silkscreen', 'cursive']
 		},
 		extend: {
 			colors: {
@@ -14,7 +15,9 @@ export default {
 				"accent-2": "var(--theme-accent-2)",
 				surface: "var(--theme-surface)",
 				quote: "var(--theme-quote)",
-				highlight: "var(--theme-highlight)"
+				highlight: "var(--theme-highlight)",
+				muted: "var(--theme-muted)",
+				border: "var(--theme-border)"
 			},
 		}
 	},

@@ -1,126 +1,136 @@
 ---
 import BaseLayout from '../layouts/Base.astro';
 import PostPreview from "../components/blog/PostPreviewB.astro";
-import ProjectPreview from "../components/ProjectPreview.astro";
 import SocialMediaLinks from "../components/SocialMediaLinks.astro";
-import { getAllPosts, getAllProjects, sortMDByDate, sortMDByPinned, sortProjectsByOrder } from "../utils";
+import { getAllPosts, sortMDByDate, sortMDByPinned } from "../utils";
 
 const MAX_POSTS = 5;
 const allPosts = await getAllPosts();
 const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS);
 const allPostsByPinned = sortMDByPinned(allPostsByDate);
-
-// Get all projects
-const allProjects = await getAllProjects();
-const sortedProjects = sortProjectsByOrder(allProjects);
-
 ---
 
 <BaseLayout title="Cave">
-	<section>
-		<h1 class="title">Yo!! Welcome :> </h1>
-		<p class="mb-4 sm:mb-8">
-      Hi there! Welcome to my lil cave. Please grab a seat and enjoy a cup of coffee(or tea). I'm Yiyuan Li, a software engineer
-      whos instrest with Rust and low level programming.
-      
+	<section class="border border-black p-6 mb-8">
+		<pre class="font-display text-xs sm:text-sm mb-4 leading-none font-bold">
+__/\\\________/\\\__/\\\________/\\\___________/\\\________/\\\________/\\\________/\\\_______        
+ _\///\\\____/\\\/__\///\\\____/\\\/_________/\\\//\\\_____\///\\\____/\\\/______/\\\\/\\\\____       
+  ___\///\\\/\\\/______\///\\\/\\\/__________/\\\_/\\\________\///\\\/\\\/______/\\\//\////\\\__      
+   _____\///\\\/__________\///\\\/___________\//\\\\//___________\///\\\/_______/\\\______\//\\\_     
+    _______\/\\\_____________\/\\\___________/\\\///\\\_____________\/\\\_______\//\\\______/\\\__     
+     _______\/\\\_____________\/\\\_________/\\\/__\///\\\/\\\_______\/\\\________\///\\\\/\\\\/___   
+      _______\/\\\_____________\/\\\________/\\\______\//\\\//________\/\\\__________\////\\\//_____  
+       _______\/\\\_____________\/\\\_______\//\\\\\\\\\\\//\\\________\/\\\_____________\///\\\\\\__ 
+        _______\///______________\///_________\///////////_\///_________\///________________\//////___
+		</pre>
+		<h1 class="font-display text-xl mb-4">Welcome to my cave</h1>
+		<p class="mb-4">
+			Hi there! I'm Yiyuan Li, a software engineer interested in Rust and low level programming.
 		</p>
-		<p class="mb-4 sm:mb-8">
-     I'll be sharing some of my recent projects and tech-related topics here,
-    Of course, there will also be content about films or my life in general.
+		<p class="mb-4">
+			I share projects, tech topics, films, and life here.
 		</p>
-
-		<p class="mb-4 sm:mb-8">
-		I'm currently looking for a job as a backend developer, you can find my resume by <a href="/YiyuanLi_CV.pdf" class="cody-link">clicking here</a>
-	    </p>
-		<div>
-			<span>Hit me up:</span>
+		<p class="mb-4">
+		Im always open to work and new opportunities 
+			<a href="/YiyuanLi_CV.pdf" class="cody-link">[resume]</a>
+		</p>
+		<div class="flex items-center gap-2">
+			<span class="text-muted">links:</span>
 			<SocialMediaLinks/>
 		</div>
 	</section>
 
-	<section class="mt-12 sm:mt-16">
-		<div class="flex justify-between items-center mb-6">
-			<h2 class="title">Projects Index</h2>
-			<a href="/project" class="text-accent hover:text-accent-2 transition-colors text-sm">#index</a>
+	<section class="mb-8 mt-12">
+		<div class="flex justify-between items-center mb-4 border-b border-black pb-2">
+			<h2 class="font-display text-lg">Projects</h2>
+			<a href="/project" class="text-sm hover:bg-black hover:text-bgColor px-1">[all]</a>
 		</div>
-		
-		<p class="mb-4">
-			Projects Index is a index that contains a list of all my personal projects. Major categories are highlighted below.
-		</p>
 
-		<div class="flex items-start justify-between flex-col md:flex-row gap-12">
-			<div class="w-full md:w-1/2">
-				<h3 class="title text-lg mb-3">Backend Development</h3>
-				<p class="mb-4">I enjoy working on backend systems and infrastructure.</p>
-				<ul class="list-disc ml-6 space-y-2">
-					<li>
-						<a href="/project/rego" class="cody-link">sequel</a>
-						<p class="text-sm mt-1">A from-scratch SQLite parser and query engine written in Rust</p>
+		<div class="grid md:grid-cols-2 gap-8">
+			<div>
+				<h3 class="font-bold mb-2 border-b border-dotted border-black pb-1">Backend</h3>
+				<ul class="space-y-2">
+					<li class="flex gap-2">
+						<span class="text-muted">></span>
+						<div>
+							<a href="/project/rego" class="cody-link">sequel</a>
+							<span class="text-muted text-xs ml-2">SQLite engine in Rust</span>
+						</div>
 					</li>
-					
+					<li class="flex gap-2">
+						<span class="text-muted">></span>
+						<div>
+							<a href="/project/rego" class="cody-link">rego</a>
+							<span class="text-muted text-xs ml-2">Redis server clone in Go</span>
+						</div>
+					</li>
+					<li class="flex gap-2">
+						<span class="text-muted">></span>
+						<div>
+							<a href="/project/hrust" class="cody-link">hrust</a>
+							<span class="text-muted text-xs ml-2">HTTP server in Rust</span>
+						</div>
+					</li>
 				</ul>
-				<ul class="list-disc ml-6 space-y-2">
-					<li>
-						<a href="/project/rego" class="cody-link">rego</a>
-						<p class="text-sm mt-1">a lightweight Redis server implementation written in Go</p>
+
+				<h3 class="font-bold mb-2 mt-6 border-b border-dotted border-black pb-1">Languages</h3>
+				<ul class="space-y-2">
+					<li class="flex gap-2">
+						<span class="text-muted">></span>
+						<div>
+							<a href="/project/ruskey" class="cody-link">ruskey</a>
+							<span class="text-muted text-xs ml-2">A language interpreter</span>
+						</div>
 					</li>
-					
-				</ul>
-				<ul class="list-disc ml-6 space-y-2">
-					<li>
-						<a href="/project/hrust" class="cody-link">hrust</a>
-						<p class="text-sm mt-1">A small HTTP server that is written in Rust</p>
-					</li>
-					
-				</ul>
-				
-				<h3 class="title text-lg mt-8 mb-3">Language Implementation</h3>
-				<p class="mb-4">Projects exploring programming language implementation and concepts.</p>
-				<ul class="list-disc ml-6 space-y-2">
-					<li>
-						<a href="/project/ruskey" class="cody-link">ruskey</a>
-						<p class="text-sm mt-1">A rust interpreter implementation of custom language Monkey</p>
-					</li>
-					<li>
-						<a href="/project/ylib" class="cody-link">ylib</a>
-						<p class="text-sm mt-1">C Standard library rewrite</p>
+					<li class="flex gap-2">
+						<span class="text-muted">></span>
+						<div>
+							<a href="/project/ylib" class="cody-link">ylib</a>
+							<span class="text-muted text-xs ml-2">C stdlib rewrite</span>
+						</div>
 					</li>
 				</ul>
 			</div>
-			
-			<div class="w-full md:w-1/2">
-				<h3 class="title text-lg mb-3">Graphics & Visualization</h3>
-				<p class="mb-4">Projects focused on graphics programming and visualization techniques.</p>
-				<ul class="list-disc ml-6 space-y-2">
-					<li>
-						<a href="/project/rayrust" class="cody-link">rayrust</a>
-						<p class="text-sm mt-1">Just a ray tracer in Rust</p>
+
+			<div>
+				<h3 class="font-bold mb-2 border-b border-dotted border-black pb-1">Graphics</h3>
+				<ul class="space-y-2">
+					<li class="flex gap-2">
+						<span class="text-muted">></span>
+						<div>
+							<a href="/project/rayrust" class="cody-link">rayrust</a>
+							<span class="text-muted text-xs ml-2">ray tracer, cpu based</span>
+						</div>
 					</li>
 				</ul>
-				
-				<h3 class="title text-lg mt-8 mb-3">Tools & Utilities</h3>
-				<p class="mb-4">Helpful tools and utilities I've built to improve workflows.</p>
-				<ul class="list-disc ml-6 space-y-2">
-					<li>
-						<a href="/project/pew" class="cody-link">pew</a>
-						<p class="text-sm mt-1">A lightweight CLI tool for dumping your codebase into a single file, perfect to work with LLMs</p>
+
+				<h3 class="font-bold mb-2 mt-6 border-b border-dotted border-black pb-1">Tools</h3>
+				<ul class="space-y-2">
+					<li class="flex gap-2">
+						<span class="text-muted">></span>
+						<div>
+							<a href="/project/pew" class="cody-link">pew</a>
+							<span class="text-muted text-xs ml-2">codebase dumper for LLMs</span>
+						</div>
 					</li>
-					<li>
-						<a href="/project/shell" class="cody-link">shell</a>
-						<p class="text-sm mt-1">does this count???</p>
-						<p class="text-sm mt-1">single-binary shell written in Rust. If you want a fancy terminal shell or 500 features you’re in the wrong place this just works</p>
+					<li class="flex gap-2">
+						<span class="text-muted">></span>
+						<div>
+							<a href="/project/shell" class="cody-link">shell</a>
+							<span class="text-muted text-xs ml-2">minimal shell in Rust, it just works</span>
+						</div>
 					</li>
 				</ul>
 			</div>
 		</div>
 	</section>
 
-	<section class="mt-12 sm:mt-16">
-		<div class="flex justify-between items-center mb-4">
-			<h2 class="title">Recent Posts</h2>
-			<a href="/blog" class="text-sm text-accent hover:text-accent-2 transition-colors">View All →</a>
+	<section>
+		<div class="flex justify-between items-center mb-4 border-b border-black pb-2">
+			<h2 class="font-display text-lg">Recent Posts</h2>
+			<a href="/blog" class="text-sm hover:bg-black hover:text-bgColor px-1">[all]</a>
 		</div>
-		<ul class="space-y-4 sm:space-y-2">
+		<ul class="space-y-2">
 			{allPostsByPinned.map(p => <PostPreview post={p}/>)}
 		</ul>
 	</section>

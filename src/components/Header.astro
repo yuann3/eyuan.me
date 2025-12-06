@@ -5,44 +5,41 @@ import { siteConfig, NAV_LINKS } from '../consts';
 const url = new URL(Astro.request.url);
 ---
 
-<header class="group relative mb-8 flex justify-between items-center gap-4" id="main-header">
+<header class="group relative mb-8 flex justify-between items-center gap-4 pb-4 border-b border-black" id="main-header">
 	<div class="block">
 		<a
-			class="title whitespace-nowrap" 
+			class="site-title whitespace-nowrap font-display text-lg"
 			href="/"
 			aria-current={url.pathname === "/" ? "page" : false}
 		>{siteConfig.title}</a>
 	</div>
 
-	<nav 
-		class="mt-4 bg-surface sm:bg-bgColor absolute hidden top-8 w-full sm:block sm:static sm:mt-0 group-[.menu-open]:z-50 group-[.menu-open]:flex group-[.menu-open]:bg-bgColor" 
-		id="navigation-menu" 
+	<nav
+		class="mt-4 bg-bgColor border border-black sm:border-0 absolute hidden top-12 w-full sm:block sm:static sm:mt-0 group-[.menu-open]:z-50 group-[.menu-open]:flex group-[.menu-open]:bg-bgColor"
+		id="navigation-menu"
 		aria-label="main menu"
 		>
-		<div class="space-y-1 px-2 pb-3 pt-2 sm:flex sm:px-0 sm:py-0 sm:space-y-0 sm:space-x-2">
-			{NAV_LINKS.map(nav => (
-				<HeaderLink 
-					class="block py-2 sm:py-0" 
-					href={nav.path} 
-					title={nav.title}
-					aria-current={url.pathname === nav.path ? "page" : false}
-					data-astro-prefetch
-				>{nav.title}</HeaderLink>
+		<div class="space-y-1 px-2 pb-3 pt-2 sm:flex sm:px-0 sm:py-0 sm:space-y-0 sm:space-x-1">
+			{NAV_LINKS.map((nav, index) => (
+				<>
+					{index > 0 && <span class="hidden sm:inline text-muted">/</span>}
+					<HeaderLink
+						class="block py-2 sm:py-0"
+						href={nav.path}
+						title={nav.title}
+						aria-current={url.pathname === nav.path ? "page" : false}
+						data-astro-prefetch
+					>{nav.title}</HeaderLink>
+				</>
 			))}
-			<HeaderLink 
-				class="sm:hidden block py-2 sm:py-0" 
+			<span class="hidden sm:inline text-muted">/</span>
+			<HeaderLink
+				class="block py-2 sm:py-0"
 				href="/tags"
 				title="tags"
 				aria-current={url.pathname === "tags" ? "page" : false}
 				data-astro-prefetch
-			>Tags</HeaderLink>
-			<HeaderLink 
-				class="sm:hidden block py-2 sm:py-0" 
-				href="/series"
-				title="series"
-				aria-current={url.pathname === "series" ? "page" : false}
-				data-astro-prefetch
-			>Series</HeaderLink>
+			>tags</HeaderLink>
 		</div>
 	</nav>
 
@@ -50,24 +47,16 @@ const url = new URL(Astro.request.url);
 		<nav-button>
 			<div class="sm:hidden">
 				<span class="sr-only">open main menu</span>
-				<button 
-					class="group flex items-center justify-center" 
-					type="button" 
+				<button
+					class="group flex items-center justify-center border border-black px-2 py-1 hover:bg-black hover:text-bgColor"
+					type="button"
 					id="navigation-menu-btn"
 					aria-label="Open main menu"
 					aria-expanded="false"
 					aria-haspopup="menu"
 				>
-
-					<!-- icon when menu is closed -->
-					<svg class="transform transition-all duration-150 ease-out group-aria-expanded:scale-0 group-aria-expanded:opacity-0 h-6 w-6 block group-aria-expanded:hidden" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-						<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-					</svg>
-
-					<!-- icon when menu is open -->
-					<svg class="transform transition-all duration-150 ease-out h-6 w-6 scale-0 text-accent opacity-0 transition-all group-aria-expanded:scale-100 group-aria-expanded:opacity-100 hidden group-aria-expanded:block" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-						<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-					</svg>
+					<span class="group-aria-expanded:hidden">menu</span>
+					<span class="hidden group-aria-expanded:inline">close</span>
 				</button>
 			</div>
 		</nav-button>
@@ -75,19 +64,12 @@ const url = new URL(Astro.request.url);
 </header>
 
 <style>
-	.title {
-		@apply bg-accent p-1 text-bgColor text-sm;
+	.site-title {
+		@apply text-textColor;
 	}
 
-	.title:before{
-		content:"[";
-		margin-right: 0;
-		@apply text-bgColor;
-	}
-
-	.title:after {
-		content:"]";
-		@apply text-bgColor;
+	.site-title:hover {
+		@apply bg-black text-bgColor;
 	}
 </style>
 

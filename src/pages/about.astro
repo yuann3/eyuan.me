@@ -6,45 +6,224 @@ import Layout from '../layouts/Base.astro';
 	description="About Yiyuan Li"
 	image="/blog-placeholder-about.jpg"
 >
-	<h1 class="title">Me?</h1>
-    <p class="mb-4">
-    Hi, I'm Yiyuan Li, a Computer Science student based in Singapore. I'm into low-level programming, computer graphics, and anything that makes developers more productive.
-    </p>
-    <p class="mb-4">
-    Rust and Go are my go-to languages. I love building things close to the metal—especially if it involves systems programming or graphics. Got a wild idea or cool project? Hit me up at <a href="mailto:yy@yuan.me">yy@yuan.me</a>.
-    </p>
-    <p class="mb-4">
-    Lately, I’ve gone full Emacs as my main editor—and damn....I crossed over to the dark side... but I still keep my Vim and Tmux close.
-    </p>
-    <p class="mb-4">
-    Outside of code, I’m usually with my girlfriend, vibing to Deep House/Techno, or lost in a movie marathon (wish I had more time for that). Just out here trying to decode the madness of the digital world.
-    </p>
-	<div class="mb-4">
-    You can check out what I've been building over at 
-    <a 
-			class="cody-link" 
-			href="/"
-			rel="noopener noreferrer"
-		>Cave</a> 
-    or catch up with me on
-		<a 
-			class="cody-link" 
-			href="https://www.github.com/yuann3"
-			target="_blank"
-			rel="noopener noreferrer"
-		>GitHub</a>
+	<div class="flex gap-8">
+		<!-- Left content - 70% -->
+		<div class="w-[70%]">
+			<h1 class="font-display text-xl mb-6 border-b border-black pb-2">About</h1>
+
+			<section class="border border-black p-4 mb-6">
+				<p class="mb-4">
+					Hi, I'm Yiyuan Li, a Software Engineer based in Singapore. I'm into low-level programming, computer graphics, and anything that makes developers more productive.
+				</p>
+				<p class="mb-4">
+					Rust and Go are my go-to languages. I love building things close to the metal—especially if it involves systems programming or graphics.
+				</p>
+				<p class="mb-4">
+					Got a wild idea or cool project? Hit me up at <a href="mailto:yy@yuan.me" class="cody-link">yy@yuan.me</a>
+				</p>
+			</section>
+
+			<section class="mb-6">
+				<h2 class="font-bold mb-2 border-b border-dotted border-black pb-1">Editor Wars</h2>
+				<p class="text-sm text-muted">
+                   Ok, i konw, but i switch from Vim to Emacs, it was one of the best desicion i've ever made. Gotta thanks to my old friend.
+				</p>
+			</section>
+
+			<section class="mb-6">
+				<h2 class="font-bold mb-2 border-b border-dotted border-black pb-1">Outside Code</h2>
+				<p class="text-sm text-muted">
+					I like watching movies, here's <a href="https://www.imdb.com/user/ur130415118/watchlist/?ref_=ext_shr_lnk" class="cody-link" target="_blank" rel="noopener noreferrer">my watchlist</a> if you're curious. Also really into food (should probably make a food page at some point). Used to game a lot, was Apex Legends S16 Predator, hit #13 globally at my peak. Got a <a href="https://www.bilibili.com/video/BV12L411d7vU/?share_source=copy_web" class="cody-link" target="_blank" rel="noopener noreferrer">1v7 clip</a> that hit 100K views, which was pretty cool. Don't really play anymore though.
+				</p>
+			</section>
+
+			<section class="mb-6">
+				<h2 class="font-bold mb-2 border-b border-dotted border-black pb-1">Links</h2>
+				<div class="flex gap-2">
+					<a class="cody-link" href="/">Cave</a>
+					<span class="text-muted">/</span>
+					<a class="cody-link" href="https://www.github.com/yuann3" target="_blank" rel="noopener noreferrer">GitHub</a>
+				</div>
+			</section>
+
+			<section class="border border-black p-4">
+				<h2 class="font-bold mb-2">Tech Stack</h2>
+				<ul class="space-y-1 text-sm">
+					<li class="flex gap-2"><span class="text-muted">></span> Rust, Go, C/C++</li>
+					<li class="flex gap-2"><span class="text-muted">></span> Editor: Emacs(GNU)</li>
+					<li class="flex gap-2"><span class="text-muted">></span> Terminal: Ghostty + Tmux</li>
+					<li class="flex gap-2"><span class="text-muted">></span> WM: Aerospace</li>
+				</ul>
+			</section>
+		</div>
+
+		<!-- Right side ASCII animations - 30% -->
+		<div class="hidden lg:flex flex-col gap-4 w-[30%] self-stretch">
+			<!-- Wave animation -->
+			<div class="border border-black p-2 flex-1 flex items-center justify-center overflow-hidden">
+				<pre id="wave-canvas" class="font-mono text-[10px] leading-none text-muted select-none"></pre>
+			</div>
+
+			<!-- Matrix rain animation -->
+			<div class="border border-black p-2 flex-1 flex items-center justify-center overflow-hidden">
+				<pre id="matrix-canvas" class="font-mono text-[10px] leading-none text-muted select-none"></pre>
+			</div>
+
+			<!-- Spinning shape animation -->
+			<div class="border border-black p-2 flex-1 flex items-center justify-center overflow-hidden">
+				<pre id="spin-canvas" class="font-mono text-[10px] leading-none select-none"></pre>
+			</div>
+		</div>
 	</div>
-	<h2 class="title mt-4">Tech</h2>
-	<ul class="list-inside list-disc">
-		<li>Rust, Go, C/C++, Java</li>
-		<li>Text Editor: Emacs(GNU), Vim</li>
-		<li>Terminal: Ghostty + Tmux</li>
-		<li>Window Manager: Yabai</li>
-	</ul>
 </Layout>
 
+<script>
+	const charWidth = 6;  // approximate width of monospace char at text-[10px]
+	const charHeight = 10; // approximate height
+
+	function getCanvasSize(canvas: HTMLElement) {
+		const parent = canvas.parentElement;
+		if (!parent) return { width: 50, height: 20 };
+		const rect = parent.getBoundingClientRect();
+		const width = Math.floor((rect.width - 16) / charWidth);  // subtract padding
+		const height = Math.floor((rect.height - 16) / charHeight);
+		return { width: Math.max(20, width), height: Math.max(10, height) };
+	}
+
+	// Wave animation
+	const waveCanvas = document.getElementById('wave-canvas');
+	if (waveCanvas) {
+		const chars = [' ', '░', '▒', '▓', '█'];
+		let frame = 0;
+
+		function renderWave() {
+			const { width, height } = getCanvasSize(waveCanvas!);
+			let output = '';
+			for (let y = 0; y < height; y++) {
+				for (let x = 0; x < width; x++) {
+					const wave1 = Math.sin((x * 0.2) + (frame * 0.05) + (y * 0.1));
+					const wave2 = Math.sin((x * 0.15) - (frame * 0.03) + (y * 0.12));
+					const wave3 = Math.cos((y * 0.2) + (frame * 0.04));
+					const combined = (wave1 + wave2 + wave3) / 3;
+					const normalized = (combined + 1) / 2;
+					const charIndex = Math.floor(normalized * (chars.length - 1));
+					output += chars[charIndex];
+				}
+				output += '\n';
+			}
+			waveCanvas!.textContent = output;
+			frame++;
+			requestAnimationFrame(renderWave);
+		}
+		renderWave();
+	}
+
+	// Matrix rain animation
+	const matrixCanvas = document.getElementById('matrix-canvas');
+	if (matrixCanvas) {
+		const chars = 'YQ#YY01';
+		let columns: number[] = [];
+		let lastWidth = 0;
+
+		function renderMatrix() {
+			const { width, height } = getCanvasSize(matrixCanvas!);
+
+			// Reinitialize columns if width changed
+			if (width !== lastWidth) {
+				columns = [];
+				for (let i = 0; i < width; i++) {
+					columns[i] = Math.random() * height;
+				}
+				lastWidth = width;
+			}
+
+			let output = '';
+			for (let y = 0; y < height; y++) {
+				for (let x = 0; x < width; x++) {
+					const dist = (columns[x] - y + height) % height;
+					if (dist < 3) {
+						output += chars[Math.floor(Math.random() * chars.length)];
+					} else if (dist < 5) {
+						output += '░';
+					} else {
+						output += ' ';
+					}
+				}
+				output += '\n';
+			}
+			// Update columns
+			for (let i = 0; i < width; i++) {
+				if (Math.random() > 0.95) {
+					columns[i] = 0;
+				}
+				columns[i] = (columns[i] + 0.3) % height;
+			}
+			matrixCanvas!.textContent = output;
+			setTimeout(() => requestAnimationFrame(renderMatrix), 50);
+		}
+		renderMatrix();
+	}
+
+	// Spinning donut-like animation
+	const spinCanvas = document.getElementById('spin-canvas');
+	if (spinCanvas) {
+		let A = 0, B = 0;
+
+		function renderSpin() {
+			const { width, height } = getCanvasSize(spinCanvas!);
+			const b: string[] = [];
+			const z: number[] = [];
+			for (let i = 0; i < width * height; i++) {
+				b[i] = ' ';
+				z[i] = 0;
+			}
+
+			for (let j = 0; j < 6.28; j += 0.07) {
+				for (let i = 0; i < 6.28; i += 0.02) {
+					const c = Math.sin(i);
+					const d = Math.cos(j);
+					const e = Math.sin(A);
+					const f = Math.sin(j);
+					const g = Math.cos(A);
+					const h = d + 2;
+					const D = 1 / (c * h * e + f * g + 5);
+					const l = Math.cos(i);
+					const m = Math.cos(B);
+					const n = Math.sin(B);
+					const t = c * h * g - f * e;
+
+					const x = Math.floor(width / 2 + (width / 4) * D * (l * h * m - t * n));
+					const y = Math.floor(height / 2 + (height / 4) * D * (l * h * n + t * m));
+					const o = Math.floor(x + width * y);
+					const N = Math.floor(8 * ((f * e - c * d * g) * m - c * d * e - f * g - l * d * n));
+
+					if (y >= 0 && y < height && x >= 0 && x < width && D > z[o]) {
+						z[o] = D;
+						b[o] = '.,-~:;=!*#$@'[Math.max(0, N)];
+					}
+				}
+			}
+
+			let output = '';
+			for (let y = 0; y < height; y++) {
+				for (let x = 0; x < width; x++) {
+					output += b[x + y * width];
+				}
+				output += '\n';
+			}
+			spinCanvas!.textContent = output;
+
+			A += 0.04;
+			B += 0.02;
+			requestAnimationFrame(renderSpin);
+		}
+		renderSpin();
+	}
+</script>
+
 <style>
-  .mb-4 {
-    margin-bottom: 1rem;
-  }
+	#wave-canvas, #matrix-canvas, #spin-canvas {
+		line-height: 1;
+		letter-spacing: 0;
+	}
 </style>

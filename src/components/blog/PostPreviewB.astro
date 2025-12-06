@@ -2,7 +2,6 @@
 import type { CollectionEntry } from "astro:content";
 import type { HTMLTag, Polymorphic } from "astro/types";
 import FormattedDate from "@/components/FormattedDate";
-import { Icon } from "astro-icon";
 
 type Props<Tag extends HTMLTag> = Polymorphic<{ as: Tag }> & {
 	post: CollectionEntry<"blog">;
@@ -14,23 +13,13 @@ const postDate = post.data.updatedDate ?? post.data.pubDate;
 const pinned: boolean = !!post.data.order;
 ---
 
-<li>
-	<div class="flex flex-col gap-x-0 sm:flex-row sm:divide-x sm:divide-accent">
-		<FormattedDate date={postDate} class="min-w-[125px] text-accent-2 opacity-70"/>
-		<span class="sm:before:ml-4">
-			<a href={`/blog/${post.slug}/`} class="cody-link" data-astro-prefetch>
-				{post.data.title}
-			</a>
-			{ pinned &&
-				<Icon 
-					class="h-5 w-5 inline text-accent-2 rotate-45 ml-1" 
-					name="mdi:pin" 
-					aria-hidden="true" 
-					focusable="false"
-				/>
-			}
-		</span>
-	</div>
-	{withDesc && ( <p class="italic">{post.data.description}</p> )}
+<li class="flex items-baseline gap-2">
+	<span class="text-muted">></span>
+	<FormattedDate date={postDate} class="text-muted text-xs font-mono tabular-nums"/>
+	<a href={`/blog/${post.slug}/`} class="cody-link" data-astro-prefetch>
+		{post.data.title}
+	</a>
+	{pinned && <span class="text-xs border border-black px-1">pinned</span>}
+	{withDesc && <span class="text-muted text-xs">- {post.data.description}</span>}
 </li>
 

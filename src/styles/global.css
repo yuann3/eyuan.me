@@ -5,34 +5,70 @@
 @layer base {
   :root {
     color-scheme: light;
-    /* New Color Palette */
-    --theme-bg: #FDFBEE;
-    --theme-text: #015551;
-    --theme-accent: #57B4BA;
-    --theme-accent-2: #FE4F2D;
-    --theme-surface: #57B4BA20;
-    --theme-quote: #015551;
-    --theme-highlight: #FE4F2D;
+    /* Retro Mac Black & White Palette */
+    --theme-bg: #F5F5F0;
+    --theme-text: #111111;
+    --theme-accent: #000000;
+    --theme-accent-2: #000000;
+    --theme-muted: #666666;
+    --theme-surface: #EEEEEE;
+    --theme-quote: #333333;
+    --theme-highlight: #000000;
+    --theme-border: #000000;
   }
 
   html {
     @apply scroll-smooth;
   }
 
+  /* Subtle paper texture overlay */
+  html::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0.03;
+    z-index: 9999;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E");
+  }
+
   html body {
-    @apply mx-auto flex min-h-screen max-w-6xl flex-col px-4 pt-4 md:pt-8 font-mono text-sm font-normal antialiased bg-bgColor text-textColor;
+    @apply mx-auto flex min-h-screen max-w-6xl flex-col px-4 pt-4 md:pt-8 font-mono text-sm font-normal bg-bgColor text-textColor;
   }
 
   /*
    * CSS for markdown and MDX blog posts
    */
 
+/* Dither pattern utilities */
+.dither-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='4' height='4' viewBox='0 0 4 4' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23000'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23000'/%3E%3C/svg%3E");
+  background-size: 4px 4px;
+}
+
+.dither-border {
+  border-image: url("data:image/svg+xml,%3Csvg width='4' height='4' viewBox='0 0 4 4' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23000'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23000'/%3E%3C/svg%3E") 1 repeat;
+}
+
+.halftone-hover:hover {
+  background-image: url("data:image/svg+xml,%3Csvg width='4' height='4' viewBox='0 0 4 4' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='1' cy='1' r='0.5' fill='%23000'/%3E%3C/svg%3E");
+  background-size: 4px 4px;
+}
+
 .prose-cody blockquote {
-  @apply text-quote border-l-0;
+  @apply text-quote border-l-2 border-black pl-4 italic;
+  border-left-style: dotted;
 }
 
 .prose-cody a {
-  @apply no-underline;
+  @apply no-underline border-b border-dotted border-black;
+}
+
+.prose-cody a:hover {
+  @apply bg-black text-bgColor;
 }
 
 .prose-cody strong {
@@ -40,7 +76,7 @@
 }
 
 .prose-cody :where(code):not(:where([class~=not-prose],[class~=not-prose] *)) {
-  @apply bg-opacity-10 bg-accent-2 !text-accent-2 px-1 py-0 border border-accent-2 border-opacity-30 rounded;
+  @apply bg-surface text-textColor px-1 py-0 border border-black;
 }
 
 .prose :where(code):not(:where([class~="not-prose"],[class~="not-prose"] *))::before{
@@ -51,17 +87,21 @@
   content: none !important;
 }
 
+/* Dithered horizontal rule */
 .prose-cody hr {
-  border-top-style: dashed;
-  border-top-width: 0.5px;
-  @apply border-accent my-4;
+  border: none;
+  height: 4px;
+  background-image: url("data:image/svg+xml,%3Csvg width='4' height='4' viewBox='0 0 4 4' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23000'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23000'/%3E%3C/svg%3E");
+  background-size: 4px 4px;
+  @apply my-6;
 }
+
 .prose-cody thead {
   @apply border-b-0;
 }
 
 .prose-cody thead th {
-  @apply font-bold border-b border-dashed border-accent;
+  @apply font-bold border-b border-black;
 }
 
 .prose-cody tbody tr {
@@ -69,7 +109,7 @@
 }
 
 .prose-cody tfoot {
-  @apply font-bold border-t border-dashed border-accent;
+  @apply font-bold border-t border-black;
 }
 
 .prose-cody sup {
@@ -77,29 +117,29 @@
 }
 
 .prose-cody sup > a {
-  @apply bg-none;
+  @apply bg-none border-none;
 }
 
 .prose-cody sup > a:hover {
-  @apply text-accent no-underline bg-none;
+  @apply text-textColor no-underline bg-none;
 }
 
 .prose-cody sup > a:before {
   content: "[";
-  @apply text-accent;
+  @apply text-muted;
 }
 
 .prose-cody sup > a:after {
   content: "]";
-  @apply text-accent;
+  @apply text-muted;
 }
 
 .prose-cody mark {
-  @apply bg-accent;
+  @apply bg-black text-bgColor px-1;
 }
 
 .prose-cody li::marker {
-  @apply text-accent;
+  @apply text-black;
 }
 
 .prose-cody table {
@@ -108,72 +148,121 @@
   white-space: nowrap;
 }
 
+/* Code blocks with Mac window style */
+.prose-cody pre {
+  @apply border border-black bg-surface relative;
+}
+
+.prose-cody pre::before {
+  content: "";
+  display: block;
+  height: 16px;
+  background-image: url("data:image/svg+xml,%3Csvg width='4' height='4' viewBox='0 0 4 4' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23000'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23000'/%3E%3C/svg%3E");
+  background-size: 4px 4px;
+  margin: -1rem -1rem 1rem -1rem;
+  padding: 0 1rem;
+  border-bottom: 1px solid black;
+}
+
 /*
  * ===== END =====
  */
 
+/* Tag styling - retro bracket style */
 .tag {
-  @apply bg-accent-2 px-1 py-0 text-bgColor font-semibold text-sm;
+  @apply border border-black px-1 py-0 text-textColor text-sm;
 }
 
 .tag:before {
-  content: "#";
-  @apply -mr-2;
+  content: "[";
+  @apply mr-0;
 }
 
+.tag:after {
+  content: "]";
+  @apply ml-0;
+}
+
+.tag:hover {
+  @apply bg-black text-bgColor;
+}
+
+/* Links with dotted underline, invert on hover */
 .cody-link {
-  @apply bg-[size:100%_6px] bg-bottom bg-repeat-x w-fit;
-  background-image: linear-gradient(
-  transparent,
-  transparent 5px,
-  var(--theme-text) 5px,
-  var(--theme-text)
-  );
+  @apply border-b border-dotted border-black;
 }
 
 .cody-link:hover {
-  background-image: linear-gradient(
-  transparent,
-  transparent 4px,
-  var(--theme-accent-2) 4px,
-  var(--theme-accent-2)
-  );
+  @apply bg-black text-bgColor border-black;
 }
 
+/* Content background */
 .cody-bg {
-  @apply p-4 bg-surface rounded-sm;
+  @apply p-4 bg-bgColor border border-black;
 }
 
+/* Copy code button - retro style */
 .cody-copy-code {
-  @apply absolute top-2 right-2 bg-accent-2 text-bgColor p-0.5 border border-accent-2 hover:bg-bgColor hover:text-accent-2 transition-all duration-200 text-sm;
+  @apply absolute top-4 right-2 bg-bgColor text-textColor px-1 py-0 border border-black hover:bg-black hover:text-bgColor text-xs;
 }
 
+/* Title with > prefix instead of # */
 .title:before {
-  content: "#";
-  @apply mr-2 text-accent-2;
+  content: ">";
+  @apply mr-2 text-textColor;
 }
 
 .title {
-  @apply text-lg font-bold mb-4;
+  @apply text-lg font-bold mb-4 font-display;
 }
 
+/* Dithered horizontal rule */
 hr {
-  @apply border-accent-2 border-dashed my-6;
+  border: none;
+  height: 4px;
+  background-image: url("data:image/svg+xml,%3Csvg width='4' height='4' viewBox='0 0 4 4' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23000'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23000'/%3E%3C/svg%3E");
+  background-size: 4px 4px;
+  @apply my-6;
 }
 
+/* Classic Mac inverted selection */
 ::selection {
-  @apply bg-accent-2 text-bgColor;
+  @apply bg-black text-bgColor;
 }
 
 ::-moz-selection {
-  @apply bg-accent-2 text-bgColor;
+  @apply bg-black text-bgColor;
 }
 
 .fade-in {
-  @apply transition-opacity duration-700 ease-in opacity-100 duration-700;
+  @apply transition-opacity duration-700 ease-in opacity-100;
 }
 
 .fade-out {
-  @apply transition-opacity duration-700 ease-in opacity-0 duration-700;
+  @apply transition-opacity duration-700 ease-in opacity-0;
+}
+
+/* Button styles - Mac classic */
+.btn {
+  @apply border border-black px-2 py-1 bg-bgColor text-textColor;
+}
+
+.btn:hover {
+  @apply bg-black text-bgColor;
+}
+
+/* Images with border and dithered shadow */
+.retro-img {
+  @apply border border-black;
+  box-shadow: 4px 4px 0 0 rgba(0,0,0,0.1);
+}
+
+/* Pixel-perfect borders */
+.pixel-border {
+  box-shadow:
+    1px 0 0 0 #000,
+    -1px 0 0 0 #000,
+    0 1px 0 0 #000,
+    0 -1px 0 0 #000;
 }
 }

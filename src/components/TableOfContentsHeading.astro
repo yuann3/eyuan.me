@@ -20,13 +20,21 @@ const { heading } = Astro.props;
 </li>
 
 <style>
+  li {
+    @apply flex gap-1;
+  }
+
   li:before {
-    content: "#";
-    @apply -mr-2 text-accent;
+    content: ">";
+    @apply text-muted;
+  }
+
+  a {
+    @apply hover:bg-black hover:text-bgColor px-1 -mx-1;
   }
 
   .active-toc {
-    @apply text-accent;
+    @apply bg-black text-bgColor;
   }
 </style>
 

@@ -1,13 +1,10 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import Layout from '../layouts/Sidebar.astro';
+import Layout from '../layouts/Base.astro';
 import FormattedDate from '../components/FormattedDate.astro';
-import SocialMediaLinks from '@/components/SocialMediaLinks';
 import TOC from '@/components/TableOfContents';
 import BackToTopBtn from '@/components/BackToTopBtn';
 import CopyBtn from '@/components/CopyBtn';
-import { Icon } from 'astro-icon';
-import { siteConfig } from '../consts';
 
 interface Props {
 	post: CollectionEntry<"blog">;
@@ -44,40 +41,41 @@ const articleDate = updatedDate?.toISOString() ?? pubDate.toISOString();
 ---
 
 <Layout title={title} description={description} image={socialImage} articleDate={articleDate}>
-	<article class="cody-bg prose prose-cody text-textColor max-w-4xl">
-		<header class="space-y-2">
+	<article class="prose prose-cody text-textColor max-w-3xl mx-auto">
+		<header class="border border-black p-4 mb-6">
 			{
 				heroImage &&
 				<div class="aspect-h-9 aspect-w-16 mb-6 w-full flex justify-center">
-						<img src={heroImage.src} alt={heroImage.alt} class="m-0"/>
+					<img src={heroImage.src} alt={heroImage.alt} class="m-0 border border-black"/>
 				</div>
 			}
-			{series && (
-				<div class="md:sr-only not-sr-only">
-					<span>Part of series:</span>
-						<a class="cody-link" href={`/series/${series}`}>{series}</a>
-				</div>
-			)}
-			<div class="flex gap-2 items-center">
-				<h1 class="text-3xl my-0">{title}</h1>
-				{ draft && (<span class="px-1 py-0 bg-red-200 text-red-600 text-sm font-semibold">draft</span>)}
+			<div class="flex gap-2 items-center mb-2">
+				<h1 class="font-display text-2xl my-0">{title}</h1>
+				{draft && (<span class="px-1 py-0 border border-black text-xs">draft</span>)}
 			</div>
-			<span class="font-semibold text-textColor flex gap-2 items-center">
+			<div class="text-muted text-sm flex flex-wrap gap-2 items-center mb-3">
 				<FormattedDate date={pubDate} dateTimeOptions={dateTimeOptions}/>
-				<span>
-					/ {minutesRead}
-				</span>
+				<span>/</span>
+				<span>{minutesRead}</span>
 				{
 					updatedDate && (
-						<div class="italic px-2 bg-accent-2 w-fit text-sm font-normal text-bgColor">
-							Last updated: <FormattedDate date={updatedDate} dateTimeOptions={dateTimeOptions} />
-						</div>
+						<>
+							<span>/</span>
+							<span class="italic">
+								updated: <FormattedDate date={updatedDate} dateTimeOptions={dateTimeOptions} />
+							</span>
+						</>
 					)
 				}
-			</span>
+			</div>
+			{series && (
+				<div class="text-sm mb-2">
+					<span class="text-muted">series:</span>
+					<a class="cody-link ml-1" href={`/series/${series}`}>{series}</a>
+				</div>
+			)}
 			{tags && (
-				<ul class="not-prose flex gap-2 flex-wrap">
-					<Icon class="w-5 h-5" name="carbon:tag-group" aria-hidden="true" focusable="false"/>
+				<ul class="not-prose flex gap-1 flex-wrap">
 					{tags.map((tag: string) => (
 						<li class="tag">
 							<a href={`/tags/${tag}`}>{tag}</a>
@@ -86,33 +84,20 @@ const articleDate = updatedDate?.toISOString() ?? pubDate.toISOString();
 				</ul>
 			)}
 		</header>
-		<hr class="my-4"/>
-		<main class="prose-sm prose-headings:font-semibold prose-headings:ml-4 prose-headings:before:absolute prose-headings:before:-ms-4 prose-headings:before:text-accent-2 prose-headings:before:content-['#'] prose-th:before:content-none prose-a:text-accent-2">
+
+		{!!headings.length && (
+			<details class="border border-black p-4 mb-6">
+				<summary class="font-bold cursor-pointer hover:bg-black hover:text-bgColor px-1 -mx-1 w-fit">Table of Contents</summary>
+				<TOC headings={headings} />
+			</details>
+		)}
+
+		<main class="prose-sm prose-headings:font-bold prose-headings:font-display prose-headings:before:content-['#'] prose-headings:before:mr-2 prose-headings:before:text-muted prose-th:before:content-none">
 			<slot />
 		</main>
+
 		<BackToTopBtn/>
 	</article>
-	<aside slot="sidebar" class="hidden sm:block">
-		<div class="flex flex-col space-y-2">
-			<h2 class="font-semibold text-lg text-textColor">{siteConfig.profile.author}</h2>
-			{siteConfig.profile.description && (<p>{siteConfig.profile.description}</p>)}
-			<SocialMediaLinks/>
-			<span class="!my-4 text-accent-2" aria-hidden>---</span>
-			<p>
-				{description}
-			</p>
-			{series && (
-				<div class="pt-2 hidden md:block">
-					<span>Part of series: </span>
-					<br>
-					<ul>
-							<li><a class="cody-link" href={`/series/${series}`}>{series}</a></li>
-					</ul>
-				</div>
-			)}
-		</div>
-		{!!headings.length && <TOC headings={headings} />}
-	</aside>
 </Layout>
 
 <CopyBtn/>

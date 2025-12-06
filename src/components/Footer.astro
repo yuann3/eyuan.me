@@ -3,29 +3,39 @@ import { NAV_LINKS, siteConfig } from '../consts.ts';
 const year = new Date().getFullYear();
 ---
 
-
 <footer
-	class="mt-auto flex w-full flex-col items-center justify-center gap-y-2 pb-4 pt-20 text-center align-top font-semibold sm:flex-row sm:justify-between sm:text-xs text-textColor mb-8"
+	class="mt-auto flex w-full flex-col items-center justify-center gap-y-2 pb-4 pt-12 text-center align-top text-xs text-muted mb-8"
 >
-	<div class="mr-2 sm:mr-0">
-		Copyright &copy; {year}{" "}
-		{siteConfig.profile.author}
-    . Licensed CC BY-NC-SA 4.0.
+	<div class="dither-line w-full h-1 mb-4"></div>
+	<div class="flex flex-col sm:flex-row sm:justify-between w-full items-center gap-4">
+		<div>
+			&copy; {year} {siteConfig.profile.author} / CC BY-NC-SA 4.0
+		</div>
+		<nav
+			aria-label="More on this site"
+			class="flex gap-x-1 items-center"
+		>
+			{
+				NAV_LINKS.map((link, index) => (
+					<>
+						{index > 0 && <span>/</span>}
+						<a
+							href={link.path}
+							class="px-1 hover:bg-black hover:text-bgColor"
+						>
+							{link.title}
+						</a>
+					</>
+				))
+			}
+		</nav>
 	</div>
-	<nav
-		aria-label="More on this site"
-		class="gap-x-0 sm:gap-x-2 sm:flex sm:divide-x sm:divide-accent"
-	>
-		{
-			NAV_LINKS.map((link) => (
-				<a
-					href={link.path}
-					class="px-2 py-0 hover:text-textColor hover:underline sm:px-4 sm:py-2"
-				>
-					{link.title}
-				</a>
-			))
-		}
-	</nav>
 </footer>
+
+<style>
+	.dither-line {
+		background-image: url("data:image/svg+xml,%3Csvg width='4' height='4' viewBox='0 0 4 4' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23000'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23000'/%3E%3C/svg%3E");
+		background-size: 4px 4px;
+	}
+</style>
 

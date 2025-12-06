@@ -2,7 +2,6 @@
 import type { CollectionEntry } from "astro:content";
 import type { HTMLTag, Polymorphic } from "astro/types";
 import FormattedDate from "@/components/FormattedDate";
-import { Icon } from "astro-icon";
 
 type Props<Tag extends HTMLTag> = Polymorphic<{ as: Tag }> & {
 	post: CollectionEntry<"blog" | "project">;
@@ -15,28 +14,16 @@ const pinned: boolean = !!post.data.order;
 const urlBasePath = post.collection === "project" ? "projects" : post.collection;
 ---
 
-<li>
-	<span>
-		<a href={`/${urlBasePath}/${post.slug}/`} class="post-item">
-			<h4 class="cody-link inline font-bold" >{post.data.title}</h4>
+<li class="border-b border-dotted border-black pb-2">
+	<div class="flex items-baseline gap-2">
+		<span class="text-muted">></span>
+		<a href={`/${urlBasePath}/${post.slug}/`} class="cody-link font-bold">
+			{post.data.title}
 		</a>
-		{ pinned &&
-			<Icon 
-				class="h-5 w-5 inline text-accent rotate-45 -ml-1" 
-				name="mdi:pin" 
-				aria-hidden="true" 
-				focusable="false"
-			/>
-		}
-	</span>
-	<p class="date pr-2 mt-1">
-		<FormattedDate date={postDate}/>
-	</p>
-	{withDesc && ( <p class="italic">{post.data.description}</p> )}
+		{pinned && <span class="text-xs border border-black px-1">pinned</span>}
+	</div>
+	<div class="flex items-center gap-2 mt-1 ml-4">
+		<FormattedDate date={postDate} class="text-muted text-xs"/>
+		{withDesc && <span class="text-muted text-xs">/ {post.data.description}</span>}
+	</div>
 </li>
-<style>
-	.post-item:before {
-		content: "#";
-		@apply text-accent-2;
-	}	
-</style>
