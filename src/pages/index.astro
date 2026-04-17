@@ -92,31 +92,49 @@ X88h. \`8888  X888k X88h. \`8888  X888k X88h. \`8888  X888k  '88888.         "8>
 	<section class="mb-8 mt-12">
 		<div class="flex justify-between items-center mb-4 border-b border-black pb-2">
 			<h2 class="font-display text-lg">Projects</h2>
-			<a href="/project" class="text-sm hover:bg-black hover:text-bgColor px-1">[all]</a>
+			<a href="/projects" class="text-sm hover:bg-black hover:text-bgColor px-1">[all]</a>
 		</div>
 
 		<div class="grid md:grid-cols-2 gap-8">
 			<div>
-				<h3 class="font-bold mb-2 border-b border-dotted border-black pb-1">Backend</h3>
+				<h3 class="font-bold mb-2 border-b border-dotted border-black pb-1">Agents</h3>
 				<ul class="space-y-2">
 					<li class="flex gap-2">
 						<span class="text-muted">></span>
 						<div>
-							<a href="/project/rego" class="cody-link">sequel</a>
+							<a href="/projects/emaclaude" class="cody-link">emaclaude</a>
+							<span class="text-muted text-xs ml-2">3-agent coding system in Emacs</span>
+						</div>
+					</li>
+					<li class="flex gap-2">
+						<span class="text-muted">></span>
+						<div>
+							<a href="/projects/mra" class="cody-link">mra</a>
+							<span class="text-muted text-xs ml-2">multi-agent runtime for Rust</span>
+						</div>
+					</li>
+				</ul>
+
+				<h3 class="font-bold mb-2 mt-6 border-b border-dotted border-black pb-1">Backend</h3>
+				<ul class="space-y-2">
+					<li class="flex gap-2">
+						<span class="text-muted">></span>
+						<div>
+							<a href="/projects/sequel" class="cody-link">sequel</a>
 							<span class="text-muted text-xs ml-2">SQLite engine in Rust</span>
 						</div>
 					</li>
 					<li class="flex gap-2">
 						<span class="text-muted">></span>
 						<div>
-							<a href="/project/rego" class="cody-link">rego</a>
-							<span class="text-muted text-xs ml-2">Redis server clone in Go</span>
+							<a href="/projects/rego" class="cody-link">rego</a>
+							<span class="text-muted text-xs ml-2">Redis server in Go</span>
 						</div>
 					</li>
 					<li class="flex gap-2">
 						<span class="text-muted">></span>
 						<div>
-							<a href="/project/hrust" class="cody-link">hrust</a>
+							<a href="/projects/hrust" class="cody-link">hrust</a>
 							<span class="text-muted text-xs ml-2">HTTP server in Rust</span>
 						</div>
 					</li>
@@ -127,14 +145,14 @@ X88h. \`8888  X888k X88h. \`8888  X888k X88h. \`8888  X888k  '88888.         "8>
 					<li class="flex gap-2">
 						<span class="text-muted">></span>
 						<div>
-							<a href="/project/ruskey" class="cody-link">ruskey</a>
-							<span class="text-muted text-xs ml-2">A language interpreter</span>
+							<a href="/projects/ruskey" class="cody-link">ruskey</a>
+							<span class="text-muted text-xs ml-2">Monkey language interpreter</span>
 						</div>
 					</li>
 					<li class="flex gap-2">
 						<span class="text-muted">></span>
 						<div>
-							<a href="/project/ylib" class="cody-link">ylib</a>
+							<a href="/projects/ylib" class="cody-link">ylib</a>
 							<span class="text-muted text-xs ml-2">C stdlib rewrite</span>
 						</div>
 					</li>
@@ -147,8 +165,22 @@ X88h. \`8888  X888k X88h. \`8888  X888k X88h. \`8888  X888k  '88888.         "8>
 					<li class="flex gap-2">
 						<span class="text-muted">></span>
 						<div>
-							<a href="/project/rayrust" class="cody-link">rayrust</a>
-							<span class="text-muted text-xs ml-2">ray tracer, cpu based</span>
+							<a href="/projects/shaderview" class="cody-link">shaderview</a>
+							<span class="text-muted text-xs ml-2">GLSL shader preview in Emacs</span>
+						</div>
+					</li>
+					<li class="flex gap-2">
+						<span class="text-muted">></span>
+						<div>
+							<a href="/projects/rayrust" class="cody-link">rayrust</a>
+							<span class="text-muted text-xs ml-2">ray tracer with GPU acceleration</span>
+						</div>
+					</li>
+					<li class="flex gap-2">
+						<span class="text-muted">></span>
+						<div>
+							<a href="/projects/lrle" class="cody-link">lrle</a>
+							<span class="text-muted text-xs ml-2">GPU terrain visualizer</span>
 						</div>
 					</li>
 				</ul>
@@ -158,15 +190,22 @@ X88h. \`8888  X888k X88h. \`8888  X888k X88h. \`8888  X888k  '88888.         "8>
 					<li class="flex gap-2">
 						<span class="text-muted">></span>
 						<div>
-							<a href="/project/pew" class="cody-link">pew</a>
+							<a href="/projects/linear-app" class="cody-link">linear-app.el</a>
+							<span class="text-muted text-xs ml-2">Linear.app in Emacs</span>
+						</div>
+					</li>
+					<li class="flex gap-2">
+						<span class="text-muted">></span>
+						<div>
+							<a href="/projects/pew" class="cody-link">pew</a>
 							<span class="text-muted text-xs ml-2">codebase dumper for LLMs</span>
 						</div>
 					</li>
 					<li class="flex gap-2">
 						<span class="text-muted">></span>
 						<div>
-							<a href="/project/shell" class="cody-link">shell</a>
-							<span class="text-muted text-xs ml-2">minimal shell in Rust, it just works</span>
+							<a href="/projects/shell" class="cody-link">shell</a>
+							<span class="text-muted text-xs ml-2">minimal shell in Rust</span>
 						</div>
 					</li>
 				</ul>

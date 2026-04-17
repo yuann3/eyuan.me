@@ -7,6 +7,35 @@ import BaseLayout from '@/layouts/Base';
 			<h1 class="title"># Projects</h1>
 			<p class="mb-6">Things I've built. Mostly rewriting existing software from scratch to understand how it actually works.</p>
 
+			<h2 id="agents" class="font-bold text-base mb-4 border-b border-dotted border-black pb-1">Agents</h2>
+		<div class="space-y-6 mb-8">
+			<div>
+				<div class="flex items-baseline gap-2 flex-wrap">
+					<a href="/projects/emaclaude" class="cody-link font-bold">emaclaude</a>
+					<span class="text-muted text-xs">[Rust, Elisp]</span>
+					<a href="https://github.com/yuann3/emaclaude" class="text-muted text-xs hover:bg-black hover:text-bgColor px-1">[github]</a>
+				</div>
+				<p class="mt-2">
+					Agentic coding system that runs directly in Emacs. Three Claude code sessions in split buffers —
+					one plans, one codes, one reviews — connected through a Rust CLI and Elisp orchestrator.
+					Review loop runs until the reviewer approves twice consecutively. No Electron app needed.
+				</p>
+			</div>
+
+			<div>
+				<div class="flex items-baseline gap-2 flex-wrap">
+					<a href="/projects/mra" class="cody-link font-bold">mra</a>
+					<span class="text-muted text-xs">[Rust]</span>
+					<a href="https://github.com/yuann3/mra" class="text-muted text-xs hover:bg-black hover:text-bgColor px-1">[github]</a>
+				</div>
+				<p class="mt-2">
+					Multi-agent runtime for Rust. Spawn AI agents as Tokio actors, wire them together, let them talk to LLMs.
+					Erlang/OTP ideas applied to LLM pipelines — supervision trees, restart strategies, bounded message queues,
+					no shared mutable state.
+				</p>
+			</div>
+		</div>
+
 			<h2 id="systems" class="font-bold text-base mb-4 border-b border-dotted border-black pb-1">Systems Programming</h2>
 		<div class="space-y-6 mb-8">
 			<div>
@@ -95,6 +124,19 @@ import BaseLayout from '@/layouts/Base';
 		<div class="space-y-6 mb-8">
 			<div>
 				<div class="flex items-baseline gap-2 flex-wrap">
+					<a href="/projects/shaderview" class="cody-link font-bold">shaderview</a>
+					<span class="text-muted text-xs">[Rust, Elisp, GLSL]</span>
+					<a href="https://github.com/yuann3/shaderview" class="text-muted text-xs hover:bg-black hover:text-bgColor px-1">[github]</a>
+				</div>
+				<p class="mt-2">
+					Real-time GLSL shader preview inside Emacs. Live preview with hot reload on save,
+					ShaderToy-compatible shaders, mouse interaction, PNG export. Three-layer architecture:
+					Elisp UI, Rust FFI module, and pure Rust GPU library on top of wgpu.
+				</p>
+			</div>
+
+			<div>
+				<div class="flex items-baseline gap-2 flex-wrap">
 					<a href="/projects/rayrust" class="cody-link font-bold">rayrust</a>
 					<span class="text-muted text-xs">[Rust, WGSL, WebGPU]</span>
 					<a href="https://github.com/yuann3/RayRust" class="text-muted text-xs hover:bg-black hover:text-bgColor px-1">[github]</a>
@@ -124,6 +166,19 @@ import BaseLayout from '@/layouts/Base';
 		<div class="space-y-6">
 			<div>
 				<div class="flex items-baseline gap-2 flex-wrap">
+					<a href="/projects/linear-app" class="cody-link font-bold">linear-app.el</a>
+					<span class="text-muted text-xs">[Elisp]</span>
+					<a href="https://github.com/yuann3/linear-app.el" class="text-muted text-xs hover:bg-black hover:text-bgColor px-1">[github]</a>
+				</div>
+				<p class="mt-2">
+					Linear.app integration for Emacs with a Magit-style UI. Collapsible tree view by teams, projects,
+					and workflow states. Change status, priority, labels, and assignee via transient menus.
+					Create issues, copy branch names, open in browser — all without leaving Emacs. Pure Elisp.
+				</p>
+			</div>
+
+			<div>
+				<div class="flex items-baseline gap-2 flex-wrap">
 					<a href="/projects/pew" class="cody-link font-bold">pew</a>
 					<span class="text-muted text-xs">[Go]</span>
 					<a href="https://github.com/yuann3/Pew" class="text-muted text-xs hover:bg-black hover:text-bgColor px-1">[github]</a>
@@ -141,6 +196,7 @@ import BaseLayout from '@/layouts/Base';
 			<nav class="sticky top-8 border border-black p-4">
 				<h3 class="font-bold text-sm mb-3 border-b border-dotted border-black pb-1">Index</h3>
 				<ul class="space-y-2 text-sm">
+					<li><a href="#agents" class="cody-link">> agents</a></li>
 					<li><a href="#systems" class="cody-link">> systems</a></li>
 					<li><a href="#languages" class="cody-link">> languages</a></li>
 					<li><a href="#graphics" class="cody-link">> graphics</a></li>
