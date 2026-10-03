@@ -10,8 +10,18 @@ const { prevUrl, nextUrl } = Astro.props;
 {
 	(prevUrl || nextUrl) && (
 		<nav class="label-mono flex pt-6 text-ink-2">
-			{prevUrl && <a href={prevUrl}>← Prev</a>}
-			{nextUrl && <a href={nextUrl} class="ms-auto">Next →</a>}
+			{prevUrl && <a href={prevUrl} class="page-link">← Prev</a>}
+			{nextUrl && <a href={nextUrl} class="page-link ms-auto">Next →</a>}
 		</nav>
 	)
 }
+
+<style>
+	.page-link {
+		transition: color var(--dur-hover) var(--ease-out);
+	}
+
+	.page-link:hover {
+		color: var(--ink);
+	}
+</style>

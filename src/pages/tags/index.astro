@@ -11,7 +11,7 @@ const tags = getUniqueTagsWithCount(posts);
 <Shell title="Tags" description="All tags" section="writing">
 	<PanelHeader title="Tags" />
 	{tags.length > 0 && (
-		<ul class="border-b border-hairline">
+		<ul class="border-b border-hairline" data-reveal-group>
 			{tags.map(([tag, count]) => (
 				<ListRow href={`/tags/${tag}/`} title={`#${tag}`} meta={`${count} ${count === 1 ? 'post' : 'posts'}`} />
 			))}

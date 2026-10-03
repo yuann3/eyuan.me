@@ -17,19 +17,46 @@ const links = [
 
 <Shell title={title} description={description} articleDate={pubDate.toISOString()} section="projects">
 	<PanelHeader title={title.toLowerCase()} />
-	<p class="label-mono flex flex-wrap gap-x-6 gap-y-2 text-muted">
-		<span>{[...stack, pubDate.getFullYear()].join(' · ')}</span>
-		{links.map((link) => (
-			<a href={link.href} target="_blank" rel="noopener" class="text-ink-2">{link.title} ↗</a>
-		))}
-	</p>
-	<article class="prose-panel project-body mt-10">
-		{heroImage && <img src={heroImage.url} alt={heroImage.alt ?? ''} />}
-		<slot />
-	</article>
+	<div data-reveal-group>
+		<p class="label-mono flex flex-wrap gap-x-6 gap-y-2 text-muted" data-reveal>
+			<span>{[...stack, pubDate.getFullYear()].join(' · ')}</span>
+			{links.map((link) => (
+				<a href={link.href} target="_blank" rel="noopener" class="meta-link text-ink-2">{link.title} <span class="meta-arrow">↗</span></a>
+			))}
+		</p>
+		<article class="prose-panel project-body mt-10" data-reveal>
+			{heroImage && <img src={heroImage.url} alt={heroImage.alt ?? ''} />}
+			<slot />
+		</article>
+	</div>
 </Shell>
 
 <style>
+	.meta-link {
+		transition: color var(--dur-hover) var(--ease-out);
+	}
+
+	.meta-arrow {
+		display: inline-block;
+		transition: transform var(--dur-hover) var(--ease-out);
+	}
+
+	@media (hover: hover) {
+		.meta-link:hover {
+			color: var(--ink);
+		}
+
+		.meta-link:hover .meta-arrow {
+			transform: translate(2px, -2px);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.meta-link:hover .meta-arrow {
+			transform: none;
+		}
+	}
+
 	/* Most write-ups repeat the title as their first heading. */
 	.project-body > :global(h1:first-of-type) {
 		display: none;

@@ -11,12 +11,12 @@ const projects = sortProjectsByDate(await getAllProjects()).sort((a, b) => rank(
 
 <Shell title="Projects" description="Things I've built." section="projects">
 	<PanelHeader title="Projects" />
-	<ul class="rows">
+	<ul class="rows" data-reveal-group>
 		{projects.map(({ slug, data }) => (
-			<li>
-				<a href={`/projects/${slug}`} class="row project">
+			<li data-reveal>
+				<a href={`/projects/${slug}`} class="row row-link project">
 					<span class="flex min-w-0 flex-1 flex-col gap-0.5 md:flex-row md:items-center md:gap-0">
-						<span class="project-name">{data.title.toLowerCase()}</span>
+						<span class="project-name" data-row-name>{data.title.toLowerCase()}</span>
 						<span class="project-summary hidden md:block">{data.summary ?? data.description}</span>
 						<span class="project-summary md:hidden">{data.summaryShort ?? data.summary ?? data.description}</span>
 					</span>
@@ -24,6 +24,7 @@ const projects = sortProjectsByDate(await getAllProjects()).sort((a, b) => rank(
 						{data.stack.join(' · ')}
 					</span>
 					<span class="project-year">{data.pubDate.getFullYear()}</span>
+					<span class="row-arrow project-arrow" data-row-arrow aria-hidden="true">→</span>
 				</a>
 			</li>
 		))}
@@ -32,6 +33,7 @@ const projects = sortProjectsByDate(await getAllProjects()).sort((a, b) => rank(
 
 <style>
 	.project {
+		position: relative;
 		align-items: flex-start;
 		gap: 12px;
 		padding: 14px 0 15px;
@@ -59,6 +61,29 @@ const projects = sortProjectsByDate(await getAllProjects()).sort((a, b) => rank(
 		font-size: 12px;
 		line-height: 24px;
 		text-align: right;
+	}
+
+	/* The arrow lives in the row's right edge; the year steps aside for it. */
+	.project-arrow {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		display: flex;
+		align-items: center;
+		color: var(--ink-2);
+		font-size: 15px;
+	}
+
+	@media (hover: hover) {
+		.project-year {
+			transition: transform var(--dur-hover) var(--ease-out);
+		}
+
+		.project:hover .project-year,
+		.project:focus-visible .project-year {
+			transform: translateX(-22px);
+		}
 	}
 
 	@media (min-width: 768px) {

@@ -20,22 +20,32 @@ const articleDate = updatedDate?.toISOString() ?? pubDate.toISOString();
 
 <Shell title={title} description={description} image={socialImage} articleDate={articleDate} section="writing">
 	<PanelHeader title={title} />
-	<p class="label-mono flex flex-wrap gap-x-6 gap-y-2 text-muted">
-		<FormattedDate date={pubDate} />
-		{updatedDate && <span>Updated <FormattedDate date={updatedDate} /></span>}
-		<span>{minutesRead}</span>
-		{draft && <span>Draft</span>}
-		{series && <a href={`/series/${series}/`} class="text-ink-2">{series}</a>}
-		{tags?.map((tag) => <a href={`/tags/${tag}/`} class="text-ink-2">#{tag}</a>)}
-	</p>
-	<article class="prose-panel mt-10" data-copy-code>
-		{heroImage && <img src={heroImage.src} alt={heroImage.alt ?? ''} />}
-		<slot />
-	</article>
+	<div data-reveal-group>
+		<p class="label-mono flex flex-wrap gap-x-6 gap-y-2 text-muted" data-reveal>
+			<FormattedDate date={pubDate} />
+			{updatedDate && <span>Updated <FormattedDate date={updatedDate} /></span>}
+			<span>{minutesRead}</span>
+			{draft && <span>Draft</span>}
+			{series && <a href={`/series/${series}/`} class="meta-link text-ink-2">{series}</a>}
+			{tags?.map((tag) => <a href={`/tags/${tag}/`} class="meta-link text-ink-2">#{tag}</a>)}
+		</p>
+		<article class="prose-panel mt-10" data-copy-code data-reveal>
+			{heroImage && <img src={heroImage.src} alt={heroImage.alt ?? ''} />}
+			<slot />
+		</article>
+	</div>
 	<CopyBtn />
 </Shell>
 
 <style>
+	.meta-link {
+		transition: color var(--dur-hover) var(--ease-out);
+	}
+
+	.meta-link:hover {
+		color: var(--ink);
+	}
+
 	/* Geist ships no italic; let the browser slant it for emphasis in posts. */
 	article :global(em),
 	article :global(i) {

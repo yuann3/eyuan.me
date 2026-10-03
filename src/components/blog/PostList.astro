@@ -10,7 +10,7 @@ const { posts } = Astro.props;
 ---
 
 {posts.length > 0 && (
-	<ul class="border-b border-hairline">
+	<ul class="border-b border-hairline" data-reveal-group>
 		{posts.map((post) => (
 			<ListRow
 				href={`/blog/${post.slug}/`}

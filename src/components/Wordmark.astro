@@ -1,11 +1,11 @@
 ---
-interface Props {
-	class?: string;
-}
+import type { HTMLAttributes } from 'astro/types';
 
-const { class: className } = Astro.props;
+type Props = HTMLAttributes<'a'>;
+
+const { class: className, ...rest } = Astro.props;
 ---
 
-<a href="/" class:list={["wordmark", className]} aria-label="eyuan, home">
+<a href="/" class:list={["wordmark", className]} aria-label="eyuan, home" {...rest}>
 	eyuan<span class="droplet" aria-hidden="true"></span>
 </a>

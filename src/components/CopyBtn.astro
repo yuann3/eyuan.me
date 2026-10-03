@@ -15,7 +15,7 @@
 			const button = document.createElement('button');
 			button.type = 'button';
 			button.textContent = 'Copy';
-			button.className = 'label-mono absolute right-3 top-2.5 rounded-md bg-white/80 px-1.5 py-0.5 text-muted opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100 [@media(hover:none)]:opacity-100';
+			button.className = 'label-mono absolute right-3 top-2.5 rounded-md bg-white/80 dark:bg-[rgba(30,30,46,0.85)] px-1.5 py-0.5 text-muted opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100 [@media(hover:none)]:opacity-100';
 			button.addEventListener('click', async () => {
 				await navigator.clipboard.writeText(pre.querySelector('code')?.innerText ?? '');
 				button.textContent = 'Copied';

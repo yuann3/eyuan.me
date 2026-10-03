@@ -9,6 +9,11 @@ export default {
 			'serif': ['Instrument Serif', 'Georgia', 'serif'],
 		},
 		extend: {
+			// Motion tokens (global.css): ease-motion-out / ease-motion-in-out.
+			transitionTimingFunction: {
+				'motion-out': 'var(--ease-out)',
+				'motion-in-out': 'var(--ease-in-out)',
+			},
 			colors: {
 				paper: "var(--paper)",
 				ink: "var(--ink)",

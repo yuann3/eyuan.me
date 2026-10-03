@@ -11,7 +11,7 @@ const series = getUniqueWithCountByProperty("series", posts);
 <Shell title="Series" description="All series" section="writing">
 	<PanelHeader title="Series" />
 	{series.length > 0 && (
-		<ul class="border-b border-hairline">
+		<ul class="border-b border-hairline" data-reveal-group>
 			{series.map(([s, count]) => (
 				<ListRow href={`/series/${s}/`} title={s} meta={`${count} ${count === 1 ? 'post' : 'posts'}`} />
 			))}

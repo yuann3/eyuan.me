@@ -3,7 +3,7 @@ import { ClientRouter } from 'astro:transitions';
 import BaseHead from '../components/BaseHead.astro';
 import Wordmark from '../components/Wordmark.astro';
 import { siteConfig, SECTIONS, FOOTER_LINKS, type Section } from '../consts';
-import { FILM_STATES, palette, gradientCss, type FilmLayout } from '../scripts/film-palettes';
+import { FILM_STATES, palette, gradientCss, type FilmLayout, type Scheme } from '../scripts/film-palettes';
 
 interface Props {
 	title: string;
@@ -17,10 +17,10 @@ const { title, description = siteConfig.description, section, image, articleDate
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 
 // Static film (no WebGL / reduced motion): the Paper construction, one rule
-// set per state. Generated from the same palettes the shader uses.
-function filmRules(layout: FilmLayout) {
+// set per state and scheme. Generated from the same palettes the shader uses.
+function filmRules(layout: FilmLayout, scheme: Scheme = 'light') {
 	return FILM_STATES.map((state) => {
-		const p = palette(state, layout);
+		const p = palette(state, layout, 'drain', scheme);
 		const root = state === 'idle' ? 'html:not([data-section])' : `html[data-section="${state}"]`;
 		const pct = (n: number) => `${+(n * 100).toFixed(3)}%`;
 		// Vertical lengths against max(panel height, ref) when the palette has a ref.
@@ -36,7 +36,13 @@ function filmRules(layout: FilmLayout) {
 	}).join('\n');
 }
 
-const filmCss = `${filmRules('desktop')}\n@media (max-width: 767px){\n${filmRules('mobile')}\n}`;
+// Dark rules come last, so they win only under the dark media query.
+const filmCss = [
+	filmRules('desktop'),
+	`@media (max-width: 767px){\n${filmRules('mobile')}\n}`,
+	`@media (prefers-color-scheme: dark){\n.film-fallback{background-color:${palette('idle', 'desktop', 'drain', 'dark').stops[0].color}}\n${filmRules('desktop', 'dark')}\n}`,
+	`@media (prefers-color-scheme: dark) and (max-width: 767px){\n${filmRules('mobile', 'dark')}\n}`,
+].join('\n');
 ---
 
 <!doctype html>
@@ -47,19 +53,27 @@ const filmCss = `${filmRules('desktop')}\n@media (max-width: 767px){\n${filmRule
 		<style is:inline set:html={filmCss}></style>
 	</head>
 	<body>
+		<script is:inline>
+			// Cold load: hide the panel and rail items until shell.ts runs the
+			// first reveal. Falls back to visible if it never does.
+			document.body.setAttribute('data-boot', '');
+			setTimeout(function () { document.body.removeAttribute('data-boot'); }, 3000);
+		</script>
 		<div class="shell" data-shell>
 			<div class="rail">
 				<div class="rail-top">
-					<Wordmark />
+					<Wordmark data-reveal />
 				</div>
 				<div class="rail-space"></div>
 				<div class="intro">
 					<h1 class="headline">
-						<span class="headline-line">hi, i'm yiyuan.</span>
-						<span class="headline-line">i take software apart,</span>
-						<span class="headline-line headline-serif"><em>one layer at a time.</em></span>
+						<span class="headline-line headline-serif" data-reveal><em>Yoo wasupp</em></span>
+						<span class="headline-line" data-reveal><em>Yiyuan's here, welcome!</em></span>
+						<span class="headline-line" data-reveal>i mainly build abstractions,</span>
+						<span class="headline-line" data-reveal>or tear them down</span>
+
 					</h1>
-					<p class="sub">software engineer in singapore.</p>
+					<p class="sub" data-reveal>i'm a software engineer based in singapore, passionate about building high-performance, reliable tools, and anything that makes me more productive</p>
 				</div>
 				<div class="rail-space"></div>
 				<nav class="nav" aria-label="Main">
@@ -70,25 +84,31 @@ const filmCss = `${filmRules('desktop')}\n@media (max-width: 767px){\n${filmRule
 							data-nav-link
 							data-section={s.id}
 							aria-current={s.id === section ? (path === s.path ? 'page' : 'true') : undefined}
+							data-reveal
 						>
-							<span class="droplet" aria-hidden="true"></span>{s.title}
+							<span class="nav-label">{s.title}</span>
 						</a>
 					))}
+					<span class="droplet nav-droplet" aria-hidden="true"></span>
+					<div class="esc-hint" data-esc-hint aria-hidden="true"><kbd>esc</kbd><span>to close</span></div>
 				</nav>
 				<ul class="links">
 					{FOOTER_LINKS.map((l) => (
-						<li><a href={l.link} class="label-mono">{l.title}</a></li>
+						<li data-reveal><a href={l.link} class="label-mono">{l.title}</a></li>
 					))}
 				</ul>
 			</div>
 			<div class="well">
 				<div class="panel" data-panel>
-					<div class="film-fallback" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-					<canvas class="film-canvas" data-film-canvas aria-hidden="true"></canvas>
-					<div class="film-grain" aria-hidden="true"></div>
+					<div class="film" data-film-layer aria-hidden="true">
+						<div class="film-fallback"><i></i><i></i><i></i><i></i></div>
+						<canvas class="film-canvas" data-film-canvas></canvas>
+						<div class="film-grain"></div>
+					</div>
 					<main class="panel-content" data-panel-content>
 						<slot />
 					</main>
+					<div class="panel-edge" data-panel-edge aria-hidden="true"></div>
 				</div>
 			</div>
 		</div>

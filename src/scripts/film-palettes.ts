@@ -4,6 +4,9 @@
 
 export type FilmState = 'idle' | 'about' | 'projects' | 'writing' | 'resume';
 export type FilmLayout = 'desktop' | 'mobile';
+// Follows `prefers-color-scheme`. Light is Paper's palettes; dark is the
+// nocturnal set below (same structure, geometry and drift).
+export type Scheme = 'light' | 'dark';
 
 // Vertical gradient, top to bottom. `at` is 0..1 of the panel height.
 export type Stop = { color: string, at: number };
@@ -91,6 +94,35 @@ const COLORS: Record<FilmState, { stops: string[], at?: number[], blobs: string[
 	},
 };
 
+// Dark: the panel glows out of a dark page. Idle keeps the flat top band
+// (near the dark paper) and glows below it; the section washes are deep,
+// low-chroma tints (OKLab L ~0.19-0.22) of each light wash's hues, so
+// #ECEDEE text keeps >= 12:1 on every pixel.
+const DARK_COLORS: typeof COLORS = {
+	idle: {
+		stops: ['#121318', '#121318', '#73512D', '#B8407A', '#5038C0', '#2264B8', '#1F8C78'],
+		at: [0, 0.12, 0.28, 0.46, 0.63, 0.8, 1],
+		blobs: ['#C24A80', '#4330A8', '#795531', '#23806F'],
+	},
+	projects: {
+		stops: ['#161514', '#20160C', '#27141C', '#1F172C', '#0E1F29'],
+		blobs: ['#361A28', '#271F3A', '#2D2218', '#032C22'],
+	},
+	about: {
+		stops: ['#171411', '#20160C', '#2A121B', '#231529', '#111E2D'],
+		blobs: ['#361A28', '#271F3A', '#2D2218', '#032C22'],
+	},
+	writing: {
+		stops: ['#141516', '#071D18', '#22180E', '#281421', '#191B2E'],
+		blobs: ['#341A2C', '#1D223D', '#2D2218', '#022C25'],
+	},
+	resume: {
+		stops: ['#141514', '#101C0C', '#0A2013', '#1F172C', '#1A1B2C'],
+		at: [0, 0.26, 0.5, 0.74, 1],
+		blobs: ['#182A12', '#271F3A', '#062C21', '#1B233B'],
+	},
+};
+
 // The idle film drifts through a small family of related palettes. They all
 // share Drain's stop positions, blob geometry and silver top, so the panel
 // still emerges from the paper; only the hues change. "drain" is Paper's
@@ -116,6 +148,96 @@ export const IDLE_VARIANTS: Record<IdleVariant, { stops: string[], blobs: string
 	},
 };
 
+// Dark counterparts of the idle family: the same hue journeys as glowing
+// bands under a dark top.
+export const DARK_IDLE_VARIANTS: Record<IdleVariant, { stops: string[], blobs: string[] }> = {
+	drain: DARK_COLORS.idle,
+	dusk: {
+		stops: ['#121318', '#121318', '#6E5428', '#B8503E', '#A8346A', '#5A34A8', '#8A4A88'],
+		blobs: ['#C25A48', '#5E30A0', '#6E5530', '#9A4A78'],
+	},
+	aurora: {
+		stops: ['#121318', '#121318', '#2A6247', '#1E7AAE', '#4440B8', '#8A3AA8', '#1F7E92'],
+		blobs: ['#2486AE', '#3E3AB0', '#32684A', '#8E4AA0'],
+	},
+	lagoon: {
+		stops: ['#121318', '#121318', '#70571E', '#1F8A7E', '#2A4EB8', '#6438B8', '#A84A7C'],
+		blobs: ['#1F8890', '#3438B0', '#745928', '#A85082'],
+	},
+};
+
+// The film's hues as published to the page (--film-1..4: the headline
+// gradient and the droplets). Light: the variant's band colours. Dark: more
+// luminous versions of the same hues, so the text glows on the dark page.
+const DARK_HUES: Record<IdleVariant, string[]> = {
+	drain: ['#E8C878', '#F27BAA', '#B48CF5', '#7AB4F2'],
+	dusk: ['#EEC57E', '#F59A86', '#EE7FB0', '#B48CF5'],
+	aurora: ['#8EE0B8', '#7CCBF2', '#A0A2F5', '#D68CEC'],
+	lagoon: ['#D8DC8A', '#6FD6C6', '#8AA6F5', '#B892F5'],
+};
+
+export function filmHues(variant: IdleVariant, scheme: Scheme = 'light'): string[] {
+	return scheme === 'dark' ? DARK_HUES[variant] : IDLE_VARIANTS[variant].stops.slice(2, 6);
+}
+
+// Nav hover preview on idle: a vivid version of each section's wash, in the
+// same hue order, so the film leans toward where the click will land
+// without turning pale. Same structure as the idle palettes.
+export const SECTION_ACCENTS: Record<Exclude<FilmState, 'idle'>, { stops: string[], blobs: string[] }> = {
+	// straw, pink, lavender, sky
+	projects: {
+		stops: ['#F2F2F0', '#F2F2F0', '#F1E0A0', '#E8789F', '#9A7BE0', '#6FB2E8', '#A9D8F2'],
+		blobs: ['#EE86AE', '#8566D8', '#F4E6B4', '#A6D6F0'],
+	},
+	// peach, rose, orchid, periwinkle
+	about: {
+		stops: ['#F2F2F0', '#F2F2F0', '#F4D9A6', '#EE8A8F', '#C27AD8', '#7A9CEB', '#B9D3F5'],
+		blobs: ['#F09A9E', '#A46BD6', '#F6E0B0', '#BCD2F4'],
+	},
+	// mint, straw, rose, periwinkle
+	writing: {
+		stops: ['#F2F2F0', '#F2F2F0', '#A9E6CF', '#EAD98C', '#E78AB4', '#7F86E2', '#B8BEF2'],
+		blobs: ['#E996BF', '#7C86DE', '#EDE2A0', '#9EE3CB'],
+	},
+	// sage, green, teal, lilac
+	resume: {
+		stops: ['#F2F2F0', '#F2F2F0', '#CBE9B5', '#7ACB98', '#4FA9B0', '#9586DE', '#B9BEE6'],
+		blobs: ['#8BD3A4', '#8A7BD8', '#D7EEC0', '#9FD9C6'],
+	},
+};
+
+// Dark hover previews: each section's hues as glowing bands.
+export const DARK_SECTION_ACCENTS: typeof SECTION_ACCENTS = {
+	projects: {
+		stops: ['#121318', '#121318', '#6E5A2C', '#B84A74', '#6A4CC0', '#2C78B8', '#2A6E90'],
+		blobs: ['#C25484', '#5A3EB0', '#6E5A34', '#2A7AA0'],
+	},
+	about: {
+		stops: ['#121318', '#121318', '#70532E', '#B8505A', '#8A44A8', '#3A5EBC', '#3A5E96'],
+		blobs: ['#C05A64', '#7038A8', '#705434', '#3C5E9E'],
+	},
+	writing: {
+		stops: ['#121318', '#121318', '#22705A', '#7A5F2A', '#B04A7C', '#4448B8', '#4A50A0'],
+		blobs: ['#B44E84', '#4248B4', '#72592E', '#22806A'],
+	},
+	resume: {
+		stops: ['#121318', '#121318', '#3C6230', '#2A8456', '#1E7A84', '#5A48B8', '#4A4C90'],
+		blobs: ['#2A7C5C', '#5444B0', '#3E6440', '#22806C'],
+	},
+};
+
+// The idle film's palette lean while a nav item is hovered (idle geometry).
+export function accentPalette(section: Exclude<FilmState, 'idle'>, layout: FilmLayout, scheme: Scheme = 'light'): Palette {
+	const p = palette('idle', layout, 'drain', scheme);
+	const c = (scheme === 'dark' ? DARK_SECTION_ACCENTS : SECTION_ACCENTS)[section];
+	const colors = layout === 'mobile' ? c.stops.slice(1) : c.stops;
+	return {
+		...p,
+		stops: p.stops.map((st, i) => ({ ...st, color: colors[i] })),
+		blobs: p.blobs.map((b, i) => ({ ...b, color: c.blobs[i] })),
+	};
+}
+
 // Drift order; the film loops through it.
 export const IDLE_CYCLE: IdleVariant[] = ['drain', 'dusk', 'aurora', 'lagoon'];
 
@@ -126,8 +248,11 @@ const MOBILE_IDLE_AT = [0, 0.22, 0.45, 0.64, 0.82, 1];
 export const FILM_STATES: FilmState[] = ['idle', 'about', 'projects', 'writing', 'resume'];
 
 // `variant` only applies to the idle state; it defaults to Paper's Drain.
-export function palette(state: FilmState, layout: FilmLayout, variant: IdleVariant = 'drain'): Palette {
-	const c = state === 'idle' ? { ...COLORS.idle, ...IDLE_VARIANTS[variant] } : COLORS[state];
+export function palette(state: FilmState, layout: FilmLayout, variant: IdleVariant = 'drain', scheme: Scheme = 'light'): Palette {
+	const dark = scheme === 'dark';
+	const table = dark ? DARK_COLORS : COLORS;
+	const variants = dark ? DARK_IDLE_VARIANTS : IDLE_VARIANTS;
+	const c = state === 'idle' ? { ...table.idle, ...variants[variant] } : table[state];
 	const mobileIdle = state === 'idle' && layout === 'mobile';
 	const colors = mobileIdle ? c.stops.slice(1) : c.stops;
 	const at = mobileIdle ? MOBILE_IDLE_AT : c.at ?? WASH_AT;

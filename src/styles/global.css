@@ -3,11 +3,73 @@
 @tailwind utilities;
 
 /*
+ * The film's current idle hues, published on [data-shell] by film.ts.
+ * Registered so the headline and droplets can transition them.
+ */
+@property --film-2 {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #E2588F;
+}
+
+@property --film-3 {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #6D4FD6;
+}
+
+/*
+ * The colour tokens, registered so a live light <-> dark switch can tween
+ * them alongside the film (480ms) instead of snapping ahead of it.
+ */
+@property --paper {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #FFFFFF;
+}
+
+@property --ink {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #121316;
+}
+
+@property --ink-2 {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #55575D;
+}
+
+@property --muted {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #76787E;
+}
+
+@property --faint {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #9A9CA1;
+}
+
+@property --hairline {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: rgba(18, 19, 22, 0.1);
+}
+
+@property --edge {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: rgba(18, 19, 22, 0.06);
+}
+
+/*
  * Tokens (from the Paper file, page "v2 — simple").
  */
 @layer base {
   :root {
-    color-scheme: light;
+    color-scheme: light dark;
     --paper: #FFFFFF;
     --ink: #121316;
     --ink-2: #55575D;
@@ -20,13 +82,36 @@
 
     --font-sans: "Geist", system-ui, sans-serif;
     --font-mono: "Geist Mono", ui-monospace, monospace;
+    --font-plex: "IBM Plex Mono", ui-monospace, monospace;
     --font-serif: "Instrument Serif", Georgia, serif;
 
+    /* Motion (beUI). */
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+    --dur-press: 120ms;
+    --dur-hover: 160ms;
+    --dur-reveal: 220ms;
+    --dur-exit: 120ms;
+    --dur-enter: 180ms;
+    --dur-panel: 480ms;
+    --stagger: 35ms;
+
+    /* Legacy names; prefer the tokens above. */
     --ease: cubic-bezier(0.2, 0, 0, 1);
     --dur: 450ms;
 
     /* The shell keeps its DOM between pages; no snapshot cross-fade. */
     view-transition-name: none;
+
+    /* Only the OS scheme changes these; ease them with the film's tween. */
+    transition:
+      --paper var(--dur-panel) var(--ease-in-out),
+      --ink var(--dur-panel) var(--ease-in-out),
+      --ink-2 var(--dur-panel) var(--ease-in-out),
+      --muted var(--dur-panel) var(--ease-in-out),
+      --faint var(--dur-panel) var(--ease-in-out),
+      --hairline var(--dur-panel) var(--ease-in-out),
+      --edge var(--dur-panel) var(--ease-in-out);
   }
 
   html {
@@ -47,12 +132,46 @@
     background: #EFE2A6;
     color: var(--ink);
   }
+
+  /*
+   * Dark: follows the device (no toggle). A lightbox at night; the film
+   * glows out of the dark page. Light values above stay untouched.
+   */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #0E0F12;
+      --ink: #ECEDEE;
+      --ink-2: #A3A6AD;
+      --muted: #8A8D94;
+      --faint: #5E6168;
+      --hairline: rgba(236, 237, 238, 0.1);
+      --edge: rgba(255, 255, 255, 0.07);
+      --droplet: linear-gradient(in oklab 180deg, #F27BAA 0%, #B48CF5 100%);
+      --iridescent: linear-gradient(in oklab 180deg, #F27BAA 0%, #D684D6 50%, #B48CF5 100%);
+    }
+
+    /* Luminous defaults until film.ts publishes the dark hues. */
+    [data-shell] {
+      --film-2: #F27BAA;
+      --film-3: #B48CF5;
+    }
+
+    ::selection {
+      background: rgba(180, 140, 245, 0.35);
+      color: var(--ink);
+    }
+  }
 }
 
 @layer components {
   /*
    * Shell: left column (rail) + panel. Every page renders inside it.
    * html[data-state="idle" | "expanded"] and html[data-section] drive it.
+   *
+   * Geometry changes instantly; shell.ts animates the panel's visible area
+   * with clip-path (and the film with a matching transform), so nothing
+   * relayouts per frame. `.shell[data-geo="wide"]` holds the expanded
+   * geometry while the panel collapses.
    */
   .shell {
     display: flex;
@@ -67,11 +186,10 @@
     flex-shrink: 0;
     width: 58.75vw; /* 846 of 1440; the panel well takes the rest */
     padding: 44px 72px 24px;
-    overflow: clip;
-    transition: width var(--dur) var(--ease), padding-right var(--dur) var(--ease);
   }
 
-  [data-state="expanded"] .rail {
+  [data-state="expanded"] .rail,
+  .shell[data-geo="wide"] .rail {
     width: 300px;
     padding-right: 32px;
   }
@@ -103,6 +221,7 @@
     line-height: 22px;
   }
 
+  /* The droplet leans very slightly toward the film's current hues. */
   .droplet {
     display: inline-block;
     flex-shrink: 0;
@@ -111,6 +230,10 @@
     border-radius: 999px;
     background: #E2588F;
     background: var(--droplet);
+    background: linear-gradient(in oklab 180deg,
+      color-mix(in oklab, #E2588F 65%, var(--film-2)) 0%,
+      color-mix(in oklab, #6D4FD6 65%, var(--film-3)) 100%);
+    transition: --film-2 var(--film-fade, 0ms) linear, --film-3 var(--film-fade, 0ms) linear;
   }
 
   .wordmark-sm .droplet {
@@ -118,18 +241,22 @@
     height: 6px;
   }
 
-  /* Headline + sub-line: only on the idle page. */
-  /* Fixed to the idle width so the headline never reflows while the rail collapses. */
+  /* Headline + sub-line: only on the idle page. Fixed to the idle width so
+     they never reflow while the rail changes. */
   .intro {
     flex-shrink: 0;
     width: calc(58.75vw - 144px);
-    transition: opacity 200ms var(--ease) 250ms, visibility 0s linear 0s;
   }
 
   [data-state="expanded"] .intro {
-    opacity: 0;
     visibility: hidden;
-    transition: opacity var(--dur) var(--ease), visibility 0s linear var(--dur);
+    pointer-events: none;
+    animation: intro-out var(--dur-exit) var(--ease-out) both;
+    transition: visibility 0s linear var(--dur-exit);
+  }
+
+  @keyframes intro-out {
+    to { opacity: 0; transform: translateY(-4px); filter: blur(4px); }
   }
 
   .headline {
@@ -146,36 +273,65 @@
 
   .headline-serif {
     height: 52px;
+    padding-top: 4px;
   }
 
+  /* Gradient text that drifts slowly (12s loop) in the film's hues. At rest
+     it is exactly Paper's gradient: the first half of a mirrored ramp. */
   .headline-serif em {
     display: inline-block;
     margin: -3px 0;
-    font-family: var(--font-serif);
-    font-size: 56px;
-    font-style: italic;
-    letter-spacing: -0.01em;
-    line-height: 58px;
+    font-family: var(--font-plex);
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 48px;
     color: #B04FC9;
     background: var(--iridescent);
+    background-image: linear-gradient(in oklab 180deg, #E2588F 0%, #B04FC9 25%, #6D4FD6 50%, #B04FC9 75%, #E2588F 100%);
+    background-size: 100% 200%;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    animation: serif-drift 6s var(--ease-in-out) infinite alternate;
+    transition: --film-2 var(--film-fade, 0ms) linear, --film-3 var(--film-fade, 0ms) linear;
+  }
+
+  @supports (color: oklab(from red l a b)) {
+    .headline-serif em {
+      /* Paper's mid stop is a touch more saturated than the plain OKLab mid. */
+      --serif-mid: oklab(from color-mix(in oklab, var(--film-2), var(--film-3)) calc(l + 0.0052) calc(a + 0.0285) calc(b - 0.0334));
+      background-image: linear-gradient(in oklab 180deg, var(--film-2) 0%, var(--serif-mid) 25%, var(--film-3) 50%, var(--serif-mid) 75%, var(--film-2) 100%);
+    }
+  }
+
+  @keyframes serif-drift {
+    to { background-position: 0 30%; }
   }
 
   .sub {
+    max-width: 480px;
     padding-top: 20px;
     color: var(--ink-2);
     font-size: 17px;
     letter-spacing: -0.01em;
     line-height: 26px;
+    text-wrap: pretty;
   }
 
+  /* Nav. One droplet glides between items (rows are 40px apart). */
   .nav {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 6px;
+    --nav-i: 0;
   }
+
+  [data-section="projects"] .nav { --nav-i: 1; }
+  [data-section="writing"] .nav { --nav-i: 2; }
+  [data-section="resume"] .nav { --nav-i: 3; }
 
   .nav-link {
     position: relative;
@@ -188,22 +344,33 @@
     font-weight: 500;
     letter-spacing: -0.02em;
     line-height: 28px;
-    transition: color 200ms var(--ease);
+    transition: color var(--dur-hover) var(--ease-out);
   }
 
-  .nav-link .droplet {
+  .nav-label {
+    display: inline-block;
+    transition: transform var(--dur-hover) var(--ease-out);
+  }
+
+  .nav-droplet {
     position: absolute;
     left: -17px;
     top: 14px;
     opacity: 0;
-    transition: opacity 200ms var(--ease);
+    pointer-events: none;
+    transform: translateY(calc(var(--nav-i) * 40px));
+    transition:
+      opacity 150ms var(--ease-out),
+      transform 300ms var(--ease-in-out),
+      --film-2 var(--film-fade, 0ms) linear,
+      --film-3 var(--film-fade, 0ms) linear;
   }
 
   [data-state="expanded"] .nav-link:not([aria-current]) {
     color: var(--faint);
   }
 
-  [data-state="expanded"] .nav-link[aria-current] .droplet {
+  [data-state="expanded"] .nav-droplet {
     opacity: 1;
   }
 
@@ -218,6 +385,7 @@
 
   .links a {
     color: var(--muted);
+    transition: color 150ms var(--ease-out);
   }
 
   /* Panel well + the film panel. */
@@ -236,13 +404,20 @@
     isolation: isolate;
   }
 
-  /* 1px inset hairline, drawn above the film. */
-  .panel::after {
-    content: "";
+  /* The film layer: fallback, canvas and grain. shell.ts gives it a FLIP
+     transform while the panel morphs. */
+  .film {
     position: absolute;
     inset: 0;
-    z-index: 3;
-    border-radius: inherit;
+    transform-origin: 0 0;
+  }
+
+  /* 1px inset hairline, drawn above everything in the panel. */
+  .panel-edge {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    border-radius: 20px;
     box-shadow: inset 0 0 0 1px var(--edge);
     pointer-events: none;
   }
@@ -283,14 +458,14 @@
     mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)'/%3E%3C/svg%3E");
     pointer-events: none;
-    transition: opacity var(--dur) var(--ease);
+    transition: opacity var(--dur-panel) var(--ease-in-out);
   }
 
   [data-state="expanded"] .film-grain {
     opacity: 0;
   }
 
-  /* Content layer: scrolls inside the panel. */
+  /* Content layer: laid out at the panel's final size, scrolls inside it. */
   .panel-content {
     position: absolute;
     inset: 0;
@@ -298,17 +473,6 @@
     overflow-y: auto;
     overscroll-behavior: contain;
     padding: 56px 72px;
-  }
-
-  /*
-   * Laid out once at the expanded width; it rides the panel's left edge while
-   * the panel resizes and the panel clips the rest, so rows never reflow.
-   */
-  @media (min-width: 768px) {
-    .panel-content {
-      right: auto;
-      width: calc(100vw - 314px);
-    }
   }
 
   .panel-content:empty {
@@ -325,27 +489,111 @@
     }
   }
 
-  .panel-content[data-entering] {
-    animation: panel-in 350ms var(--ease) 150ms both;
-  }
-
-  /* Idle → expanded: nothing to wait for, rise with the panel. */
-  .panel-content[data-entering="now"] {
-    animation-delay: 40ms;
-  }
-
+  /* Leaving content: lift 4px and fade (120ms). */
   .panel-content[data-leaving] {
     pointer-events: none;
-    animation: panel-out 150ms var(--ease) both;
+    animation: panel-out var(--dur-exit) var(--ease-out) both;
   }
 
-  @keyframes panel-in {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: none; }
+  /* Content with nothing to stagger reveals as one block. */
+  .panel-content[data-entering] {
+    animation: rv-in var(--rv-dur, var(--dur-reveal)) var(--ease-out) var(--rv-base, 0ms) backwards;
   }
 
   @keyframes panel-out {
-    to { opacity: 0; }
+    to { opacity: 0; transform: translateY(-4px); }
+  }
+
+  /*
+   * Reveals (see motion-api.md). shell.ts sets data-rv on reveal items:
+   * wait (hidden, below the fold), in (animating in), instant (shown).
+   */
+  [data-rv="wait"] {
+    opacity: 0;
+  }
+
+  [data-rv="in"] {
+    animation: rv-in var(--rv-dur, var(--dur-reveal)) var(--ease-out) calc(var(--rv-base, 0ms) + var(--i, 0) * var(--rv-stagger, var(--stagger))) backwards;
+  }
+
+  @keyframes rv-in {
+    from { opacity: 0; transform: translateY(8px); filter: blur(4px); }
+  }
+
+  @keyframes rv-fade {
+    from { opacity: 0; }
+  }
+
+  /* Cold load: hidden until shell.ts starts the first reveal. */
+  body[data-boot] .panel,
+  body[data-boot] .rail [data-reveal] {
+    opacity: 0;
+  }
+
+  /* Esc hint: a small pill in the rail, just above the nav, so it never covers panel content. */
+  .esc-hint {
+    position: absolute;
+    left: -1px;
+    bottom: calc(100% + 24px);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: max-content;
+    padding: 6px 10px 6px 6px;
+    border: 1px solid var(--hairline);
+    border-radius: 999px;
+    background: var(--paper);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 14px;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 400ms var(--ease-out);
+  }
+
+  .esc-hint kbd {
+    display: inline-block;
+    padding: 2px 6px;
+    border: 1px solid var(--hairline);
+    border-radius: 6px;
+    color: var(--ink);
+    font: inherit;
+  }
+
+  .esc-hint span {
+    color: var(--ink-2);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .esc-hint[data-hint] {
+    visibility: visible;
+  }
+
+  .esc-hint[data-hint="on"],
+  .esc-hint[data-hint="dim"] {
+    animation: rv-in var(--dur-reveal) var(--ease-out) var(--hint-delay, 0ms) backwards;
+  }
+
+  .esc-hint[data-hint="on"] {
+    opacity: 1;
+  }
+
+  .esc-hint[data-hint="dim"] {
+    opacity: 0.55;
+  }
+
+  .esc-hint[data-hint="out"] {
+    opacity: 0;
+    transition: opacity var(--dur-exit) var(--ease-out);
+  }
+
+  @media (max-width: 767px), (hover: none) {
+    .esc-hint {
+      display: none;
+    }
   }
 
   /*
@@ -386,13 +634,28 @@
     text-transform: uppercase;
   }
 
+  a.label-mono {
+    transition: color 150ms var(--ease-out);
+  }
+
   .close {
     color: var(--ink-2);
     white-space: nowrap;
+    transition: color 150ms var(--ease-out), transform var(--dur-press) var(--ease-out);
+  }
+
+  .close-x {
+    display: inline-block;
+    transition: transform 200ms var(--ease-out);
+  }
+
+  .close:active {
+    transform: scale(0.94);
   }
 
   /* Hairline list: a .rows wrapper with .row children (52px, hairline on top). */
-  .rows {
+  /* The closing hairline rides on the last row, so it reveals with it. */
+  .rows > :last-child {
     border-bottom: 1px solid var(--hairline);
   }
 
@@ -405,6 +668,85 @@
 
   .hairline {
     border-color: var(--hairline);
+  }
+
+  /* Row hover (pointer devices): warm bleed, name nudge, end arrow. */
+  .row-link {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .row-link::before {
+    content: "";
+    position: absolute;
+    inset: 0 -12px;
+    z-index: -1;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.35);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--dur-hover) var(--ease-out);
+  }
+
+  .row-link .row-name,
+  .row-link [data-row-name] {
+    display: inline-block;
+    transition: transform var(--dur-hover) var(--ease-out);
+  }
+
+  /* Absolutely positioned at its static spot: never moves the layout. */
+  .row-arrow {
+    position: absolute;
+    margin-left: 6px;
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity var(--dur-hover) var(--ease-out), transform var(--dur-hover) var(--ease-out);
+  }
+
+  .row-link:focus-visible::before {
+    opacity: 1;
+  }
+
+  /* Press feedback. */
+  .press {
+    transition: transform var(--dur-press) var(--ease-out);
+  }
+
+  .press:active {
+    transform: scale(0.97);
+  }
+
+  .btn-ink {
+    background-color: var(--ink);
+    color: var(--paper);
+    transition: background-color 150ms var(--ease-out), transform var(--dur-press) var(--ease-out);
+  }
+
+  .btn-ink:active {
+    transform: scale(0.97);
+  }
+
+  .lift {
+    transition: transform 150ms var(--ease-out), background-color 150ms var(--ease-out);
+  }
+
+  /* Skill chip: a soft pill over the panel wash. */
+  .chip {
+    background-color: rgba(255, 255, 255, 0.7);
+  }
+
+  @keyframes icon-drop {
+    50% { transform: translateY(3px); }
+  }
+
+  /* Inline links: an ink underline grows from the left on hover. */
+  .ulink,
+  .prose-panel a {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1px;
+    transition: background-size 220ms var(--ease-out), color 150ms var(--ease-out);
   }
 
   /* Long-form content (posts, project write-ups). */
@@ -439,16 +781,17 @@
     line-height: 26px;
   }
 
+  /* Resting hairline underline; the ink one grows over it on hover. */
+  /* Inline links: a faint resting underline so they read as links, plus the ink one that grows on hover. */
+  .ulink,
   .prose-panel a {
-    text-decoration: underline;
-    text-decoration-color: var(--hairline);
-    text-decoration-thickness: 1px;
-    text-underline-offset: 3px;
-    transition: text-decoration-color 200ms var(--ease);
+    background-image: linear-gradient(currentColor, currentColor), linear-gradient(color-mix(in srgb, currentColor 30%, transparent), color-mix(in srgb, currentColor 30%, transparent));
+    background-size: 0% 1px, 100% 1px;
   }
 
-  .prose-panel a:hover {
-    text-decoration-color: currentColor;
+  .ulink:focus-visible,
+  .prose-panel a:focus-visible {
+    background-size: 100% 1px, 100% 1px;
   }
 
   .prose-panel ul,
@@ -573,8 +916,8 @@
 
     .headline-serif em {
       margin: 0;
-      font-size: 36px;
-      line-height: 40px;
+      font-size: 27px;
+      line-height: 34px;
     }
 
     .sub {
@@ -593,6 +936,11 @@
       height: 40px;
     }
 
+    .nav-droplet {
+      top: calc(28px + 17px);
+      left: 7px;
+    }
+
     .links {
       order: 4;
       padding: 24px 24px 34px;
@@ -602,17 +950,20 @@
       overflow: hidden;
     }
 
+    /* Hidden behind the sheet, after the sheet has covered them. */
     [data-state="expanded"] .rail-top,
     [data-state="expanded"] .nav,
     [data-state="expanded"] .links {
       visibility: hidden;
+      transition: visibility 0s linear var(--dur-panel);
     }
 
-    [data-state="expanded"] .well {
+    /* The sheet. The well keeps its slot so the idle page never shifts. */
+    [data-state="expanded"] .panel,
+    .shell[data-geo="wide"] .panel {
       position: fixed;
       inset: 8px;
       z-index: 10;
-      padding: 0;
     }
 
     .film-grain {
@@ -664,14 +1015,205 @@
     }
   }
 
+  /*
+   * Hover feedback: pointer devices only.
+   */
+  @media (hover: hover) and (pointer: fine) {
+    .nav-link:hover .nav-label {
+      transform: translateX(4px);
+    }
+
+    .nav-link:active .nav-label {
+      transform: translateX(4px) scale(0.97);
+      transition-duration: var(--dur-press);
+    }
+
+    [data-state="expanded"] .nav-link:not([aria-current]):hover {
+      color: var(--ink-2);
+    }
+
+    /* Idle: a faint droplet previews beside the hovered item. */
+    [data-state="idle"] .nav:has(> .nav-link:nth-of-type(1):hover) { --nav-i: 0; }
+    [data-state="idle"] .nav:has(> .nav-link:nth-of-type(2):hover) { --nav-i: 1; }
+    [data-state="idle"] .nav:has(> .nav-link:nth-of-type(3):hover) { --nav-i: 2; }
+    [data-state="idle"] .nav:has(> .nav-link:nth-of-type(4):hover) { --nav-i: 3; }
+
+    [data-state="idle"] .nav:has(> .nav-link:hover) .nav-droplet {
+      opacity: 0.35;
+    }
+
+    .links a:hover,
+    a.label-mono:hover,
+    .close:hover {
+      color: var(--ink);
+    }
+
+    .close:hover .close-x {
+      transform: rotate(90deg);
+    }
+
+    .row-link:hover::before {
+      opacity: 1;
+    }
+
+    .row-link:hover .row-name,
+    .row-link:hover [data-row-name] {
+      transform: translateX(4px);
+    }
+
+    .row-link:hover .row-arrow {
+      opacity: 1;
+      transform: none;
+    }
+
+    .btn-ink:hover {
+      background-color: #2A2B30;
+    }
+
+    :is(a, button):hover .icon-drop {
+      animation: icon-drop 280ms var(--ease-out);
+    }
+
+    .lift:hover {
+      transform: translateY(-1px);
+      background-color: #FFFFFF;
+    }
+
+    .ulink:hover,
+    .prose-panel a:hover {
+      background-size: 100% 1px, 100% 1px;
+    }
+  }
+
+  /* Keyboard: the same idle preview on focus. */
+  [data-state="idle"] .nav:has(> .nav-link:nth-of-type(2):focus-visible) { --nav-i: 1; }
+  [data-state="idle"] .nav:has(> .nav-link:nth-of-type(3):focus-visible) { --nav-i: 2; }
+  [data-state="idle"] .nav:has(> .nav-link:nth-of-type(4):focus-visible) { --nav-i: 3; }
+
+  [data-state="idle"] .nav:has(> .nav-link:focus-visible) .nav-droplet {
+    opacity: 0.35;
+  }
+
+  /*
+   * Reduced motion: keep opacity and colour, drop travel, blur, scale and
+   * loops. shell.ts skips the panel morph (instant state changes).
+   */
   @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-      animation-duration: 1ms !important;
-      animation-delay: 0s !important;
-      transition-duration: 1ms !important;
-      transition-delay: 0s !important;
+    [data-rv="in"],
+    .panel-content[data-entering],
+    .esc-hint[data-hint="on"],
+    .esc-hint[data-hint="dim"] {
+      animation-name: rv-fade;
+    }
+
+    [data-state="expanded"] .intro,
+    .panel-content[data-leaving] {
+      animation-name: rv-out-fade;
+    }
+
+    .headline-serif em {
+      animation: none;
+    }
+
+    .nav-droplet,
+    .nav-label,
+    .close-x,
+    .row-link .row-name,
+    .row-link [data-row-name],
+    .row-arrow,
+    .press,
+    .btn-ink,
+    .lift,
+    .close {
+      transform: none !important;
+    }
+
+    .nav-droplet {
+      transition: opacity 150ms var(--ease-out);
+    }
+
+    .icon-drop {
+      animation: none !important;
+    }
+  }
+
+  @keyframes rv-out-fade {
+    to { opacity: 0; }
+  }
+
+  /*
+   * Dark (prefers-color-scheme). Most of the UI follows the tokens; these
+   * are the pieces with their own colours. The film's hues (--film-2/-3)
+   * come from film.ts, which publishes luminous ones in dark.
+   */
+  @media (prefers-color-scheme: dark) {
+    .droplet {
+      background: #F27BAA;
+      background: var(--droplet);
+      background: linear-gradient(in oklab 180deg,
+        color-mix(in oklab, #F27BAA 65%, var(--film-2)) 0%,
+        color-mix(in oklab, #B48CF5 65%, var(--film-3)) 100%);
+    }
+
+    .headline-serif em {
+      color: #D684D6;
+      background-image: linear-gradient(in oklab 180deg, #F27BAA 0%, #D684D6 25%, #B48CF5 50%, #D684D6 75%, #F27BAA 100%);
+    }
+
+    @supports (color: oklab(from red l a b)) {
+      .headline-serif em {
+        /* A soft, plain OKLab mid: the luminous stops need no extra push. */
+        --serif-mid: oklab(from color-mix(in oklab, var(--film-2), var(--film-3)) calc(l + 0.01) a b);
+        background-image: linear-gradient(in oklab 180deg, var(--film-2) 0%, var(--serif-mid) 25%, var(--film-3) 50%, var(--serif-mid) 75%, var(--film-2) 100%);
+      }
+    }
+
+    .film-fallback {
+      background-color: #121318;
+    }
+
+    /* Soft-light keeps the grain in the light, not as dust on the dark;
+       0.2 matches the light grain's relative strength. */
+    .film-grain {
+      opacity: 0.2;
+      mix-blend-mode: soft-light;
+    }
+
+    .row-link::before {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .prose-panel :not(pre) > code {
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    /* Bright images would glare out of the night page; take the edge off. */
+    .prose-panel img {
+      filter: brightness(0.88);
+    }
+
+    /* Shiki dual themes: switch to the dark (catppuccin-mocha) colours. */
+    .astro-code,
+    .astro-code span {
+      color: var(--shiki-dark) !important;
+      background-color: var(--shiki-dark-bg) !important;
+      font-style: var(--shiki-dark-font-style) !important;
+      font-weight: var(--shiki-dark-font-weight) !important;
+      text-decoration: var(--shiki-dark-text-decoration) !important;
+    }
+
+    .chip {
+      background-color: rgba(255, 255, 255, 0.06);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .btn-ink:hover {
+        background-color: #D3D5D9;
+      }
+
+      .lift:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
     }
   }
 }
