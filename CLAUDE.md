@@ -10,7 +10,7 @@ Personal site and blog (https://www.eyuan.me), built with Astro 5, Tailwind 3, a
 - `npm run build`: runs `astro check` (type-checks `.astro`/`.ts` and validates content frontmatter against the Zod schemas), then `astro build` into `dist/`.
 - `npm run preview`: serve the built `dist/`.
 
-There are no tests and no linter. `astro check` through `npm run build` is the only verification step. Both `package-lock.json` and `pnpm-lock.yaml` are committed; npm is the one in use.
+There are no tests and no linter. `astro check` through `npm run build` is the only verification step. Use npm (`package-lock.json`); `netlify.toml` makes Netlify build with `npm run build` on Node 22. `sharp` must stay a direct dependency because `astro:assets` optimizes the About page photos at build time.
 
 ## Architecture: one shell, two states
 

@@ -1,0 +1,8 @@
+# Build with npm (package-lock.json) so Netlify installs the same dependency
+# tree as local builds. This overrides the build command set in the Netlify UI.
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
