@@ -16,7 +16,7 @@ export const experience: ResumeEntry[] = [
 		period: "Jun 2026 — Present",
 		title: "Software Engineer at Voltade Pte. Ltd.",
 		description:
-			"One of two core engineers on Volty, a multi-tenant AI agent platform. Reworked how agent turns are scheduled across tenants, built the first version of the agent's MCP server access with OAuth, live token streaming and hard abort for agent turns, and tenant-isolated realtime, and wrote most of the operator app.",
+			"One of two core engineers on Volty, a multi-tenant AI agent platform. Built the quality layer under its model routing, which scores inference hosts, probes them with evals and moves traffic off bad ones. Designed agent tools (MCP servers with OAuth, PDF, web fetch behind an SSRF guard), made realtime delivery tenant-isolated, and wrote most of the operator app.",
 	},
 	{
 		period: "Jan — May 2026",
@@ -56,9 +56,11 @@ export const skills: string[] = [
 	"C",
 	"Go",
 	"SQL",
-	"Agent runtimes",
+	"Agent tools",
 	"MCP",
-	"LLM-as-judge evals",
+	"LLM evals",
+	"Inference routing",
+	"SSRF and egress control",
 	"PostgreSQL",
 	"pg-boss",
 	"Bun",

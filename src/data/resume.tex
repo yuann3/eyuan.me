@@ -147,7 +147,36 @@
 
     \section{Summary}
         \begin{onecolentry}
-            Software engineer who builds agent runtimes and the infrastructure under them, and likes taking things apart. One of two core engineers on Volty, a multi-tenant agent platform on WhatsApp and email, where I built the first version of its MCP tool access, turn streaming and cancellation, and queue concurrency. 2+ years of experience, mostly in Rust, C and TypeScript, with Python and Go when the job calls for it. On the side I've built a SQLite engine from scratch, a Redis server, a GPU shader renderer that runs inside Emacs buffers, and a multi-agent runtime in Rust. I'm happiest figuring out how something works one layer deeper than I need to. I think computers and Emacs are cool, and so are house music and movies.
+            Software engineer building AI agent infrastructure: agent tools and the sandboxing around them, evals, and the quality layer under inference routing that keeps multi-tenant agent platforms reliable. I anchor my work in the fundamentals of software engineering, which is why my side projects rebuild the classics: a SQLite engine from scratch, a Redis server, a GPU shader renderer that runs inside Emacs buffers, and an actor-based multi-agent runtime in Rust. 2+ years of experience, mostly in Rust, C, and TypeScript, with Python and Go when the job calls for it. I'm happiest figuring out how something works one layer deeper than I need to. I think computers and Emacs are cool, and so are house music and movies.
+        \end{onecolentry}
+
+    \section{Technical Skills}
+        \begin{onecolentry}
+            \textbf{Languages:} Rust, C, C++, TypeScript, Python, Go (Golang), SQL, Emacs Lisp, GLSL, Bash
+        \end{onecolentry}
+
+        \vspace{0.07 cm}
+
+        \begin{onecolentry}
+            \textbf{AI Agents \& Inference:} MCP, OAuth 2.1, Tool Design \& Approval Gates, LLM-as-Judge \& Probe Evals, Inference Provider Routing, Streaming \& Cancellation, Mastra AI, RAG
+        \end{onecolentry}
+
+        \vspace{0.07 cm}
+
+        \begin{onecolentry}
+            \textbf{Frameworks \& Libraries:} Tokio, wgpu, Bun, Hono, React, Vue 3, FastAPI, Flask, Node.js, Playwright
+        \end{onecolentry}
+
+        \vspace{0.07 cm}
+
+        \begin{onecolentry}
+            \textbf{Databases \& Infra:} PostgreSQL (RLS, LISTEN/NOTIFY), pg-boss, Redis, SQLite, ChromaDB, Supabase, AWS, Docker, Turborepo, Git, Linux, CI/CD
+        \end{onecolentry}
+
+        \vspace{0.07 cm}
+
+        \begin{onecolentry}
+            \textbf{Concepts:} Agent Runtimes, Multi-Tenancy, Actor Model, Distributed Systems, Concurrency, Database Internals, GPU Programming, FFI/Dynamic Modules, TDD
         \end{onecolentry}
 
     \section{Experience}
@@ -159,15 +188,12 @@
         \end{twocolentry}
         \vspace{0.08 cm}
         \begin{onecolentry}
-            \textit{Volty: multi-tenant AI agents for businesses on WhatsApp and email (Bun, Hono, Postgres with row-level security, pg-boss, React). One of two core engineers; wrote 60+ design decision records.}
             \begin{highlights}
-                \item Reworked agent turn scheduling so tenants no longer contend for one global queue slot: foreground and background concurrency tiers plus queue-wait telemetry on the pg-boss queues, measured with a multi-org load-test harness I built against a real worker
-                \item Designed and built the first version of per-org MCP server access: OAuth 2.1 with dynamic client registration and PKCE, envelope-encrypted credentials the model never sees, and a per-tool run, ask-a-human or off policy. Tool definitions are hashed, so a tool its server silently changes is disabled
-                \item Made Stop a hard abort that parks the turn durably and signals every in-flight tool call to abort. Streamed tokens and reasoning to the browser over Postgres NOTIFY and SSE in \textasciitilde120 ms batches
-                \item Built LLM inbox triage: a model turns plain-English filters into structured clauses compiled to SQL, and an LLM judge labels conversations on the semantic clause. Wrote the labelled eval that holds it to precision, recall and latency bars
-                \item Built tenant-scoped realtime delivery that fails closed: the org id is stamped inside \texttt{pg\_notify} from the row-level-security setting, SSE drops unscoped events, and a CI check rejects producers that skip it
-                \item Put the agent's web search and fetch behind an egress guard, adding DNS pinning (no re-pointing a hostname between check and connect) and streamed size caps to a vendored SSRF engine
-                \item Led the design and build of WhatsApp template campaigns, and wrote most of the React 19 operator app
+                \item Built the inference-quality layer under Volty's multi-provider LLM routing: detectors score every production reply for broken output, hosts that underperform their peers are quarantined, and a streaming breaker retries looping replies on another host
+                \item Built the eval tooling around it: a probe harness that tests inference endpoints on tool calls, structured JSON, and long context against a reference endpoint, plus the LLM-judge eval behind smart inbox filters
+                \item Designed and built agent tools: the first version of org MCP servers (OAuth 2.1, per-tool approval, hash-pinned definitions), PDF operations, and web fetch behind an SSRF guard with DNS pinning
+                \item Split agent turns into foreground and background concurrency tiers, streamed tokens to the browser over Postgres NOTIFY and SSE with tenant scoping that fails closed, and made Stop a hard abort of in-flight tool calls
+                \item Tech Stack: TypeScript, Bun, Hono, PostgreSQL (RLS), pg-boss, React 19, MCP, Playwright, AWS
             \end{highlights}
         \end{onecolentry}
 
@@ -181,7 +207,11 @@
         \vspace{0.08 cm}
         \begin{onecolentry}
             \begin{highlights}
-                \item Designed how agents validate and hand off work in a multi-agent curriculum generator (Mastra, TypeScript), and built its Hono backend (JWT auth, RBAC, typed RPC client) with \textasciitilde800 tests
+                \item Designed and built a multi-agent AI curriculum platform from scratch with a small team, and owned the architecture for how agents coordinate, validate, and hand off work
+                \item Built the backend in a Turborepo monorepo: Hono middleware with JWT auth, RBAC, a typed RPC client, and 809+ tests across 59 files, deployed on AWS
+                \item Integrated Singapore's SkillsFuture Skills Framework into Supabase (PostgreSQL), seeding 269K rows across 10 tables with multi-country schema support
+                \item Built the Vue 3 frontend with Vike SSR, Pinia, and PrimeVue, with Storybook for the design system
+                \item Tech Stack: TypeScript, Mastra AI, Hono, Vue 3, Supabase, PostgreSQL, AWS, Turborepo, Vitest, Zod
             \end{highlights}
         \end{onecolentry}
 
@@ -195,7 +225,25 @@
         \vspace{0.08 cm}
         \begin{onecolentry}
             \begin{highlights}
-                \item Built a RAG document Q\&A platform (FastAPI, React 19, Ollama) with 500+ users; its LlamaParse and ChromaDB pipeline cut query response time by 40\%
+                \item Built a full-stack RAG learning platform with FastAPI, React 19, and Ollama, giving 500+ users question answering over their course documents
+                \item Built the document pipeline on LlamaParse with ChromaDB vector search, cutting query response time by 40\%
+                \item Built OAuth 2.0 authentication and REST API endpoints handling 1,000+ daily requests
+                \item Tech Stack: Python, TypeScript, React 19, Next.js, FastAPI, Flask, Tailwind CSS, JWT, ChromaDB
+            \end{highlights}
+        \end{onecolentry}
+
+        \vspace{0.15 cm}
+
+        \begin{twocolentry}{
+            Feb 2024 -- Nov 2024
+        }
+            \textbf{Technical Leader, Data Structures \& Algorithms}, University of Newcastle
+        \end{twocolentry}
+        \vspace{0.10 cm}
+        \begin{onecolentry}
+            \begin{highlights}
+                \item Led algorithm workshops on dynamic programming state transitions, graph traversal edge cases, and backtracking with pruning
+                \item Wrote teaching material for the hard parts: B-tree rebalancing, amortized complexity, and off-by-one errors in binary search
             \end{highlights}
         \end{onecolentry}
 
@@ -250,6 +298,22 @@
         \vspace{0.15 cm}
     
         \begin{twocolentry}{
+            \githublink{https://github.com/yuann3/RayRust}{\textbf{View on GitHub}}
+        }
+            \textbf{RayRust: CPU/GPU Path Tracer}
+        \end{twocolentry}
+        \vspace{0.08 cm}
+        \begin{onecolentry}
+            \begin{highlights}
+                \item Built a Monte Carlo path tracer in Rust with Lambertian, metal, and dielectric (glass) materials, and a camera with depth of field and adjustable field of view
+                \item Added a GPU backend on wgpu with WGSL shaders behind a feature flag, so the same scenes render on Vulkan, Metal, or DirectX 12, with the CPU renderer as fallback
+                \item Technologies: Rust, wgpu, WGSL, GPU Compute, Monte Carlo Sampling
+            \end{highlights}
+        \end{onecolentry}
+
+        \vspace{0.15 cm}
+
+        \begin{twocolentry}{
             \githublink{https://github.com/yuann3/sequel/}{\textbf{View on GitHub}}
         }
             \textbf{Sequel: SQLite Database Engine}
@@ -296,23 +360,6 @@
         \end{onecolentry}
 
         \vspace{0.15 cm}
-
-    \section{Technical Skills}
-        \begin{onecolentry}
-            \textbf{Languages:} TypeScript, Rust, Python, Go, C, SQL
-        \end{onecolentry}
-
-        \vspace{0.07 cm}
-
-        \begin{onecolentry}
-            \textbf{Agents:} MCP and OAuth 2.1, tool approval policies, LLM-as-judge evals, streaming and cancellation, actor supervision
-        \end{onecolentry}
-
-        \vspace{0.07 cm}
-
-        \begin{onecolentry}
-            \textbf{Stack:} PostgreSQL (RLS, LISTEN/NOTIFY, full-text search), pg-boss, Bun, Hono, Tokio, AWS, React, Playwright
-        \end{onecolentry}
 
     \section{Education}
 
