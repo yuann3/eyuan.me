@@ -9,26 +9,32 @@ export type ResumeEntry = {
 export const RESUME_PDF = "/YiyuanLi_Resume.pdf";
 
 export const about =
-	"Software engineer and full-stack engineer with 2+ years of experience, specializing in Rust and C. Passionate about building high-performance systems and exploring the deeper mechanics of software.";
+	"Software engineer building AI agent systems and the infrastructure under them. I work on Volty at Voltade, a multi-tenant agent platform that answers customers for businesses on WhatsApp and email, and I write agent runtimes in Rust on the side. I usually end up taking a system apart one layer deeper than the job needs.";
 
 export const experience: ResumeEntry[] = [
 	{
-		period: "2026 — Current",
+		period: "Jun 2026 — Present",
+		title: "Software Engineer at Voltade Pte. Ltd.",
+		description:
+			"One of two core engineers on Volty, a multi-tenant AI agent platform. Reworked how agent turns are scheduled across tenants, built the first version of the agent's MCP server access with OAuth, live token streaming and hard abort for agent turns, and tenant-isolated realtime, and wrote most of the operator app.",
+	},
+	{
+		period: "Jan — May 2026",
 		title: "Software Engineer – AI at ClassDo Pte. Ltd.",
 		description:
-			"Designed and built a multi-agent AI curriculum platform from scratch using a Turborepo monorepo. Owned software architecture decisions and integrated complex frameworks like SkillsFuture into Supabase.",
+			"Designed how agents validate and hand off work in a multi-agent curriculum generator, and built its Hono backend in a Turborepo monorepo with ~800 tests.",
 	},
 	{
-		period: "2025 — 2025",
+		period: "Jan — Sep 2025",
 		title: "Software Engineering Intern at Newcastle Australia IHE Pte. Ltd.",
 		description:
-			"Developed a full-stack RAG AI learning platform and implemented a document parsing pipeline that reduced query response time by 40%. Built secure authentication systems and RESTful APIs handling 1,000+ daily requests.",
+			"Built a RAG learning platform for document Q&A with FastAPI, React and Ollama, and a parsing and vector-search pipeline that cut query response time by 40%.",
 	},
 	{
-		period: "2024 — 2024",
+		period: "Feb — Nov 2024",
 		title: "Technical Leader, Data Structures & Algorithms at The University of Newcastle",
 		description:
-			"Led intensive algorithm workshops and developed custom teaching materials for complex computer science concepts.",
+			"Ran algorithm workshops and wrote teaching material on topics like B-tree rebalancing and amortized complexity.",
 	},
 ];
 
@@ -44,21 +50,22 @@ export const education: ResumeEntry[] = [
 ];
 
 export const skills: string[] = [
-	"Rust",
-	"C",
-	"C++",
-	"Python",
-	"SQL",
 	"TypeScript",
+	"Rust",
+	"Python",
+	"C",
 	"Go",
-	"React.js",
-	"Vue.js",
+	"SQL",
+	"Agent runtimes",
+	"MCP",
+	"LLM-as-judge evals",
 	"PostgreSQL",
-	"Redis",
+	"pg-boss",
+	"Bun",
+	"Hono",
+	"Tokio",
+	"React",
 	"AWS",
 	"Docker",
-	"Distributed Systems",
-	"RAG",
-	"Microservices",
-	"CI/CD",
+	"Playwright",
 ];

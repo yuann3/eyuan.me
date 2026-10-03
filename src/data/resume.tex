@@ -1,0 +1,347 @@
+\documentclass[10pt, letterpaper]{article}
+
+% Packages:
+\usepackage[
+    ignoreheadfoot,
+    top=1.2 cm,
+    bottom=1.2 cm,
+    left=1.6 cm,
+    right=1.6 cm,
+    footskip=1.0 cm,
+]{geometry}
+\usepackage{titlesec}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage[dvipsnames]{xcolor}
+\definecolor{primaryColor}{RGB}{0, 0, 0}
+\definecolor{accentColor}{RGB}{40, 40, 40}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage[
+    pdftitle={Yiyuan Li's CV},
+    pdfauthor={Yiyuan Li},
+    pdfcreator={LaTeX CV Yiyuan},
+    colorlinks=true,
+    urlcolor=accentColor
+]{hyperref}
+\usepackage[pscoord]{eso-pic}
+\usepackage{calc}
+\usepackage{bookmark}
+\usepackage{lastpage}
+\usepackage{changepage}
+\usepackage{paracol}
+\usepackage{ifthen}
+\usepackage{needspace}
+\usepackage{iftex}
+
+\ifPDFTeX
+    \input{glyphtounicode}
+    \pdfgentounicode=1
+    \usepackage[T1]{fontenc}
+    \usepackage[utf8]{inputenc}
+    \usepackage{charter}
+\else
+    % XeTeX/tectonic: charter.sty has no TU fonts, so load XCharter (OpenType) for real bold/italic
+    \usepackage{fontspec}
+    \setmainfont{XCharter}[
+        Extension=.otf,
+        UprightFont=*-Roman,
+        BoldFont=*-Bold,
+        ItalicFont=*-Italic,
+        BoldItalicFont=*-BoldItalic
+    ]
+\fi
+
+\newcommand{\githublink}[2]{\href{#1}{#2 $\nearrow$}}
+
+% Some settings:
+\raggedright
+\AtBeginEnvironment{adjustwidth}{\partopsep0pt}
+\pagestyle{empty}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}
+\setlength{\topskip}{0pt}
+\setlength{\columnsep}{0.15cm}
+\pagenumbering{gobble}
+
+\titleformat{\section}{\needspace{4\baselineskip}\bfseries\large}{}{0pt}{}[\vspace{1pt}\titlerule]
+
+\titlespacing{\section}{-1pt}{0.3 cm}{0.15 cm}
+
+\renewcommand\labelitemi{$\vcenter{\hbox{\small$\bullet$}}$}
+\newenvironment{highlights}{
+    \begin{itemize}[
+        topsep=0.08 cm,
+        parsep=0.05 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=0.4 cm
+    ]
+}{
+    \end{itemize}
+}
+
+\newenvironment{onecolentry}{
+    \begin{adjustwidth}{0.15 cm}{0.15 cm}
+}{
+    \end{adjustwidth}
+}
+
+\newenvironment{twocolentry}[2][]{
+    \onecolentry
+    \def\secondColumn{#2}
+    \setcolumnwidth{\fill, 4.5 cm}
+    \begin{paracol}{2}
+}{
+    \switchcolumn \raggedleft \secondColumn
+    \end{paracol}
+    \endonecolentry
+}
+
+\newenvironment{header}{
+    \setlength{\topsep}{0pt}\par\kern\topsep\centering\linespread{1.5}
+}{
+    \par\kern\topsep
+}
+
+\let\hrefWithoutArrow\href
+
+\begin{document}
+    \newcommand{\AND}{\unskip
+        \cleaders\copy\ANDbox\hskip\wd\ANDbox
+        \ignorespaces
+    }
+    \newsavebox\ANDbox
+    \sbox\ANDbox{$|$}
+
+    \begin{header}
+        \fontsize{25 pt}{25 pt}\selectfont Yiyuan Li
+
+        \vspace{5 pt}
+
+        \normalsize
+        \mbox{Singapore}%
+        \kern 5.0 pt%
+        \AND%
+        \kern 5.0 pt%
+        \mbox{\hrefWithoutArrow{mailto:yy@eyuan.me}{yy@eyuan.me}}%
+        \kern 5.0 pt%
+        \AND%
+        \kern 5.0 pt%
+        \mbox{\hrefWithoutArrow{tel:+6589523447}{+65 8952 3447}}%
+        \kern 5.0 pt%
+        \AND%
+        \kern 5.0 pt%
+        \mbox{\hrefWithoutArrow{https://www.eyuan.me/}{eyuan.me}}%
+        \kern 5.0 pt%
+        \AND%
+        \kern 5.0 pt%
+        \mbox{\hrefWithoutArrow{https://linkedin.com/in/yyuanl}{linkedin.com/in/yyuanl}}%
+        \kern 5.0 pt%
+        \AND%
+        \kern 5.0 pt%
+        \mbox{\hrefWithoutArrow{https://github.com/yuann3}{github.com/yuann3}}%
+    \end{header}
+
+    \vspace{5 pt - 0.3 cm}
+
+    \section{Summary}
+        \begin{onecolentry}
+            Software engineer who builds agent runtimes and the infrastructure under them, and likes taking things apart. One of two core engineers on Volty, a multi-tenant agent platform on WhatsApp and email, where I built the first version of its MCP tool access, turn streaming and cancellation, and queue concurrency. 2+ years of experience, mostly in Rust, C and TypeScript, with Python and Go when the job calls for it. On the side I've built a SQLite engine from scratch, a Redis server, a GPU shader renderer that runs inside Emacs buffers, and a multi-agent runtime in Rust. I'm happiest figuring out how something works one layer deeper than I need to. I think computers and Emacs are cool, and so are house music and movies.
+        \end{onecolentry}
+
+    \section{Experience}
+
+        \begin{twocolentry}{
+            Jun 2026 -- Present
+        }
+            \textbf{Software Engineer}, Voltade Pte. Ltd. -- Singapore
+        \end{twocolentry}
+        \vspace{0.08 cm}
+        \begin{onecolentry}
+            \textit{Volty: multi-tenant AI agents for businesses on WhatsApp and email (Bun, Hono, Postgres with row-level security, pg-boss, React). One of two core engineers; wrote 60+ design decision records.}
+            \begin{highlights}
+                \item Reworked agent turn scheduling so tenants no longer contend for one global queue slot: foreground and background concurrency tiers plus queue-wait telemetry on the pg-boss queues, measured with a multi-org load-test harness I built against a real worker
+                \item Designed and built the first version of per-org MCP server access: OAuth 2.1 with dynamic client registration and PKCE, envelope-encrypted credentials the model never sees, and a per-tool run, ask-a-human or off policy. Tool definitions are hashed, so a tool its server silently changes is disabled
+                \item Made Stop a hard abort that parks the turn durably and signals every in-flight tool call to abort. Streamed tokens and reasoning to the browser over Postgres NOTIFY and SSE in \textasciitilde120 ms batches
+                \item Built LLM inbox triage: a model turns plain-English filters into structured clauses compiled to SQL, and an LLM judge labels conversations on the semantic clause. Wrote the labelled eval that holds it to precision, recall and latency bars
+                \item Built tenant-scoped realtime delivery that fails closed: the org id is stamped inside \texttt{pg\_notify} from the row-level-security setting, SSE drops unscoped events, and a CI check rejects producers that skip it
+                \item Put the agent's web search and fetch behind an egress guard, adding DNS pinning (no re-pointing a hostname between check and connect) and streamed size caps to a vendored SSRF engine
+                \item Led the design and build of WhatsApp template campaigns, and wrote most of the React 19 operator app
+            \end{highlights}
+        \end{onecolentry}
+
+        \vspace{0.15 cm}
+
+        \begin{twocolentry}{
+            Jan 2026 -- May 2026
+        }
+            \textbf{Software Engineer -- AI}, ClassDo Pte. Ltd. -- Singapore
+        \end{twocolentry}
+        \vspace{0.08 cm}
+        \begin{onecolentry}
+            \begin{highlights}
+                \item Designed how agents validate and hand off work in a multi-agent curriculum generator (Mastra, TypeScript), and built its Hono backend (JWT auth, RBAC, typed RPC client) with \textasciitilde800 tests
+            \end{highlights}
+        \end{onecolentry}
+
+        \vspace{0.15 cm}
+
+        \begin{twocolentry}{
+            Jan 2025 -- Sep 2025
+        }
+            \textbf{Software Engineering Intern}, Newcastle Australia IHE Pte. Ltd. -- Singapore
+        \end{twocolentry}
+        \vspace{0.08 cm}
+        \begin{onecolentry}
+            \begin{highlights}
+                \item Built a RAG document Q\&A platform (FastAPI, React 19, Ollama) with 500+ users; its LlamaParse and ChromaDB pipeline cut query response time by 40\%
+            \end{highlights}
+        \end{onecolentry}
+
+    \section{Projects}
+
+        \begin{twocolentry}{
+            \githublink{https://github.com/yuann3/mra}{\textbf{View on GitHub}}
+        }
+            \textbf{MRA: Multi-Agent Runtime for Rust}
+        \end{twocolentry}
+        \vspace{0.08 cm}
+        \begin{onecolentry}
+            \begin{highlights}
+                \item Designed an Erlang/OTP-inspired agent runtime where each AI agent runs as a Tokio actor with bounded mpsc mailboxes, zero shared mutable state, and transparent restarts via ArcSwap mailbox slots
+                \item Implemented a supervisor with OneForOne/OneForAll restart strategies, exponential backoff, hang detection, and peer injection -- agents survive crashes without callers noticing
+                \item Technologies: Rust, Tokio, async/await, Actor Model, Serde, Figment, OpenRouter API
+            \end{highlights}
+        \end{onecolentry}
+
+        \vspace{0.15 cm}
+
+        \begin{twocolentry}{
+            \githublink{https://github.com/yuann3/emaclaude}{\textbf{View on GitHub}}
+        }
+            \textbf{Emaclaude: Claude Code Orchestrator}
+        \end{twocolentry}
+        \vspace{0.08 cm}
+        \begin{onecolentry}
+            \begin{highlights}
+                \item Built a 3-agent coding workflow (planner, coder, reviewer) inside Doom Emacs split buffers, coordinated by a \textasciitilde130-line Rust CLI and an Elisp orchestrator piping JSON state and effects
+                \item Implemented a review loop with double-confirmation passes to catch hallucinated approvals, plus inline diff comments and one-command PR creation via Magit and gh CLI
+                \item Technologies: Rust, Emacs Lisp, Claude Code CLI, Magit, Serde, Clap, GitHub CLI
+            \end{highlights}
+        \end{onecolentry}
+
+        \vspace{0.15 cm}
+
+        \begin{twocolentry}{
+            \githublink{https://github.com/yuann3/shaderview}{\textbf{View on GitHub}}
+        }
+            \textbf{ShaderView: GLSL Shader Engine for Emacs}
+        \end{twocolentry}
+        \vspace{0.08 cm}
+        \begin{onecolentry}
+            \begin{highlights}
+                \item Built a GPU-accelerated GLSL shader renderer that runs inside Emacs buffers using wgpu (Vulkan/Metal), with hot-reload on save and Shadertoy-compatible uniforms (iResolution, iTime, iMouse)
+                \item Wrote a Rust dynamic module (cdylib FFI) bridging Emacs Lisp to a pure-Rust GPU core, supporting concurrent shader sessions, PNG export, and configurable frame rates
+                \item Technologies: Rust, wgpu, Emacs Lisp, GLSL, FFI/Dynamic Modules, Vulkan, Metal
+            \end{highlights}
+        \end{onecolentry}
+
+        \vspace{0.15 cm}
+    
+        \begin{twocolentry}{
+            \githublink{https://github.com/yuann3/sequel/}{\textbf{View on GitHub}}
+        }
+            \textbf{Sequel: SQLite Database Engine}
+        \end{twocolentry}
+        \vspace{0.08 cm}
+        \begin{onecolentry}
+            \begin{highlights}
+                \item Built a SQLite-compatible database engine from scratch in Rust, implementing B-tree data structures and binary file parsing to read .db files without external dependencies
+                \item Implemented SQL query execution including SELECT with WHERE clauses, COUNT aggregation, and index optimization achieving 3x faster lookups through B-tree traversal
+                \item Technologies: Rust, B-tree, Binary Parsing, Database Internals, File I/O
+            \end{highlights}
+        \end{onecolentry}
+
+        \vspace{0.15 cm}
+    
+        \begin{twocolentry}{
+            \githublink{https://github.com/yuann3/Rego/}{\textbf{View on GitHub}}
+        }
+            \textbf{Rego: Redis Server Implementation}
+        \end{twocolentry}
+        \vspace{0.08 cm}
+        \begin{onecolentry}
+            \begin{highlights}
+                \item Implemented Redis-compatible server in Go with core commands (GET, SET, EXPIRE) and WAIT replication, passing 100\% of Codecrafters integration tests
+                \item Optimized memory allocation using slice pooling, reducing garbage collection overhead and improving throughput by 30\%
+                \item Technologies: Go (Golang), TCP/IP Networking, Concurrency, Memory Optimization
+            \end{highlights}
+        \end{onecolentry}
+
+        \vspace{0.15 cm}
+    
+        \begin{twocolentry}{
+            \githublink{https://github.com/yuann3/Ruskey/}{\textbf{View on GitHub}}
+        }
+            \textbf{Ruskey: Programming Language Interpreter}
+        \end{twocolentry}
+        \vspace{0.08 cm}
+        \begin{onecolentry}
+            \begin{highlights}
+                \item Developed a complete interpreter for Monkey language in Rust: lexer, recursive descent parser, AST, and tree-walking evaluator
+                \item Implemented closures, first-class functions, and hash maps using Test-Driven Development (TDD) methodology
+                \item Technologies: Rust, Compiler Design, Abstract Syntax Trees (AST), TDD
+            \end{highlights}
+        \end{onecolentry}
+
+        \vspace{0.15 cm}
+
+    \section{Technical Skills}
+        \begin{onecolentry}
+            \textbf{Languages:} TypeScript, Rust, Python, Go, C, SQL
+        \end{onecolentry}
+
+        \vspace{0.07 cm}
+
+        \begin{onecolentry}
+            \textbf{Agents:} MCP and OAuth 2.1, tool approval policies, LLM-as-judge evals, streaming and cancellation, actor supervision
+        \end{onecolentry}
+
+        \vspace{0.07 cm}
+
+        \begin{onecolentry}
+            \textbf{Stack:} PostgreSQL (RLS, LISTEN/NOTIFY, full-text search), pg-boss, Bun, Hono, Tokio, AWS, React, Playwright
+        \end{onecolentry}
+
+    \section{Education}
+
+        \begin{twocolentry}{
+            Nov 2025 -- Sep 2026
+        }
+            \textbf{Singapore University of Technology and Design (SUTD)}, 42 Singapore Computer Science
+        \end{twocolentry}  
+        \vspace{0.08 cm}
+        \begin{onecolentry}
+            \begin{highlights}
+                \item Core Curriculum: Peer-to-peer software engineering program focused on C, Unix, and systems programming
+                \item Completed 16+ projects: libft, ft\_printf, get\_next\_line, push\_swap, pipex, Born2beRoot
+            \end{highlights}
+        \end{onecolentry}
+
+        \vspace{0.15 cm}
+
+        \begin{twocolentry}{
+            Jan 2024 -- Sep 2025
+        }
+            \textbf{The University of Newcastle}, Bachelor of Information Technology
+        \end{twocolentry}  
+        \vspace{0.08 cm}
+        \begin{onecolentry}
+            \begin{highlights}
+                \item High Distinction: Object-Oriented Programming (OOP)
+                \item Distinction: Data Structures and Algorithms (DSA), Advanced Database Systems
+            \end{highlights}
+        \end{onecolentry}
+
+\end{document}
