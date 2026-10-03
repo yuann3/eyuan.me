@@ -1,208 +1,89 @@
 ---
-import BaseLayout from '@/layouts/Base';
+import Shell from '@/layouts/Shell';
+import PanelHeader from '@/components/PanelHeader';
+import { getAllProjects, sortProjectsByDate } from '@/utils';
+
+// Paper's order; anything not listed follows, newest first.
+const ORDER = ['emaclaude', 'mra', 'shaderview', 'linear-app', 'sequel', 'rego', 'rayrust', 'lrle', 'shell', 'ruskey', 'pew', 'hrust', 'ylib'];
+const rank = (slug: string) => (ORDER.includes(slug) ? ORDER.indexOf(slug) : ORDER.length);
+const projects = sortProjectsByDate(await getAllProjects()).sort((a, b) => rank(a.slug) - rank(b.slug));
 ---
-<BaseLayout title="Projects">
-	<div class="flex gap-8">
-		<section class="flex-1">
-			<h1 class="title"># Projects</h1>
-			<p class="mb-6">Things I've built. Mostly rewriting existing software from scratch to understand how it actually works.</p>
 
-			<h2 id="agents" class="font-bold text-base mb-4 border-b border-dotted border-black pb-1">Agents</h2>
-		<div class="space-y-6 mb-8">
-			<div>
-				<div class="flex items-baseline gap-2 flex-wrap">
-					<a href="/projects/emaclaude" class="cody-link font-bold">emaclaude</a>
-					<span class="text-muted text-xs">[Rust, Elisp]</span>
-					<a href="https://github.com/yuann3/emaclaude" class="text-muted text-xs hover:bg-black hover:text-bgColor px-1">[github]</a>
-				</div>
-				<p class="mt-2">
-					Agentic coding system that runs directly in Emacs. Three Claude code sessions in split buffers —
-					one plans, one codes, one reviews — connected through a Rust CLI and Elisp orchestrator.
-					Review loop runs until the reviewer approves twice consecutively. No Electron app needed.
-				</p>
-			</div>
+<Shell title="Projects" description="Things I've built." section="projects">
+	<PanelHeader title="Projects" />
+	<ul class="rows">
+		{projects.map(({ slug, data }) => (
+			<li>
+				<a href={`/projects/${slug}`} class="row project">
+					<span class="flex min-w-0 flex-1 flex-col gap-0.5 md:flex-row md:items-center md:gap-0">
+						<span class="project-name">{data.title.toLowerCase()}</span>
+						<span class="project-summary hidden md:block">{data.summary ?? data.description}</span>
+						<span class="project-summary md:hidden">{data.summaryShort ?? data.summary ?? data.description}</span>
+					</span>
+					<span class="label-mono hidden w-[200px] shrink-0 text-muted min-[1100px]:block">
+						{data.stack.join(' · ')}
+					</span>
+					<span class="project-year">{data.pubDate.getFullYear()}</span>
+				</a>
+			</li>
+		))}
+	</ul>
+</Shell>
 
-			<div>
-				<div class="flex items-baseline gap-2 flex-wrap">
-					<a href="/projects/mra" class="cody-link font-bold">mra</a>
-					<span class="text-muted text-xs">[Rust]</span>
-					<a href="https://github.com/yuann3/mra" class="text-muted text-xs hover:bg-black hover:text-bgColor px-1">[github]</a>
-				</div>
-				<p class="mt-2">
-					Multi-agent runtime for Rust. Spawn AI agents as Tokio actors, wire them together, let them talk to LLMs.
-					Erlang/OTP ideas applied to LLM pipelines — supervision trees, restart strategies, bounded message queues,
-					no shared mutable state.
-				</p>
-			</div>
-		</div>
+<style>
+	.project {
+		align-items: flex-start;
+		gap: 12px;
+		padding: 14px 0 15px;
+	}
 
-			<h2 id="systems" class="font-bold text-base mb-4 border-b border-dotted border-black pb-1">Systems Programming</h2>
-		<div class="space-y-6 mb-8">
-			<div>
-				<div class="flex items-baseline gap-2 flex-wrap">
-					<a href="/projects/sequel" class="cody-link font-bold">sequel</a>
-					<span class="text-muted text-xs">[Rust]</span>
-					<a href="https://github.com/yuann3/sequel" class="text-muted text-xs hover:bg-black hover:text-bgColor px-1">[github]</a>
-				</div>
-				<p class="mt-2">
-					A from-scratch SQLite parser and query engine. Reads raw <code>.db</code> files byte-by-byte,
-					manually parses B-trees, and extracts rows. Supports <code>SELECT</code>, <code>WHERE</code>,
-					<code>COUNT(*)</code>, and index optimization with B-tree traversal. Part of the "rewrite everything in Rust" movement -
-					real devs read hex dumps and parse varints manually.
-				</p>
-			</div>
+	.project-name {
+		color: var(--ink);
+		font-size: 18px;
+		font-weight: 500;
+		letter-spacing: -0.015em;
+		line-height: 24px;
+	}
 
-			<div>
-				<div class="flex items-baseline gap-2 flex-wrap">
-					<a href="/projects/rego" class="cody-link font-bold">rego</a>
-					<span class="text-muted text-xs">[Go]</span>
-					<a href="https://github.com/yuann3/rego" class="text-muted text-xs hover:bg-black hover:text-bgColor px-1">[github]</a>
-				</div>
-				<p class="mt-2">
-					A lightweight Redis server implementation compatible with standard Redis clients.
-					Full RESP protocol support, key-value ops with expiry, transactions (MULTI/EXEC),
-					master-slave replication, RDB file parsing and persistence, and Redis Streams (XADD, XRANGE, XREAD).
-					Basically Redis but I wrote it.
-				</p>
-			</div>
+	.project-summary {
+		color: var(--ink-2);
+		font-size: 14px;
+		line-height: 20px;
+	}
 
-			<div>
-				<div class="flex items-baseline gap-2 flex-wrap">
-					<a href="/projects/hrust" class="cody-link font-bold">hrust</a>
-					<span class="text-muted text-xs">[Rust]</span>
-					<a href="https://github.com/yuann3/http-rust" class="text-muted text-xs hover:bg-black hover:text-bgColor px-1">[github]</a>
-				</div>
-				<p class="mt-2">
-					Simple HTTP/1.1 server with GET/POST handling, file upload/download, User-Agent echo,
-					gzip compression support, and multithreaded request handling. Nothing fancy, just works.
-				</p>
-			</div>
+	.project-year {
+		flex-shrink: 0;
+		width: 40px;
+		color: var(--muted);
+		font-family: var(--font-mono);
+		font-size: 12px;
+		line-height: 24px;
+		text-align: right;
+	}
 
-			<div>
-				<div class="flex items-baseline gap-2 flex-wrap">
-					<a href="/projects/shell" class="cody-link font-bold">shell</a>
-					<span class="text-muted text-xs">[Rust]</span>
-					<a href="https://github.com/yuann3/shell" class="text-muted text-xs hover:bg-black hover:text-bgColor px-1">[github]</a>
-				</div>
-				<p class="mt-2">
-					Single-binary shell. Pipelines with <code>|</code>, redirection (<code>&gt;</code>, <code>&gt;&gt;</code>, <code>2&gt;</code>),
-					tab-completion with <code>$PATH</code> lookups, persistent history.
-					If you want a fancy terminal emulator or 500 features you're in the wrong place - this just works.
-				</p>
-			</div>
-		</div>
+	@media (min-width: 768px) {
+		.project {
+			align-items: center;
+			gap: 0;
+			padding: 10px 0;
+		}
 
-		<h2 id="languages" class="font-bold text-base mb-4 border-b border-dotted border-black pb-1">Languages & Low-Level</h2>
-		<div class="space-y-6 mb-8">
-			<div>
-				<div class="flex items-baseline gap-2 flex-wrap">
-					<a href="/projects/ruskey" class="cody-link font-bold">ruskey</a>
-					<span class="text-muted text-xs">[Rust]</span>
-					<a href="https://github.com/yuann3/Ruskey" class="text-muted text-xs hover:bg-black hover:text-bgColor px-1">[github]</a>
-				</div>
-				<p class="mt-2">
-					Rust implementation of the Monkey programming language interpreter, based on
-					"Writing An Interpreter In Go" by Thorsten Ball. Full lexer and parser done, working on the evaluator.
-					C-like syntax, first-class functions, closures, a simple object system. Learning interpreters the hard way.
-				</p>
-			</div>
+		.project-name {
+			flex-shrink: 0;
+			width: 220px;
+			font-size: 20px;
+		}
 
-			<div>
-				<div class="flex items-baseline gap-2 flex-wrap">
-					<a href="/projects/ylib" class="cody-link font-bold">ylib</a>
-					<span class="text-muted text-xs">[C]</span>
-					<a href="https://github.com/yuann3/Ylib" class="text-muted text-xs hover:bg-black hover:text-bgColor px-1">[github]</a>
-				</div>
-				<p class="mt-2">
-					Reinventing the wheel on purpose. A rewrite of the C standard library - string type checking,
-					memory management, linked list manipulation functions. Because understanding what's under the hood matters.
-				</p>
-			</div>
-		</div>
+		.project-summary {
+			min-width: 0;
+			font-size: 15px;
+			line-height: 22px;
+		}
 
-		<h2 id="graphics" class="font-bold text-base mb-4 border-b border-dotted border-black pb-1">Graphics</h2>
-		<div class="space-y-6 mb-8">
-			<div>
-				<div class="flex items-baseline gap-2 flex-wrap">
-					<a href="/projects/shaderview" class="cody-link font-bold">shaderview</a>
-					<span class="text-muted text-xs">[Rust, Elisp, GLSL]</span>
-					<a href="https://github.com/yuann3/shaderview" class="text-muted text-xs hover:bg-black hover:text-bgColor px-1">[github]</a>
-				</div>
-				<p class="mt-2">
-					Real-time GLSL shader preview inside Emacs. Live preview with hot reload on save,
-					ShaderToy-compatible shaders, mouse interaction, PNG export. Three-layer architecture:
-					Elisp UI, Rust FFI module, and pure Rust GPU library on top of wgpu.
-				</p>
-			</div>
-
-			<div>
-				<div class="flex items-baseline gap-2 flex-wrap">
-					<a href="/projects/rayrust" class="cody-link font-bold">rayrust</a>
-					<span class="text-muted text-xs">[Rust, WGSL, WebGPU]</span>
-					<a href="https://github.com/yuann3/RayRust" class="text-muted text-xs hover:bg-black hover:text-bgColor px-1">[github]</a>
-				</div>
-				<p class="mt-2">
-					Path tracer with both CPU and GPU acceleration. Monte Carlo sampling, materials (Lambertian diffuse, metal, dielectric glass),
-					camera with depth of field and adjustable FOV, cross-platform GPU via wgpu.
-					Works on your shitty laptop if it has Vulkan/Metal/DX12 - otherwise use your poor CPU.
-				</p>
-			</div>
-
-			<div>
-				<div class="flex items-baseline gap-2 flex-wrap">
-					<a href="/projects/lrle" class="cody-link font-bold">lrle</a>
-					<span class="text-muted text-xs">[Rust, WGSL, wgpu]</span>
-					<a href="https://github.com/yuann3/lrle" class="text-muted text-xs hover:bg-black hover:text-bgColor px-1">[github]</a>
-				</div>
-				<p class="mt-2">
-					GPU-accelerated 3D terrain visualizer. Loads heightmap data from FDF files and renders them in real-time
-					with an orbital camera system, adjustable height scaling, and an egui stats panel.
-					Cross-platform GPU via wgpu. WIP but it works.
-				</p>
-			</div>
-		</div>
-
-		<h2 id="tools" class="font-bold text-base mb-4 border-b border-dotted border-black pb-1">Tools</h2>
-		<div class="space-y-6">
-			<div>
-				<div class="flex items-baseline gap-2 flex-wrap">
-					<a href="/projects/linear-app" class="cody-link font-bold">linear-app.el</a>
-					<span class="text-muted text-xs">[Elisp]</span>
-					<a href="https://github.com/yuann3/linear-app.el" class="text-muted text-xs hover:bg-black hover:text-bgColor px-1">[github]</a>
-				</div>
-				<p class="mt-2">
-					Linear.app integration for Emacs with a Magit-style UI. Collapsible tree view by teams, projects,
-					and workflow states. Change status, priority, labels, and assignee via transient menus.
-					Create issues, copy branch names, open in browser — all without leaving Emacs. Pure Elisp.
-				</p>
-			</div>
-
-			<div>
-				<div class="flex items-baseline gap-2 flex-wrap">
-					<a href="/projects/pew" class="cody-link font-bold">pew</a>
-					<span class="text-muted text-xs">[Go]</span>
-					<a href="https://github.com/yuann3/Pew" class="text-muted text-xs hover:bg-black hover:text-bgColor px-1">[github]</a>
-				</div>
-				<p class="mt-2">
-					CLI for dumping source code into a single markdown file for LLMs. Auto-detects and skips binary files,
-					generates tree-style directory structure, respects <code>.pewc</code> gitignore-style patterns.
-					Install with <code>brew tap yuann3/pew && brew install pew</code> and you're good.
-				</p>
-			</div>
-		</div>
-		</section>
-
-		<aside class="hidden lg:block w-48 shrink-0">
-			<nav class="sticky top-8 border border-black p-4">
-				<h3 class="font-bold text-sm mb-3 border-b border-dotted border-black pb-1">Index</h3>
-				<ul class="space-y-2 text-sm">
-					<li><a href="#agents" class="cody-link">> agents</a></li>
-					<li><a href="#systems" class="cody-link">> systems</a></li>
-					<li><a href="#languages" class="cody-link">> languages</a></li>
-					<li><a href="#graphics" class="cody-link">> graphics</a></li>
-					<li><a href="#tools" class="cody-link">> tools</a></li>
-				</ul>
-			</nav>
-		</aside>
-	</div>
-</BaseLayout>
+		.project-year {
+			width: 48px;
+			font-size: 13px;
+			line-height: 18px;
+		}
+	}
+</style>

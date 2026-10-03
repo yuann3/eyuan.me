@@ -1,24 +1,26 @@
+
 /** @type {import('tailwindcss').Config} */
 export default {
 	content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
 	theme: {
 		fontFamily: {
-			'mono': ['IBM Plex Mono', 'monospace'],
-			'display': ['Silkscreen', 'cursive'],
-			'ascii': ['JetBrains Mono', 'monospace']
+			'sans': ['Geist', 'system-ui', 'sans-serif'],
+			'mono': ['Geist Mono', 'ui-monospace', 'monospace'],
+			'serif': ['Instrument Serif', 'Georgia', 'serif'],
 		},
 		extend: {
 			colors: {
-				bgColor: "var(--theme-bg)",
-				textColor: "var(--theme-text)",
-				link: "var(--theme-link)",
-				accent: "var(--theme-accent)",
-				"accent-2": "var(--theme-accent-2)",
-				surface: "var(--theme-surface)",
-				quote: "var(--theme-quote)",
-				highlight: "var(--theme-highlight)",
-				muted: "var(--theme-muted)",
-				border: "var(--theme-border)"
+				paper: "var(--paper)",
+				ink: "var(--ink)",
+				"ink-2": "var(--ink-2)",
+				muted: "var(--muted)",
+				faint: "var(--faint)",
+				hairline: "var(--hairline)",
+				// Legacy names, still used by pages that are not migrated yet.
+				bgColor: "var(--paper)",
+				textColor: "var(--ink)",
+				surface: "var(--paper)",
+				border: "var(--hairline)",
 			},
 		}
 	},

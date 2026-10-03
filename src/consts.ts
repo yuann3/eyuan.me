@@ -11,12 +11,6 @@ type Config = {
   }
 }
 
-type SocialLink = {
-  icon: string;
-  friendlyName: string; // for accessibility
-  link: string;
-}
-
 export const siteConfig: Config = {
   title: "Eyuan",
   description: "YY's Cave",
@@ -27,58 +21,20 @@ export const siteConfig: Config = {
   }
 }
 
-/** 
-  These are you social media links. 
-  It uses https://github.com/natemoo-re/astro-icon#readme
-  You can find icons @ https://icones.js.org/
-*/
-export const socialLinks: Array<SocialLink> = [
-  {
-    icon: "mdi:github",
-    friendlyName: "Github",
-    link: "https://github.com/Yuann3",
-  },
-  {
-    icon: "mdi:instagram",
-    friendlyName: "Instagram",
-    link: "https://www.instagram.com/eeuan3/",
-  },
-  {
-    icon: "mdi:twitter",
-    friendlyName: "Twitter",
-    link: "https://twitter.com/eyuann3",
-  },
-  {
-    icon: "mdi:email",
-    friendlyName: "Email",
-    link: "mailto:yy@eyuan.me",
-  },
-  {
-    icon: "mdi:rss",
-    friendlyName: "Rss",
-    link: "/rss.xml"
-  }
+export type Section = 'about' | 'projects' | 'writing' | 'resume';
+
+// Left-column nav of the shell. Order matches the design.
+export const SECTIONS: Array<{ id: Section, title: string, path: string }> = [
+  { id: "about", title: "About", path: "/about" },
+  { id: "projects", title: "Projects", path: "/projects" },
+  { id: "writing", title: "Writing", path: "/blog" },
+  { id: "resume", title: "Resume", path: "/resume" },
 ];
 
-export const NAV_LINKS: Array<{ title: string, path: string }> = [
-  {
-    title: "Cave",
-    path: "/",
-  },
-  {
-    title: "About",
-    path: "/about",
-  },
-  {
-    title: "Blog",
-    path: "/blog",
-  },
-  {
-    title: "Projects",
-    path: '/projects'
-  },
-  {
-    title: "TimeMachine",
-    path: '/archive'
-  }
+// Footer links under the nav.
+export const FOOTER_LINKS: Array<{ title: string, link: string }> = [
+  { title: "EMAIL", link: "mailto:yy@eyuan.me" },
+  { title: "GITHUB", link: "https://github.com/yuann3" },
+  { title: "X", link: "https://twitter.com/eyuann3" },
+  { title: "RSS", link: "/rss.xml" },
 ];

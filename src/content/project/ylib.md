@@ -1,6 +1,7 @@
 ---
 title: 'Ylib'
 description: 'Ylib - C Standard library rewrite'
+summary: 'the c standard library, rewritten on purpose'
 pubDate: 'Jun 30 2024'
 heroImage:
     url: '/Ylib.png'

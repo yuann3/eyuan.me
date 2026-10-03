@@ -1,9 +1,11 @@
 ---
 title: 'mra'
 description: 'Multi-agent runtime for Rust — Erlang/OTP-style actors for LLM pipelines'
+summary: 'multi-agent runtime for rust, erlang/otp style'
+summaryShort: 'multi-agent runtime for rust'
 pubDate: 'Feb 20 2026'
 platform: All
-stack: ["Rust"]
+stack: ["Rust", "Tokio"]
 website: https://github.com/yuann3/mra
 github: https://github.com/yuann3/mra
 ---

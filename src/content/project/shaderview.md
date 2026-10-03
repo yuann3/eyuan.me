@@ -1,9 +1,11 @@
 ---
 title: 'shaderview'
 description: 'Real-time GLSL shader preview inside Emacs buffers'
+summary: 'live glsl shader preview inside emacs'
+summaryShort: 'live glsl preview inside emacs'
 pubDate: 'Mar 1 2026'
 platform: All
-stack: ["Rust", "Elisp", "GLSL"]
+stack: ["Rust", "wgpu", "GLSL"]
 website: https://github.com/yuann3/shaderview
 github: https://github.com/yuann3/shaderview
 ---

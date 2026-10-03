@@ -1,72 +1,33 @@
 ---
 import type { Page, GetStaticPaths } from "astro";
 import type { CollectionEntry } from "astro:content";
-import BaseLayout from "@/layouts/Base";
-import PostPreview from "@/components/blog/PostPreviewA";
+import Shell from "@/layouts/Shell";
+import PanelHeader from "@/components/PanelHeader";
+import PostList from "@/components/blog/PostList";
 import Pagination from "@/components/Pagination";
-import { getAllPosts, getUniqueTags, sortMDByDate, sortMDByPinned } from "@/utils";
+import { getAllPosts, sortMDByDate, sortMDByPinned } from "@/utils";
 
 export const getStaticPaths = (async ({ paginate }) => {
 	const allPosts = await getAllPosts(true);
 	const allPostsByDate = sortMDByDate(allPosts);
 	const allPostsByPinned = sortMDByPinned(allPostsByDate);
-	const tags = getUniqueTags(allPosts);
-	return paginate(allPostsByPinned, { props: { tags }, pageSize: 10 });
+	return paginate(allPostsByPinned, { pageSize: 10 });
 }) satisfies GetStaticPaths;
 
 interface Props {
 	page: Page<CollectionEntry<"blog">>;
-	tags: string[];
 }
 
-const { page, tags } = Astro.props;
+const { page } = Astro.props;
 
 const meta = {
-	title: "Posts",
+	title: "Writing",
 	description: "Read my collection of posts and the things that interest me",
-};
-
-const paginationProps = {
-	...(page.url.prev && {
-		prevUrl: {
-			url: page.url.prev,
-			text: `< prev`,
-		},
-	}),
-	...(page.url.next && {
-		nextUrl: {
-			url: page.url.next,
-			text: `next >`,
-		},
-	}),
 };
 ---
 
-<BaseLayout {...meta}>
-	<div class="max-w-3xl">
-		<h1 class="font-display text-xl mb-6 border-b border-black pb-2">Posts</h1>
-
-		{!!tags.length && (
-			<div class="mb-6 border border-black p-4">
-				<h2 class="font-bold mb-2">Tags</h2>
-				<ul class="flex gap-1 flex-wrap">
-					{tags.map(tag => (
-						<li class="tag">
-							<a href={`/tags/${tag}`} aria-label={`tag: ${tag}`}>
-								{tag}
-							</a>
-						</li>
-					))}
-				</ul>
-			</div>
-		)}
-
-		<ul class="flex flex-col gap-4">
-			{page.data.map(post => (
-				<PostPreview post={post} withDesc/>
-			))}
-		</ul>
-
-		<Pagination {...paginationProps} />
-	</div>
-</BaseLayout>
+<Shell {...meta} section="writing">
+	<PanelHeader title="Writing" />
+	<PostList posts={page.data} />
+	<Pagination prevUrl={page.url.prev} nextUrl={page.url.next} />
+</Shell>

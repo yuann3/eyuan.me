@@ -1,0 +1,99 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import BaseHead from '../components/BaseHead.astro';
+import Wordmark from '../components/Wordmark.astro';
+import { siteConfig, SECTIONS, FOOTER_LINKS, type Section } from '../consts';
+import { FILM_STATES, palette, gradientCss, type FilmLayout } from '../scripts/film-palettes';
+
+interface Props {
+	title: string;
+	description?: string;
+	section?: Section;
+	image?: string;
+	articleDate?: string;
+}
+
+const { title, description = siteConfig.description, section, image, articleDate } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+// Static film (no WebGL / reduced motion): the Paper construction, one rule
+// set per state. Generated from the same palettes the shader uses.
+function filmRules(layout: FilmLayout) {
+	return FILM_STATES.map((state) => {
+		const p = palette(state, layout);
+		const root = state === 'idle' ? 'html:not([data-section])' : `html[data-section="${state}"]`;
+		const pct = (n: number) => `${+(n * 100).toFixed(3)}%`;
+		// Vertical lengths against max(panel height, ref) when the palette has a ref.
+		const vert = (n: number) => (p.ref ? `calc(${+n.toFixed(5)} * max(100%, ${p.ref}px))` : pct(n));
+		const blobs = p.blobs.map((b, i) =>
+			`${root} .film-fallback i:nth-child(${i + 1}){left:${pct(b.x)};top:${vert(b.y)};width:${pct(b.w)};height:${vert(b.h)};filter:blur(${b.blur}px);opacity:${b.opacity};background-color:${b.color}}`);
+		const gradient = gradientCss(p);
+		const size = p.ref ? `;background-size:100% max(100%, ${p.ref}px)` : ';background-size:auto';
+		return [
+			`${root} .film-fallback{background-image:${gradient.replace('in oklab ', '')};background-image:${gradient}${size}}`,
+			...blobs,
+		].join('\n');
+	}).join('\n');
+}
+
+const filmCss = `${filmRules('desktop')}\n@media (max-width: 767px){\n${filmRules('mobile')}\n}`;
+---
+
+<!doctype html>
+<html lang="en" data-state={section ? 'expanded' : 'idle'} data-section={section}>
+	<head>
+		<BaseHead title={title} description={description} image={image} articleDate={articleDate} />
+		<ClientRouter />
+		<style is:inline set:html={filmCss}></style>
+	</head>
+	<body>
+		<div class="shell" data-shell>
+			<div class="rail">
+				<div class="rail-top">
+					<Wordmark />
+				</div>
+				<div class="rail-space"></div>
+				<div class="intro">
+					<h1 class="headline">
+						<span class="headline-line">hi, i'm yiyuan.</span>
+						<span class="headline-line">i take software apart,</span>
+						<span class="headline-line headline-serif"><em>one layer at a time.</em></span>
+					</h1>
+					<p class="sub">software engineer in singapore.</p>
+				</div>
+				<div class="rail-space"></div>
+				<nav class="nav" aria-label="Main">
+					{SECTIONS.map((s) => (
+						<a
+							href={s.path}
+							class="nav-link"
+							data-nav-link
+							data-section={s.id}
+							aria-current={s.id === section ? (path === s.path ? 'page' : 'true') : undefined}
+						>
+							<span class="droplet" aria-hidden="true"></span>{s.title}
+						</a>
+					))}
+				</nav>
+				<ul class="links">
+					{FOOTER_LINKS.map((l) => (
+						<li><a href={l.link} class="label-mono">{l.title}</a></li>
+					))}
+				</ul>
+			</div>
+			<div class="well">
+				<div class="panel" data-panel>
+					<div class="film-fallback" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+					<canvas class="film-canvas" data-film-canvas aria-hidden="true"></canvas>
+					<div class="film-grain" aria-hidden="true"></div>
+					<main class="panel-content" data-panel-content>
+						<slot />
+					</main>
+				</div>
+			</div>
+		</div>
+		<script>
+			import '../scripts/shell';
+		</script>
+	</body>
+</html>

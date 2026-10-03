@@ -1,6 +1,8 @@
 ---
 title: 'Sequel'
 description: 'A from-scratch SQLite parser and query engine written in Rust'
+summary: 'sqlite engine from scratch, b-trees by hand'
+summaryShort: 'sqlite engine from scratch'
 pubDate: 'May 23 2025'
 heroImage:
     url: 'https://github.com/user-attachments/assets/03bba877-2e89-40b4-aa50-b0f4d153aefe'

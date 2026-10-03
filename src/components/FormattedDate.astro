@@ -1,17 +1,14 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import { getFormattedDate } from "@/utils";
 
 type Props = HTMLAttributes<"time"> & {
 	date: Date;
-	dateTimeOptions?: Intl.DateTimeFormatOptions;
-	locale?: string;
 };
 
-const { date, dateTimeOptions, locale, ...attrs } = Astro.props;
-const postDate = getFormattedDate(date, dateTimeOptions, locale);
+const { date, ...attrs } = Astro.props;
+// YYYY-MM-DD, as in the design. Dates come from frontmatter at local midnight.
+const pad = (n: number) => String(n).padStart(2, "0");
+const ymd = `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 ---
 
-<time datetime={date.toISOString()} {...attrs} title={postDate}>
-	{postDate}
-</time>
+<time datetime={ymd} {...attrs}>{ymd}</time>

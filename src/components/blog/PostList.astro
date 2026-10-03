@@ -1,0 +1,23 @@
+---
+import type { CollectionEntry } from "astro:content";
+import ListRow from "./ListRow.astro";
+
+interface Props {
+	posts: Array<CollectionEntry<"blog">>;
+}
+
+const { posts } = Astro.props;
+---
+
+{posts.length > 0 && (
+	<ul class="border-b border-hairline">
+		{posts.map((post) => (
+			<ListRow
+				href={`/blog/${post.slug}/`}
+				title={post.data.title}
+				description={post.data.description}
+				date={post.data.pubDate}
+			/>
+		))}
+	</ul>
+)}

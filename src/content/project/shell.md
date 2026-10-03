@@ -1,6 +1,7 @@
 ---
 title: 'Shell'
 description: 'shell - single binary shell'
+summary: 'a single-binary shell that just works'
 pubDate: 'Jul 02 2025'
 platform: All 
 stack: ["Rust"]

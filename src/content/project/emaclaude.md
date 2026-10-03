@@ -1,6 +1,8 @@
 ---
 title: 'emaclaude'
 description: 'Agentic coding system with three Claude agents orchestrated in Emacs'
+summary: 'three claude agents in emacs — plan, code, review'
+summaryShort: 'three claude agents in emacs'
 pubDate: 'Mar 15 2026'
 platform: All
 stack: ["Rust", "Elisp"]

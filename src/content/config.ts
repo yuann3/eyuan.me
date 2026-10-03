@@ -43,6 +43,8 @@ const projectCollection = defineCollection({
   schema: () => z.object({
     title: z.string(),
     description: z.string(),
+    summary: z.string().optional(),
+    summaryShort: z.string().optional(),
     pubDate: z
     .string()
     .or(z.date())

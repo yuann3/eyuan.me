@@ -1,6 +1,7 @@
 ---
 title: 'Ruskey'
 description: 'A rust interpreter implementation of custom language Monkey'
+summary: 'monkey language interpreter'
 pubDate: 'Mar 06 2025'
 heroImage:
     url: 'https://github.com/user-attachments/assets/92e15a16-dcc9-45b3-9c5a-93fc98e06b58'

@@ -1,7 +1,7 @@
 ---
 import type { InferGetStaticPropsType, GetStaticPaths } from 'astro';
 import { getCollection } from "astro:content";
-import ProjectLayout from '../../layouts/Project.astro';
+import ProjectLayout from '@/layouts/Project';
 
 export const getStaticPaths = (async () => {
 	const allProjects = await getCollection("project", ({ data }) => {

@@ -1,12 +1,13 @@
 ---
 title: 'RayRust'
 description: 'just a ray tracer in Rust'
-pubDate: 'Feb 30 2025'
+summary: 'path tracer on cpu and gpu'
+pubDate: 'Feb 28 2025'
 heroImage:
     url: 'https://github.com/user-attachments/assets/67c509ac-c1f3-4d3b-9edc-e1b77f277197'
     alt: 'RayRust'
 platform: All 
-stack: ["Rust", "WGSL", "WebGPU"]
+stack: ["Rust", "WGSL", "wgpu"]
 website: https://github.com/yuann3/RayRust
 github: https://github.com/yuann3/RayRust
 ---

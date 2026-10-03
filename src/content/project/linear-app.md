@@ -1,6 +1,8 @@
 ---
 title: 'linear-app.el'
 description: 'Linear.app integration for Emacs with Magit-style UI'
+summary: 'linear.app inside emacs, magit-style'
+summaryShort: 'linear.app inside emacs'
 pubDate: 'Jan 10 2026'
 platform: All
 stack: ["Elisp"]

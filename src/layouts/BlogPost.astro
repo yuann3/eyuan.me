@@ -1,103 +1,44 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import Layout from '../layouts/Base.astro';
-import FormattedDate from '../components/FormattedDate.astro';
-import TOC from '@/components/TableOfContents';
-import BackToTopBtn from '@/components/BackToTopBtn';
+import Shell from '@/layouts/Shell';
+import PanelHeader from '@/components/PanelHeader';
+import FormattedDate from '@/components/FormattedDate';
 import CopyBtn from '@/components/CopyBtn';
 
 interface Props {
 	post: CollectionEntry<"blog">;
 }
 
-const {post} = Astro.props
-
-const {
-	slug,
-	data: {
-		title,
-		description,
-		pubDate,
-		updatedDate,
-		heroImage,
-		ogImage,
-		tags,
-		series,
-		draft
-	}
-} = post;
-
-const { headings, remarkPluginFrontmatter } = post.render && await post.render();
+const { post } = Astro.props;
+const { slug, data: { title, description, pubDate, updatedDate, heroImage, ogImage, tags, series, draft } } = post;
+const { remarkPluginFrontmatter } = await post.render();
 const { minutesRead } = remarkPluginFrontmatter;
 
 const socialImage = ogImage ?? `/og-image/${slug}.png`;
-const dateTimeOptions: Intl.DateTimeFormatOptions = {
-	year: "numeric",
-	month: "long",
-	day: "numeric"
-};
-
 const articleDate = updatedDate?.toISOString() ?? pubDate.toISOString();
 ---
 
-<Layout title={title} description={description} image={socialImage} articleDate={articleDate}>
-	<article class="prose prose-cody text-textColor max-w-3xl mx-auto">
-		<header class="border border-black p-4 mb-6">
-			{
-				heroImage &&
-				<div class="aspect-h-9 aspect-w-16 mb-6 w-full flex justify-center">
-					<img src={heroImage.src} alt={heroImage.alt} class="m-0 border border-black"/>
-				</div>
-			}
-			<div class="flex gap-2 items-center mb-2">
-				<h1 class="font-display text-2xl my-0">{title}</h1>
-				{draft && (<span class="px-1 py-0 border border-black text-xs">draft</span>)}
-			</div>
-			<div class="text-muted text-sm flex flex-wrap gap-2 items-center mb-3">
-				<FormattedDate date={pubDate} dateTimeOptions={dateTimeOptions}/>
-				<span>/</span>
-				<span>{minutesRead}</span>
-				{
-					updatedDate && (
-						<>
-							<span>/</span>
-							<span class="italic">
-								updated: <FormattedDate date={updatedDate} dateTimeOptions={dateTimeOptions} />
-							</span>
-						</>
-					)
-				}
-			</div>
-			{series && (
-				<div class="text-sm mb-2">
-					<span class="text-muted">series:</span>
-					<a class="cody-link ml-1" href={`/series/${series}`}>{series}</a>
-				</div>
-			)}
-			{tags && (
-				<ul class="not-prose flex gap-1 flex-wrap">
-					{tags.map((tag: string) => (
-						<li class="tag">
-							<a href={`/tags/${tag}`}>{tag}</a>
-						</li>
-					))}
-				</ul>
-			)}
-		</header>
-
-		{!!headings.length && (
-			<details class="border border-black p-4 mb-6">
-				<summary class="font-bold cursor-pointer hover:bg-black hover:text-bgColor px-1 -mx-1 w-fit">Table of Contents</summary>
-				<TOC headings={headings} />
-			</details>
-		)}
-
-		<main class="prose-sm prose-headings:font-bold prose-headings:font-display prose-headings:before:content-['#'] prose-headings:before:mr-2 prose-headings:before:text-muted prose-th:before:content-none">
-			<slot />
-		</main>
-
-		<BackToTopBtn/>
+<Shell title={title} description={description} image={socialImage} articleDate={articleDate} section="writing">
+	<PanelHeader title={title} />
+	<p class="label-mono flex flex-wrap gap-x-6 gap-y-2 text-muted">
+		<FormattedDate date={pubDate} />
+		{updatedDate && <span>Updated <FormattedDate date={updatedDate} /></span>}
+		<span>{minutesRead}</span>
+		{draft && <span>Draft</span>}
+		{series && <a href={`/series/${series}/`} class="text-ink-2">{series}</a>}
+		{tags?.map((tag) => <a href={`/tags/${tag}/`} class="text-ink-2">#{tag}</a>)}
+	</p>
+	<article class="prose-panel mt-10" data-copy-code>
+		{heroImage && <img src={heroImage.src} alt={heroImage.alt ?? ''} />}
+		<slot />
 	</article>
-</Layout>
+	<CopyBtn />
+</Shell>
 
-<CopyBtn/>
+<style>
+	/* Geist ships no italic; let the browser slant it for emphasis in posts. */
+	article :global(em),
+	article :global(i) {
+		font-synthesis: style;
+	}
+</style>

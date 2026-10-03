@@ -1,36 +1,7 @@
 ---
-import BaseLayout from '../layouts/Base.astro';
+import Shell from '@/layouts/Shell';
 ---
 
-<BaseLayout title="404">
-	<section class="flex flex-col justify-center items-center h-80 border border-black p-8">
-		<pre class="font-display text-4xl mb-4">
-    _  _    ___  _  _
-   | || |  / _ \| || |
-   | || |_| | | | || |_
-   |__   _| | | |__   _|
-      |_| | |_| |  |_|
-           \___/
-		</pre>
-		<div class="text-center">
-			<p class="mb-4 font-display">FILE NOT FOUND</p>
-			<p class="text-muted text-sm mb-4">The requested resource could not be located.</p>
-			<a href="/" class="border border-black px-4 py-2 hover:bg-black hover:text-bgColor inline-block">
-				[return home]
-			</a>
-		</div>
-		<div class="blink mt-4 w-4 h-6 bg-black"></div>
-	</section>
-</BaseLayout>
-
-<style>
-	.blink {
-		animation: blink-animation 1s steps(2, start) infinite;
-	}
-
-	@keyframes blink-animation {
-		to {
-			visibility: hidden;
-		}
-	}
-</style>
+<Shell title="Not found" description="This page does not exist.">
+	<p class="label-mono text-ink-2">404 · Nothing here</p>
+</Shell>

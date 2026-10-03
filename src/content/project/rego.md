@@ -1,6 +1,8 @@
 ---
 title: 'Rego'
 description: 'A lightweight Redis server implementation written in Go'
+summary: 'redis server, basically redis but i wrote it'
+summaryShort: 'redis, but i wrote it'
 pubDate: 'May 7 2025'
 platform: All 
 stack: ["GO"]

@@ -1,0 +1,24 @@
+---
+import FormattedDate from "@/components/FormattedDate";
+
+interface Props {
+	href: string;
+	title: string;
+	description?: string;
+	date?: Date;
+	meta?: string;
+}
+
+const { href, title, description, date, meta } = Astro.props;
+const lane = "shrink-0 font-mono text-[12px] leading-[18px] text-muted md:w-[140px] md:text-[13px]";
+---
+
+<li class="border-t border-hairline">
+	<a href={href} class="flex flex-col gap-1.5 py-5 md:flex-row md:items-baseline md:gap-0 md:py-8">
+		{date ? <FormattedDate date={date} class={lane} /> : <span class={lane}>{meta}</span>}
+		<span class="flex min-w-0 flex-1 flex-col gap-1 md:gap-2">
+			<span class="text-[20px] font-medium leading-[26px] tracking-[-0.02em] text-ink md:text-[28px] md:leading-[34px]">{title}</span>
+			{description && <span class="text-[14px] leading-5 text-ink-2 md:text-[15px] md:leading-[22px]">{description}</span>}
+		</span>
+	</a>
+</li>
