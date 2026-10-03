@@ -1,18 +1,21 @@
 ---
 import Shell from '@/layouts/Shell';
 import PanelHeader from '@/components/PanelHeader';
+import PhotoPile from '@/components/PhotoPile';
 ---
 
 <Shell title="About" description="About Yiyuan Li" section="about">
 	<PanelHeader title="About" />
-	<div class="flex max-w-[620px] flex-col gap-10 pt-6 text-[20px] leading-[30px] tracking-[-0.01em] text-ink" data-reveal-group>
-		<div class="flex max-w-[540px] flex-col gap-5" data-reveal>
-			<p>i like working on the fundamentals of software engineering, mostly in rust and c.</p>
-			<p>i'm currently at <a href="https://voltade.com" class="ulink">Voltade</a>, building our ai agent platform, <a href="https://voltade.com/how-volty-works" class="ulink">Volty</a>.</p>
-			<p>outside of work i like messing around with different kinds of systems and doing questionable experiments with emacs. lately i've been focusing on ai infra, cuz our fellow ai is getting more and more interesting.</p>
-			<p>you can find out more about what i'm doing in <a href="/projects" class="ulink">projects</a> or on <a href="https://github.com/yuann3" class="ulink">my github</a>, though some things never go public (yeah, purely cuz i forget to).</p>
-			<p>oh yeah btw, if you're in SG, i must argue with you that McWings are better than McNuggets. everything else is negotiable.</p>
+	<PhotoPile>
+		<div class="flex max-w-[620px] flex-col gap-10 pt-6 text-[20px] leading-[30px] tracking-[-0.01em] text-ink" data-reveal-group>
+			<div class="flex max-w-[540px] flex-col gap-5" data-reveal>
+				<p>i like working on the fundamentals of software engineering, mostly in rust and c.</p>
+				<p>i'm currently at <a href="https://voltade.com" class="ulink">Voltade</a>, building our ai agent platform, <a href="https://voltade.com/how-volty-works" class="ulink">Volty</a>.</p>
+				<p>outside of work i like messing around with different kinds of systems and doing questionable experiments with emacs. lately i've been focusing on ai infra, cuz our fellow ai is getting more and more interesting.</p>
+				<p>you can find out more about what i'm doing in <a href="/projects" class="ulink">projects</a> or on <a href="https://github.com/yuann3" class="ulink">my github</a>, though some things never go public (yeah, purely cuz i forget to).</p>
+				<p>oh yeah btw, if you're in SG, i must argue with you that McWings are better than McNuggets. everything else is negotiable.</p>
+			</div>
+			<p data-reveal>say hi → <a href="mailto:yy@eyuan.me" class="ulink">yy@eyuan.me</a></p>
 		</div>
-		<p data-reveal>say hi → <a href="mailto:yy@eyuan.me" class="ulink">yy@eyuan.me</a></p>
-	</div>
+	</PhotoPile>
 </Shell>
