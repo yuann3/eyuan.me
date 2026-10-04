@@ -1,8 +1,11 @@
-# Build with npm (package-lock.json) so Netlify installs the same dependency
-# tree as local builds. This overrides the build command set in the Netlify UI.
+# Deploys come from GitHub Actions (.github/workflows/deploy.yml), which builds
+# with `npm run build` and uploads dist/ with the Netlify CLI. Netlify's own
+# Git-triggered builds are skipped by `ignore`; these settings still document
+# how the site builds if you ever trigger a build on Netlify by hand.
 [build]
   command = "npm run build"
   publish = "dist"
+  ignore = "exit 0"
 
 [build.environment]
   NODE_VERSION = "22"

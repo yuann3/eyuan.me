@@ -1,0 +1,64 @@
+# Build the site and deploy it to Netlify from GitHub Actions.
+# - push to main      -> production deploy (environment "production")
+# - pull request      -> preview deploy at a per-PR alias (environment "preview")
+# - manual dispatch   -> production deploy from the chosen ref
+# Netlify's own Git builds are disabled in netlify.toml (`ignore`), so this is
+# the only deploy path. Needs repo secrets NETLIFY_AUTH_TOKEN and NETLIFY_SITE_ID.
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  deployments: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ github.event_name == 'pull_request' && 'preview' || 'production' }}
+      url: ${{ steps.deploy.outputs.url }}
+    env:
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+
+      - name: Deploy to Netlify
+        id: deploy
+        # Forked PRs get no secrets: build only, skip the deploy.
+        if: ${{ env.NETLIFY_AUTH_TOKEN != '' }}
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+            flags="--alias pr-$PR_NUMBER"
+          else
+            flags="--prod"
+          fi
+          npx --yes netlify-cli@27 deploy --dir dist --no-build $flags \
+            --message "$GITHUB_SHA $GITHUB_EVENT_NAME" --json > deploy.json
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+            url=$(jq -r '.deploy_url' deploy.json)
+          else
+            url=$(jq -r '.url' deploy.json)
+          fi
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "### Deployed to Netlify: $url" >> "$GITHUB_STEP_SUMMARY"
