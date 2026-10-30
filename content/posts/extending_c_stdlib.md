@@ -1,9 +1,9 @@
 ---
 title: 'Stealing Ideas from Rust and C++ for Your C Standard Library'
 description: 'Making C less painful by borrowing modern language concepts'
-pubDate: 'Dec 12 2025'
+date: 2025-12-12
 slug: extending-c-stdlib
-heroImage: 
+hero: 
   src: '/rustc.PNG'
   alt: 'rustc'
 order: 2

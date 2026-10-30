@@ -1,0 +1,5 @@
+# The rail's nav, in the design's order. `id` is the section a Page sets.
+- { id: about, title: About, path: /about/ }
+- { id: projects, title: Projects, path: /projects/ }
+- { id: writing, title: Writing, path: /blog/ }
+- { id: resume, title: Resume, path: /resume/ }

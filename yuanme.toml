@@ -1,0 +1,90 @@
+#:schema ./.yuanme/schemas/yuanme.toml.json
+
+[site]
+url = "https://eyuan.me"
+title = "Eyuan"
+description = "YY's Cave"
+language = "en"
+author = "Yiyuan Li"
+
+[collections.posts]
+route = "/blog/{slug}/"
+list_route = "/blog/"
+paginate = 10
+sort = ["order", "-modified"]
+
+[collections.posts.fields]
+date = { type = "date" }
+description = { type = "string", max = 250 }
+order = { type = "int", min = 1, max = 5, optional = true }
+hero = { type = "object", optional = true, fields = { src = { type = "string" }, alt = { type = "string", optional = true } } }
+
+[collections.projects]
+route = "/projects/{slug}/"
+list_route = "/projects/"
+sort = ["order", "-modified"]
+
+[collections.projects.fields]
+date = { type = "date" }
+description = { type = "string" }
+summary = { type = "string", optional = true }
+summary_short = { type = "string", optional = true }
+stack = { type = "list", items = { type = "string" } }
+website = { type = "url", optional = true }
+github = { type = "url", optional = true }
+order = { type = "int", min = 1, max = 13, optional = true }
+hero = { type = "object", optional = true, fields = { url = { type = "string" }, alt = { type = "string", optional = true } } }
+
+[taxonomies.tags]
+collections = ["posts"]
+route = "/tags/{term}/"
+lowercase = true
+paginate = 10
+sort = ["-modified"]
+
+[taxonomies.series]
+collections = ["posts"]
+route = "/series/{term}/"
+single = true
+paginate = 10
+sort = ["modified"]
+
+[routes.home]
+path = "/"
+template = "home.html"
+
+[routes.about]
+path = "/about/"
+template = "about.html"
+
+[routes.resume]
+path = "/resume/"
+template = "resume.html"
+
+[routes.archive]
+path = "/archive/"
+template = "archive.html"
+
+[routes.not_found]
+path = "/404.html"
+template = "404.html"
+
+[routes.llms]
+path = "/llms.txt"
+template = "llms.txt"
+
+[feeds.rss]
+collections = ["posts"]
+path = "/rss.xml"
+
+[tailwind]
+version = "4.3.3"
+
+# This Site's own budgets, measured on it in yuanme#66.
+[budgets]
+html = 14
+css = 11
+js = 13
+fonts = 64
+math_font = 55
+requests = 6

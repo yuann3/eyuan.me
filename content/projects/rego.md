@@ -2,12 +2,12 @@
 title: 'Rego'
 description: 'A lightweight Redis server implementation written in Go'
 summary: 'redis server, basically redis but i wrote it'
-summaryShort: 'redis, but i wrote it'
-pubDate: 'May 7 2025'
-platform: All 
+summary_short: 'redis, but i wrote it'
+date: 2025-05-07
 stack: ["GO"]
 website: https://github.com/yuann3/rego
 github: https://github.com/yuann3/rego
+order: 6
 ---
 
 # Rego

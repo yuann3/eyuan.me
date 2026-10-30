@@ -2,11 +2,11 @@
 title: 'Shell'
 description: 'shell - single binary shell'
 summary: 'a single-binary shell that just works'
-pubDate: 'Jul 02 2025'
-platform: All 
+date: 2025-07-02
 stack: ["Rust"]
 website: https://github.com/yuann3/shell
 github: https://github.com/yuann3/shell
+order: 9
 ---
 
 # shell

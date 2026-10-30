@@ -1,9 +1,9 @@
 ---
 title: 'So, Here we go again'
 description: 'Feels new yet familiar'
-pubDate: 'Jul 01 2024'
+date: 2024-07-01
 slug: first
-heroImage: 
+hero: 
   src: '/plane.png'
   alt: 'plane'
 tags: ["Life", "Draft"]

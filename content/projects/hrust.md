@@ -2,11 +2,11 @@
 title: 'HRust'
 description: 'A small HTTP server that is written in Rust'
 summary: 'http/1.1 server, nothing fancy'
-pubDate: 'Sep 26 2024'
-platform: All 
+date: 2024-09-26
 stack: ["Rust"]
 website: https://github.com/yuann3/http-rust
 github: https://github.com/yuann3/http-rust
+order: 12
 
 ---
 

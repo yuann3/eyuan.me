@@ -2,14 +2,14 @@
 title: 'RayRust'
 description: 'just a ray tracer in Rust'
 summary: 'path tracer on cpu and gpu'
-pubDate: 'Feb 28 2025'
-heroImage:
+date: 2025-02-28
+hero:
     url: 'https://github.com/user-attachments/assets/67c509ac-c1f3-4d3b-9edc-e1b77f277197'
     alt: 'RayRust'
-platform: All 
 stack: ["Rust", "WGSL", "wgpu"]
 website: https://github.com/yuann3/RayRust
 github: https://github.com/yuann3/RayRust
+order: 7
 ---
 
 a ray tracer with both CPU and GPU acceleration capabilities implemented in rust, just a fun project, do it for learning purpose

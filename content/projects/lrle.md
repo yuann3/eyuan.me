@@ -2,12 +2,12 @@
 title: 'LRLE'
 description: 'GPU-accelerated 3D terrain visualizer in Rust'
 summary: 'real-time gpu terrain visualizer'
-summaryShort: 'real-time gpu terrain'
-pubDate: 'Dec 22 2025'
-platform: All
+summary_short: 'real-time gpu terrain'
+date: 2025-12-22
 stack: ["Rust", "WGSL", "wgpu"]
 website: https://github.com/yuann3/lrle
 github: https://github.com/yuann3/lrle
+order: 8
 ---
 
 # LRLE

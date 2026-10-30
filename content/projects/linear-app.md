@@ -2,12 +2,12 @@
 title: 'linear-app.el'
 description: 'Linear.app integration for Emacs with Magit-style UI'
 summary: 'linear.app inside emacs, magit-style'
-summaryShort: 'linear.app inside emacs'
-pubDate: 'Jan 10 2026'
-platform: All
+summary_short: 'linear.app inside emacs'
+date: 2026-01-10
 stack: ["Elisp"]
 website: https://github.com/yuann3/linear-app.el
 github: https://github.com/yuann3/linear-app.el
+order: 4
 ---
 
 An Emacs package for browsing and managing Linear.app issues with a Magit-style UI. Pure Emacs Lisp, no external dependencies.

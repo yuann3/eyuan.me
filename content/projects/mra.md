@@ -2,12 +2,12 @@
 title: 'mra'
 description: 'Multi-agent runtime for Rust — Erlang/OTP-style actors for LLM pipelines'
 summary: 'multi-agent runtime for rust, erlang/otp style'
-summaryShort: 'multi-agent runtime for rust'
-pubDate: 'Feb 20 2026'
-platform: All
+summary_short: 'multi-agent runtime for rust'
+date: 2026-02-20
 stack: ["Rust", "Tokio"]
 website: https://github.com/yuann3/mra
 github: https://github.com/yuann3/mra
+order: 2
 ---
 
 A lightweight multi-agent runtime for Rust. Spawn AI agents as Tokio actors, wire them together, let them talk to LLMs. Erlang/OTP ideas applied to LLM pipelines.

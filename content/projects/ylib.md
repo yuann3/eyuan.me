@@ -2,14 +2,14 @@
 title: 'Ylib'
 description: 'Ylib - C Standard library rewrite'
 summary: 'the c standard library, rewritten on purpose'
-pubDate: 'Jun 30 2024'
-heroImage:
+date: 2024-06-30
+hero:
     url: '/Ylib.png'
     alt: 'Ylib'
-platform: All 
 stack: ["C"]
 website: https://github.com/yuann3/Ylib
 github: https://github.com/yuann3/Ylib
+order: 13
 ---
 
 Reinventing the wheel, Ylib is a rewrite of the C standard library. It contains string type checking, memory management, include some linked list manipulate functions

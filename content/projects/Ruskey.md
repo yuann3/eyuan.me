@@ -2,14 +2,14 @@
 title: 'Ruskey'
 description: 'A rust interpreter implementation of custom language Monkey'
 summary: 'monkey language interpreter'
-pubDate: 'Mar 06 2025'
-heroImage:
+date: 2025-03-06
+hero:
     url: 'https://github.com/user-attachments/assets/92e15a16-dcc9-45b3-9c5a-93fc98e06b58'
     alt: 'Ruskey'
-platform: All 
 stack: ["Rust"]
 website: https://github.com/yuann3/Ruskey
 github: https://github.com/yuann3/Ruskey
+order: 10
 ---
 
 # Ruskey 🦀

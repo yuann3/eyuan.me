@@ -2,12 +2,12 @@
 title: 'emaclaude'
 description: 'Agentic coding system with three Claude agents orchestrated in Emacs'
 summary: 'three claude agents in emacs — plan, code, review'
-summaryShort: 'three claude agents in emacs'
-pubDate: 'Mar 15 2026'
-platform: All
+summary_short: 'three claude agents in emacs'
+date: 2026-03-15
 stack: ["Rust", "Elisp"]
 website: https://github.com/yuann3/emaclaude
 github: https://github.com/yuann3/emaclaude
+order: 1
 ---
 
 An agentic coding system that runs directly within Emacs. Three Claude code sessions coordinate across split buffers — one plans, one codes, one reviews — connected through a lightweight Rust CLI and an Elisp orchestrator.

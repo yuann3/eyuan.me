@@ -1,0 +1,5 @@
+# The links under the nav.
+- { title: EMAIL, link: "mailto:yy@eyuan.me" }
+- { title: GITHUB, link: "https://github.com/yuann3" }
+- { title: X, link: "https://twitter.com/eyuann3" }
+- { title: RSS, link: /rss.xml }

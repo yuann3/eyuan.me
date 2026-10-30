@@ -2,15 +2,15 @@
 title: 'Sequel'
 description: 'A from-scratch SQLite parser and query engine written in Rust'
 summary: 'sqlite engine from scratch, b-trees by hand'
-summaryShort: 'sqlite engine from scratch'
-pubDate: 'May 23 2025'
-heroImage:
+summary_short: 'sqlite engine from scratch'
+date: 2025-05-23
+hero:
     url: 'https://github.com/user-attachments/assets/03bba877-2e89-40b4-aa50-b0f4d153aefe'
     alt: 'sequel'
-platform: All 
 stack: ["Rust"]
 website: https://github.com/yuann3/sequel
 github: https://github.com/yuann3/sequel
+order: 5
 ---
 
 # sequel
