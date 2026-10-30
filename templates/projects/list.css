@@ -1,0 +1,79 @@
+.project {
+	position: relative;
+	align-items: flex-start;
+	gap: 12px;
+	padding: 14px 0 15px;
+}
+
+.project-name {
+	color: var(--ink);
+	font-size: 18px;
+	font-weight: 500;
+	letter-spacing: -0.015em;
+	line-height: 24px;
+}
+
+.project-summary {
+	color: var(--ink-2);
+	font-size: 14px;
+	line-height: 20px;
+}
+
+.project-year {
+	flex-shrink: 0;
+	width: 40px;
+	color: var(--muted);
+	font-family: var(--font-mono);
+	font-size: 12px;
+	line-height: 24px;
+	text-align: right;
+}
+
+/* The arrow lives in the row's right edge; the year steps aside for it. */
+.project-arrow {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	display: flex;
+	align-items: center;
+	color: var(--ink-2);
+	font-size: 15px;
+}
+
+@media (hover: hover) {
+	.project-year {
+		transition: transform var(--dur-hover) var(--ease-out);
+	}
+
+	.project:hover .project-year,
+	.project:focus-visible .project-year {
+		transform: translateX(-22px);
+	}
+}
+
+@media (min-width: 768px) {
+	.project {
+		align-items: center;
+		gap: 0;
+		padding: 10px 0;
+	}
+
+	.project-name {
+		flex-shrink: 0;
+		width: 220px;
+		font-size: 20px;
+	}
+
+	.project-summary {
+		min-width: 0;
+		font-size: 15px;
+		line-height: 22px;
+	}
+
+	.project-year {
+		width: 48px;
+		font-size: 13px;
+		line-height: 18px;
+	}
+}

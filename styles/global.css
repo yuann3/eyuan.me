@@ -1,6 +1,24 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "./fonts.css";
+
+/*
+ * The theme the utilities read: the fonts, and the colour tokens below. A
+ * theme of its own replaces Tailwind's fonts, as the v3 config did.
+ */
+@theme {
+  --font-*: initial;
+  --font-sans: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-hairline: var(--hairline);
+}
 
 /*
  * The film's current idle hues, published on [data-shell] by film.ts.
@@ -80,10 +98,7 @@
     --droplet: linear-gradient(in oklab 180deg, #E2588F 0%, #6D4FD6 100%);
     --iridescent: linear-gradient(in oklab 180deg, #E2588F 0%, #B04FC9 50%, #6D4FD6 100%);
 
-    --font-sans: "Geist", system-ui, sans-serif;
-    --font-mono: "Geist Mono", ui-monospace, monospace;
     --font-plex: "IBM Plex Mono", ui-monospace, monospace;
-    --font-serif: "Instrument Serif", Georgia, serif;
 
     /* Motion (beUI). */
     --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -1190,16 +1205,6 @@
     /* Bright images would glare out of the night page; take the edge off. */
     .prose-panel img {
       filter: brightness(0.88);
-    }
-
-    /* Shiki dual themes: switch to the dark (catppuccin-mocha) colours. */
-    .astro-code,
-    .astro-code span {
-      color: var(--shiki-dark) !important;
-      background-color: var(--shiki-dark-bg) !important;
-      font-style: var(--shiki-dark-font-style) !important;
-      font-weight: var(--shiki-dark-font-weight) !important;
-      text-decoration: var(--shiki-dark-text-decoration) !important;
     }
 
     .chip {

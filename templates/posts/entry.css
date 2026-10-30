@@ -1,0 +1,13 @@
+.meta-link {
+	transition: color var(--dur-hover) var(--ease-out);
+}
+
+.meta-link:hover {
+	color: var(--ink);
+}
+
+/* Geist ships no italic; let the browser slant it for emphasis in posts. */
+article :global(em),
+article :global(i) {
+	font-synthesis: style;
+}
