@@ -1,0 +1,25 @@
+// Adds a small COPY label to each code block of the post in the panel.
+export function mount() {
+	const root = document.querySelector('[data-panel-content] [data-copy-code]');
+	if (!root) return;
+
+	for (const pre of root.querySelectorAll('pre')) {
+		if (pre.parentElement?.dataset.codeBlock !== undefined) continue;
+		const wrapper = document.createElement('div');
+		wrapper.dataset.codeBlock = '';
+		wrapper.className = 'group relative';
+		pre.replaceWith(wrapper);
+		wrapper.append(pre);
+
+		const button = document.createElement('button');
+		button.type = 'button';
+		button.textContent = 'Copy';
+		button.className = 'label-mono absolute right-3 top-2.5 rounded-md bg-white/80 dark:bg-[rgba(30,30,46,0.85)] px-1.5 py-0.5 text-muted opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100 [@media(hover:none)]:opacity-100';
+		button.addEventListener('click', async () => {
+			await navigator.clipboard.writeText(pre.querySelector('code')?.innerText ?? '');
+			button.textContent = 'Copied';
+			setTimeout(() => (button.textContent = 'Copy'), 1200);
+		});
+		wrapper.append(button);
+	}
+}

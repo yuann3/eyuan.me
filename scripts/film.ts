@@ -595,8 +595,8 @@ export function startFilm(panel: HTMLElement) {
 	}).observe(panel);
 
 	let navFromIdle = currentState() === 'idle';
-	document.addEventListener('astro:before-swap', () => { navFromIdle = currentState() === 'idle'; });
-	document.addEventListener('astro:after-swap', () => {
+	document.addEventListener('yuanme:before-swap', () => { navFromIdle = currentState() === 'idle'; });
+	document.addEventListener('yuanme:after-swap', () => {
 		const next = currentState();
 		from = shown;
 		tweenMs = next !== 'idle' && !navFromIdle ? TWEEN_SWAP_MS : TWEEN_STATE_MS;

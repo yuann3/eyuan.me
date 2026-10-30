@@ -1,9 +1,10 @@
-// Client side of Shell.astro.
+// Client side of templates/layouts/shell.html.
 //
-// Navigation between shell pages uses Astro's <ClientRouter /> with a custom
-// swap: the shell (left column, panel, film canvas) is never replaced. We copy
-// the new <html> attributes (data-state / data-section drive the CSS), swap
-// <head>, update the nav, and replace only the panel content.
+// Navigation between shell pages swaps only the panel content: the shell
+// (left column, panel, film canvas) is never replaced. Until the Router swaps
+// Pages (yuanme#76), every navigation is a full page load: the before-swap
+// handler that called swapPanel and morph under Astro's ClientRouter is in
+// this file's history, at eyuan.me 6567e01.
 //
 // Motion (beUI, see motion-spec.md and motion-api.md):
 // - The layout changes instantly. The panel's visible area then morphs from
@@ -15,7 +16,7 @@
 //   or after the exit on a section swap.
 // - Esc closes an expanded panel, with a floating hint.
 
-import { navigate, swapFunctions } from 'astro:transitions/client';
+import { navigate } from 'yuanme:router';
 import { startFilm } from './film';
 import { enter, play, unobserve } from './motion-reveal';
 
@@ -298,35 +299,6 @@ function swapPanel(next: Document, from: State) {
 	}
 }
 
-document.addEventListener('astro:before-swap', (event) => {
-	const next = event.newDocument;
-	// Only shell → shell navigations get the custom swap.
-	if (!document.querySelector('[data-shell]') || !next.querySelector('[data-shell]')) return;
-
-	event.swap = () => {
-		const from = state();
-		swapFunctions.deselectScripts(next);
-		const restoreFocus = swapFunctions.saveFocus();
-		morph(() => {
-			swapFunctions.swapRootAttributes(next);
-			swapFunctions.swapHeadElements(next);
-		}, from);
-		const to = state();
-		syncNav(event.to.pathname);
-		swapPanel(next, from);
-
-		if (from === 'idle' && to === 'expanded') {
-			preview(null);
-			hintOn(HINT_DELAY_MS);
-		} else if (from === 'expanded' && to === 'idle') {
-			hintOut();
-			// The headline re-reveals once the panel is ~70% collapsed.
-			play(introItems(), { base: reduced() ? 0 : Math.round(COLLAPSE_MS * 0.7), stagger: 40 }, true);
-		}
-		restoreFocus();
-	};
-});
-
 // ---------- first load ----------
 
 function boot() {
@@ -359,7 +331,7 @@ function init() {
 }
 
 init();
-document.addEventListener('astro:page-load', init);
+document.addEventListener('yuanme:page-load', init);
 
 const panel = $('[data-panel]');
 if (panel) startFilm(panel);
