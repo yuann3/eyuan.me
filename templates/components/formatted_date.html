@@ -1,0 +1,4 @@
+{# props: date: date, class?: string #}
+{% macro formatted_date(date, class=none) %}
+<time datetime="{{ date }}"{{ {"class": class}|attrs }}>{{ date }}</time>
+{% endmacro %}

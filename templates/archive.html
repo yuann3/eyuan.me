@@ -1,0 +1,10 @@
+{% extends "layouts/shell.html" %}
+{% from "components/panel_header.html" import panel_header %}
+{% from "components/post_list.html" import post_list %}
+{% set title = "Archive" %}
+{% set description = "Every post, newest first." %}
+{% set section = "writing" %}
+{% block content %}
+	{{ panel_header(title="Archive") }}
+	{{ post_list(posts=collections.posts|sort_by(["-modified"])) }}
+{% endblock %}

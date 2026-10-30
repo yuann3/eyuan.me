@@ -1,0 +1,26 @@
+{% extends "layouts/shell.html" %}
+{% from "components/panel_header.html" import panel_header %}
+{% set title = "Projects" %}
+{% set description = "Things I've built." %}
+{% set section = "projects" %}
+{% block content %}
+	{{ panel_header(title="Projects") }}
+	<ul class="rows" data-reveal-group>
+		{% for p in entries %}
+		<li data-reveal>
+			<a href="{{ p.url }}" class="row row-link project">
+				<span class="flex min-w-0 flex-1 flex-col gap-0.5 md:flex-row md:items-center md:gap-0">
+					<span class="project-name" data-row-name>{{ p.title|lower }}</span>
+					<span class="project-summary hidden md:block">{{ p.summary|default(p.description) }}</span>
+					<span class="project-summary md:hidden">{{ p.summary_short|default(p.summary|default(p.description)) }}</span>
+				</span>
+				<span class="label-mono hidden w-[200px] shrink-0 text-muted min-[1100px]:block">
+					{{ p.stack|map("lower")|unique|join(" · ") }}
+				</span>
+				<span class="project-year">{{ p.date|dateformat(format="%Y") }}</span>
+				<span class="row-arrow project-arrow" data-row-arrow aria-hidden="true">→</span>
+			</a>
+		</li>
+		{% endfor %}
+	</ul>
+{% endblock %}

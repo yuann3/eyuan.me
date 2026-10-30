@@ -1,0 +1,60 @@
+{% extends "layouts/shell.html" %}
+{% from "components/panel_header.html" import panel_header %}
+{% set title = "Resume" %}
+{% set description = "Resume of Yiyuan Li" %}
+{% set section = "resume" %}
+{% set heading = "text-[17px] font-medium leading-6 text-ink" %}
+{#- Mobile: the date stacked above the entry. Desktop: a 188px date lane. #}
+{% set row = "flex flex-col md:flex-row" %}
+{% set period = "nudge shrink-0 text-muted md:w-[188px]" %}
+{% block content %}
+	{% set actions %}
+		<a href="{{ data.resume.pdf }}" download class="btn-ink flex items-center gap-2 rounded-full px-[18px] py-[10px] text-[15px] font-medium leading-5">
+			Download resume
+			<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" class="shrink-0 overflow-visible">
+				<path class="icon-drop" d="M7 2v8M3.5 6.5L7 10l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+				<path d="M2.5 12h9" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+			</svg>
+		</a>
+	{% endset %}
+	{{ panel_header(title="Resume", actions=actions) }}
+	<div class="max-w-[840px] text-[16px] leading-[30px]">
+		<section class="flex flex-col gap-5 pb-14 pt-6" data-reveal-group>
+			<h2 class="{{ heading }}" data-reveal>About</h2>
+			<p class="nudge max-w-[800px] text-ink-2" data-reveal>{{ data.resume.about }}</p>
+		</section>
+		<section class="flex flex-col gap-5 pb-14" data-reveal-group>
+			<h2 class="{{ heading }}" data-reveal>Experience</h2>
+			<div class="flex flex-col gap-7" data-reveal-group>
+				{% for e in data.resume.experience %}
+				<div class="{{ row }}" data-reveal>
+					<p class="{{ period }}">{{ e.period }}</p>
+					<div class="min-w-0 flex-1">
+						<p class="nudge text-ink">{{ e.title }}</p>
+						<p class="nudge text-ink-2">{{ e.description|default("") }}</p>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</section>
+		<section class="flex flex-col gap-5 pb-14" data-reveal-group>
+			<h2 class="{{ heading }}" data-reveal>Education</h2>
+			<div class="flex flex-col gap-5" data-reveal-group>
+				{% for e in data.resume.education %}
+				<div class="{{ row }}" data-reveal>
+					<p class="{{ period }}">{{ e.period }}</p>
+					<p class="nudge min-w-0 flex-1 text-ink">{{ e.title }}</p>
+				</div>
+				{% endfor %}
+			</div>
+		</section>
+		<section class="flex flex-col gap-5 pb-6" data-reveal-group>
+			<h2 class="{{ heading }}" data-reveal>Skills</h2>
+			<ul class="flex flex-wrap gap-[10px]" data-reveal>
+				{% for s in data.resume.skills %}
+				<li class="lift chip rounded-full px-[14px] py-[6px] text-[15px] leading-[22px] text-ink">{{ s }}</li>
+				{% endfor %}
+			</ul>
+		</section>
+	</div>
+{% endblock %}

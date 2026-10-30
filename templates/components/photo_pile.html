@@ -1,0 +1,27 @@
+{#- A loose pile of printed photos beside the text column the caller passes.
+    Desktop, when the column leaves room on its right: the prints scatter at
+    random in that empty area and can be dragged around. Narrower: a tilted,
+    horizontally scrolling row below the text. #}
+{# props: photos: list<object> #}
+{% macro photo_pile(photos) %}
+{% set sizes = {"portrait": "(min-width: 1100px) 220px, 160px", "tall": "(min-width: 1100px) 190px, 130px", "landscape": "(min-width: 1100px) 260px, 280px"} %}
+<div class="about-body">
+	{{ caller() }}
+	<div class="pile" data-pile>
+		<div class="pile-stage" data-pile-stage>
+			{% for p in photos %}
+			{% set ar = p.w / p.h %}
+			{% set kind = "landscape" if ar > 1 else ("tall" if ar < 0.7 else "portrait") %}
+			{% set img = image(p.src, widths=[160, 240, 320, 480, 640], sizes=sizes[kind]) %}
+			<figure class="photo photo-{{ kind }}" data-photo style="--ar:{{ '%.4f'|format(ar) }};--fx:{{ p.fx }};--fy:{{ p.fy }};--r:{{ p.r }}deg;--t:{{ p.t }}deg;--z:{{ loop.index }}">
+				<picture>
+					{% for s in img.sources %}<source type="{{ s.type }}" srcset="{{ s.srcset }}" sizes="{{ img.sizes }}">{% endfor %}
+					<img src="{{ img.url }}" srcset="{{ img.srcset }}" alt="{{ p.alt }}" sizes="{{ img.sizes }}" loading="lazy" decoding="async" draggable="false" fetchpriority="auto" width="{{ p.w }}" height="{{ p.h }}">
+				</picture>
+				<figcaption>{{ p.caption }}</figcaption>
+			</figure>
+			{% endfor %}
+		</div>
+	</div>
+</div>
+{% endmacro %}

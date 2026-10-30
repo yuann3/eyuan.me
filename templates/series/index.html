@@ -1,0 +1,16 @@
+{% extends "layouts/shell.html" %}
+{% from "components/panel_header.html" import panel_header %}
+{% from "components/list_row.html" import list_row %}
+{% set title = "Series" %}
+{% set description = "All series" %}
+{% set section = "writing" %}
+{% block content %}
+	{{ panel_header(title="Series") }}
+	{% if terms %}
+	<ul class="border-b border-hairline" data-reveal-group>
+		{% for t in terms|sort_by(["-count"]) %}
+		{{ list_row(href=t.url, title=t.name, meta=t.count ~ " " ~ t.count|pluralize("post", "posts")) }}
+		{% endfor %}
+	</ul>
+	{% endif %}
+{% endblock %}

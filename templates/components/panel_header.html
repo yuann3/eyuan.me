@@ -1,0 +1,17 @@
+{% from "components/wordmark.html" import wordmark %}
+{# props: title: string, actions?: slot #}
+{% macro panel_header(title, actions="") %}
+<header class="panel-header" data-reveal>
+	<div class="panel-topbar">
+		{{ wordmark(class="wordmark-sm") }}
+		<a href="/" class="label-mono close" aria-keyshortcuts="Escape">CLOSE <span class="close-x" aria-hidden="true">×</span></a>
+	</div>
+	<div class="panel-heading">
+		<h1 class="panel-title">{{ title }}</h1>
+		<div class="panel-actions">
+			{{ actions }}
+			<a href="/" class="label-mono close close-desktop" aria-keyshortcuts="Escape">CLOSE <span class="close-x" aria-hidden="true">×</span></a>
+		</div>
+	</div>
+</header>
+{% endmacro %}

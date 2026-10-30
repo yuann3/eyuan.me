@@ -1,0 +1,40 @@
+# The About Page's photo pile. `w` and `h` are each file's own size, which
+# set the print's aspect ratio. Where each print sits by default: `fx` and
+# `fy` as fractions of the free area, `r` its rotation when scattered and `t`
+# its tilt in a row, in degrees.
+- src: images/about/sentosa-boardwalk.jpg
+  w: 1200
+  h: 1600
+  caption: sentosa
+  alt: Tall palm trees along a waterfront boardwalk on Sentosa in late-afternoon sun, people strolling by the water.
+  fx: 0.02
+  fy: 0.01
+  r: -4
+  t: -2
+- src: images/about/beach-market.jpg
+  w: 1600
+  h: 1200
+  caption: beach market
+  alt: Red, orange and blue shade sails strung over a beach market with food stalls on the sand.
+  fx: 0.9
+  fy: 0.25
+  r: 5
+  t: 1.5
+- src: images/about/hornbills.jpg
+  w: 900
+  h: 1600
+  caption: hornbills
+  alt: Two hornbills perched on a street lamp against a pale sky.
+  fx: 0.08
+  fy: 0.84
+  r: 3
+  t: -1.5
+- src: images/about/phuket-old-town.jpg
+  w: 1200
+  h: 1600
+  caption: phuket old town
+  alt: A crowded Phuket old town street at dusk under strings of glowing bulbs and golden clouds.
+  fx: 0.92
+  fy: 0.97
+  r: -6
+  t: 2.5

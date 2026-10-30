@@ -1,0 +1,20 @@
+{% extends "layouts/shell.html" %}
+{% from "components/panel_header.html" import panel_header %}
+{% set title = entry.title %}
+{% set description = entry.description %}
+{% set section = "projects" %}
+{% set article_date = entry.date %}
+{% block content %}
+	{{ panel_header(title=entry.title|lower) }}
+	<div data-reveal-group>
+		<p class="label-mono flex flex-wrap gap-x-6 gap-y-2 text-muted" data-reveal>
+			<span>{{ (entry.stack|map("lower")|unique|list + [entry.date|dateformat(format="%Y")])|join(" · ") }}</span>
+			{% if entry.github %}<a href="{{ entry.github }}" target="_blank" rel="noopener" class="meta-link text-ink-2">GITHUB <span class="meta-arrow">↗</span></a>{% endif %}
+			{% if entry.website and entry.website != entry.github|default("") %}<a href="{{ entry.website }}" target="_blank" rel="noopener" class="meta-link text-ink-2">WEBSITE <span class="meta-arrow">↗</span></a>{% endif %}
+		</p>
+		<article class="prose-panel project-body mt-10" data-reveal>
+			{% if entry.hero %}<img src="{{ entry.hero.url }}" alt="{{ entry.hero.alt|default('') }}" />{% endif %}
+			{{ entry.content }}
+		</article>
+	</div>
+{% endblock %}
