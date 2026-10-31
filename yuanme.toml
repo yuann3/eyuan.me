@@ -80,6 +80,9 @@ path = "/rss.xml"
 [router]
 mode = "swap"
 
+[host]
+adapter = "cloudflare"
+
 [tailwind]
 version = "4.3.3"
 
