@@ -4,7 +4,7 @@ description: 'Making C less painful by borrowing modern language concepts'
 date: 2025-12-12
 slug: extending-c-stdlib
 hero: 
-  src: '/rustc.PNG'
+  src: '/images/hero/rustc.PNG'
   alt: 'rustc'
 order: 2
 tags: ["C", "Programming"]

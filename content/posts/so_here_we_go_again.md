@@ -4,7 +4,7 @@ description: 'Feels new yet familiar'
 date: 2024-07-01
 slug: first
 hero: 
-  src: '/plane.png'
+  src: '/images/hero/plane.png'
   alt: 'plane'
 tags: ["Life", "Draft"]
 ---

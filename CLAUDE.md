@@ -48,5 +48,5 @@ Content lives in `content/<collection>/*.md`, and `yuanme.toml` declares each Co
 - Resume content is `data/resume.yaml`. The PDF is `static/YiyuanLi_Resume.pdf`; `data/resume.tex` is its source and isn't part of the build.
 - The About photos are `images/about/`, listed in `data/photos.yaml`.
 - **Slugs** come from the file name, lowercased (`Pew.md` → `/projects/pew/`), unless the front matter sets `slug:`.
-- Other images go in `static/` and are referenced by absolute path.
+- Post and project hero images are in `images/hero/`, named in front matter by their path from the root (`/images/hero/plane.png`); the entry Templates make them with `image()`. A project's hero may also be a remote URL, which stays a plain `<img>`.
 - `draft: true` leaves an Entry out of the build (`yuanme dev` shows it); `unlisted: true` builds its Page but leaves it out of every list, Taxonomy, the feed and the sitemap.
