@@ -23,7 +23,7 @@ Every Page renders inside `templates/layouts/shell.html`, which is a two-column 
 - **Idle and expanded states.** Templates that don't set `section` are **idle**: this is only `/` and the 404. Templates that set `section` (`about | projects | writing | resume`) are **expanded**: the left column collapses to a 300px rail and the panel grows across the page.
   - The state lives on `<html data-state data-section>`. All state styling keys off those attributes.
   - Child routes set their parent's section. Projects use `projects`. Posts, the Writing list, `/archive/`, tags and series use `writing`.
-- **Navigation.** Every navigation is a full page load until the Router swaps Pages (yuanme#76). `scripts/shell.ts` runs the first reveal; the panel swap and morph it ran under Astro's ClientRouter come back then.
+- **Navigation.** yuanme's Router swaps Pages (`[router] mode = "swap"`). `templates/layouts/shell.ts`, the Layout's Sidecar script, replaces its swap on `yuanme:before-swap`: it keeps the shell and its Film, swaps the head and the panel content, morphs the panel and runs the reveal. Back and Forward restore the panel's scroll from the history entry.
   - Never set attributes on `<html>` from JS.
 - **The panel scrolls, not the window.** Panel content is its own scroll container. On desktop the window never scrolls, so don't use `window.scrollTo`.
 - **The film.** `scripts/film.ts` is a WebGL fragment shader that draws the living gradient. `scripts/film-palettes.ts` holds the per-state palettes, which come from Paper.

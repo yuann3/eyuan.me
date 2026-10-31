@@ -1,10 +1,11 @@
-// Client side of templates/layouts/shell.html.
+// Client side of templates/layouts/shell.html, its Sidecar script, so every
+// Page loads it in its Page Script, with the Router.
 //
 // Navigation between shell pages swaps only the panel content: the shell
-// (left column, panel, film canvas) is never replaced. Until the Router swaps
-// Pages (yuanme#76), every navigation is a full page load: the before-swap
-// handler that called swapPanel and morph under Astro's ClientRouter is in
-// this file's history, at eyuan.me 6567e01.
+// (left column, panel, film canvas) is never replaced. The Router's swap is
+// replaced on `yuanme:before-swap`: we copy the new <html> attributes
+// (data-state / data-section drive the CSS), swap <head>, update the nav,
+// and replace only the panel content.
 //
 // Motion (beUI, see motion-spec.md and motion-api.md):
 // - The layout changes instantly. The panel's visible area then morphs from
@@ -17,8 +18,8 @@
 // - Esc closes an expanded panel, with a floating hint.
 
 import { navigate } from 'yuanme:router';
-import { startFilm } from './film';
-import { enter, play, unobserve } from './motion-reveal';
+import { startFilm } from '/scripts/film';
+import { enter, play, unobserve } from '/scripts/motion-reveal';
 
 type State = 'idle' | 'expanded';
 type Box = { top: number, left: number, width: number, height: number };
@@ -299,6 +300,63 @@ function swapPanel(next: Document, from: State) {
 	}
 }
 
+// The Router's swap without its <body>: the <html> attributes, and the head,
+// keeping the stylesheets both Pages link.
+function swapRoot(next: Document) {
+	const root = document.documentElement;
+	for (const { name } of [...root.attributes]) root.removeAttribute(name);
+	for (const { name, value } of next.documentElement.attributes) root.setAttribute(name, value);
+}
+
+function swapHead(next: Document) {
+	const twin = (el: Element) =>
+		el.matches('link[rel=stylesheet]') && next.head.querySelector(`link[rel=stylesheet][href="${el.getAttribute('href')}"]`);
+	for (const el of [...document.head.children]) {
+		const t = twin(el);
+		t ? t.remove() : el.remove();
+	}
+	document.head.append(...next.head.children);
+}
+
+// The panel scrolls, not the window, so the Router doesn't restore it:
+// each history entry keeps where its panel was (`panel-scroll`).
+const navigation = (window as any).navigation;
+
+function savePanelScroll() {
+	const content = $('[data-panel-content]');
+	if (navigation && content) navigation.updateCurrentEntry({ state: { panelTop: content.scrollTop } });
+}
+
+navigation?.addEventListener('navigate', savePanelScroll);
+
+document.addEventListener('yuanme:before-swap', (event) => {
+	const next = event.newDocument;
+	// Only shell → shell navigations get the custom swap.
+	if (!document.querySelector('[data-shell]') || !next.querySelector('[data-shell]')) return;
+
+	event.swap = () => {
+		const from = state();
+		morph(() => {
+			swapRoot(next);
+			swapHead(next);
+		}, from);
+		const to = state();
+		syncNav(event.to.pathname);
+		swapPanel(next, from);
+		const content = $('[data-panel-content]');
+		if (content && event.navigationType === 'traverse') content.scrollTop = navigation.currentEntry.getState()?.panelTop ?? 0;
+
+		if (from === 'idle' && to === 'expanded') {
+			preview(null);
+			hintOn(HINT_DELAY_MS);
+		} else if (from === 'expanded' && to === 'idle') {
+			hintOut();
+			// The headline re-reveals once the panel is ~70% collapsed.
+			play(introItems(), { base: reduced() ? 0 : Math.round(COLLAPSE_MS * 0.7), stagger: 40 }, true);
+		}
+	};
+});
+
 // ---------- first load ----------
 
 function boot() {
@@ -324,14 +382,11 @@ function boot() {
 	body.removeAttribute('data-boot');
 }
 
-function init() {
+export function mount() {
 	bindNav();
 	bindHint();
 	boot();
 }
-
-init();
-document.addEventListener('yuanme:page-load', init);
 
 const panel = $('[data-panel]');
 if (panel) startFilm(panel);
