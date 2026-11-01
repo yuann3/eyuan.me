@@ -1,7 +1,7 @@
 // The film: a living gradient drawn with one fragment shader.
 // It renders behind the panel content and never holds text. When WebGL is
 // missing or the visitor prefers reduced motion, the static CSS fallback
-// in Shell.astro stays visible instead.
+// (templates/partials/film_css.html) stays visible instead.
 //
 // What moves:
 // - Flow: domain-warped fbm bands whose warp advances visibly, plus a slow
@@ -331,7 +331,15 @@ export function startFilm(panel: HTMLElement) {
 	// The static film only needs the hues; the WebGL film replaces this.
 	let onScheme = () => publishHues('drain', 0);
 	darkQuery.addEventListener('change', () => onScheme());
-	if (reducedMotion.matches) return;
+	if (reducedMotion.matches) {
+		// It starts once reduced motion is turned off (film-motion-change).
+		const start = () => {
+			reducedMotion.removeEventListener('change', start);
+			startFilm(panel);
+		};
+		reducedMotion.addEventListener('change', start);
+		return;
+	}
 
 	const gl = canvas.getContext('webgl', { antialias: false, alpha: false, depth: false, stencil: false, powerPreference: 'low-power' });
 	if (!gl) return;
