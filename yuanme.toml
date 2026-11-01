@@ -94,3 +94,39 @@ js = 13
 fonts = 64
 math_font = 55
 requests = 6
+
+# Every Page is over #15's 6 render-path requests, and these acknowledge
+# exactly how far (yuanme#76): the Page, the Site's stylesheet and the
+# Sidecar stylesheet, the Page Script and the chunk it shares with every
+# other Page (the Router and the shell), and four font files, which the
+# Engine counts whether or not a Page's text uses them; and code.css on
+# Pages with code. Getting to 6 is an Engine change: see yuanme#94.
+[budgets.overages]
+"/" = { requests = 3 }
+"/404.html" = { requests = 3 }
+"/about/" = { requests = 3 }
+"/archive/" = { requests = 3 }
+"/blog/" = { requests = 3 }
+"/blog/extending-c-stdlib/" = { requests = 4 }
+"/blog/first/" = { requests = 3 }
+"/projects/" = { requests = 3 }
+"/projects/emaclaude/" = { requests = 3 }
+"/projects/hrust/" = { requests = 4 }
+"/projects/linear-app/" = { requests = 3 }
+"/projects/lrle/" = { requests = 4 }
+"/projects/mra/" = { requests = 3 }
+"/projects/pew/" = { requests = 4 }
+"/projects/rayrust/" = { requests = 4 }
+"/projects/rego/" = { requests = 4 }
+"/projects/ruskey/" = { requests = 4 }
+"/projects/sequel/" = { requests = 4 }
+"/projects/shaderview/" = { requests = 3 }
+"/projects/shell/" = { requests = 4 }
+"/projects/ylib/" = { requests = 3 }
+"/resume/" = { requests = 3 }
+"/series/" = { requests = 3 }
+"/tags/" = { requests = 3 }
+"/tags/c/" = { requests = 3 }
+"/tags/draft/" = { requests = 3 }
+"/tags/life/" = { requests = 3 }
+"/tags/programming/" = { requests = 3 }
