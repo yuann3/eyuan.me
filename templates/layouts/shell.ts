@@ -388,8 +388,16 @@ export function mount() {
 	boot();
 }
 
-// After the first reveal has started: compiling the Film's shaders is a
-// long task, which would hold the reveal, and the Page's LCP with it. The
-// static fallback shows until the Film's first frame anyway.
+// After the first reveal has finished: compiling the Film's shaders is a
+// long task, and on a phone's CPU it held the reveal's frames, and the
+// Page's LCP with them. The static fallback shows until the Film's first
+// frame anyway.
+const revealed = () =>
+	Promise.all(
+		document
+			.getAnimations()
+			.filter((a) => Number.isFinite(Number(a.effect?.getComputedTiming().endTime)))
+			.map((a) => a.finished.catch(() => {})),
+	);
 const panel = $('[data-panel]');
-if (panel) document.addEventListener('yuanme:page-load', () => requestAnimationFrame(() => setTimeout(() => startFilm(panel))), { once: true });
+if (panel) document.addEventListener('yuanme:page-load', () => requestAnimationFrame(() => revealed().then(() => setTimeout(() => startFilm(panel)))), { once: true });
