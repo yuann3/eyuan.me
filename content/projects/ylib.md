@@ -5,6 +5,8 @@ summary: 'the c standard library, rewritten on purpose'
 date: 2024-06-30
 hero:
     url: '/images/hero/Ylib.png'
+    width: 3636
+    height: 2022
     alt: 'Ylib'
 stack: ["C"]
 website: https://github.com/yuann3/Ylib

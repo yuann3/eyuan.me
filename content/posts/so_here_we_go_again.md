@@ -5,6 +5,8 @@ date: 2024-07-01
 slug: first
 hero: 
   src: '/images/hero/plane.png'
+  width: 2418
+  height: 1360
   alt: 'plane'
 tags: ["Life", "Draft"]
 ---

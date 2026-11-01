@@ -17,7 +17,10 @@ sort = ["order", "-modified"]
 date = { type = "date" }
 description = { type = "string", max = 250 }
 order = { type = "int", min = 1, max = 5, optional = true }
-hero = { type = "object", optional = true, fields = { src = { type = "string" }, alt = { type = "string", optional = true } } }
+# A hero's width and height, of its original file, keep its box at that
+# ratio whichever copy the browser picks, as Astro's original did: the
+# copies' heights are rounded to whole pixels.
+hero = { type = "object", optional = true, fields = { src = { type = "string" }, alt = { type = "string", optional = true }, width = { type = "int", min = 1, optional = true }, height = { type = "int", min = 1, optional = true } } }
 
 [collections.projects]
 route = "/projects/{slug}/"
@@ -33,7 +36,7 @@ stack = { type = "list", items = { type = "string" } }
 website = { type = "url", optional = true }
 github = { type = "url", optional = true }
 order = { type = "int", min = 1, max = 13, optional = true }
-hero = { type = "object", optional = true, fields = { url = { type = "string" }, alt = { type = "string", optional = true } } }
+hero = { type = "object", optional = true, fields = { url = { type = "string" }, alt = { type = "string", optional = true }, width = { type = "int", min = 1, optional = true }, height = { type = "int", min = 1, optional = true } } }
 
 [taxonomies.tags]
 collections = ["posts"]

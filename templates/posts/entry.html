@@ -17,7 +17,7 @@
 			{% for tag in entry.tags %}<a href="/tags/{{ tag|lower }}/" class="meta-link text-ink-2">#{{ tag|lower }}</a>{% endfor %}
 		</p>
 		<article class="prose-panel mt-10" data-copy-code data-reveal>
-			{% if entry.hero %}{{ image(entry.hero.src, widths=[480, 720, 1080, 1440], sizes="(min-width: 768px) 720px, 100vw")|picture(alt=entry.hero.alt|default(''), priority=true) }}{% endif %}
+			{% if entry.hero %}{{ image(entry.hero.src, widths=[480, 720, 1080, 1440], sizes="(min-width: 768px) 720px, 100vw")|picture(alt=entry.hero.alt|default(''), priority=true, attrs={"style": "aspect-ratio: " ~ entry.hero.width ~ "/" ~ entry.hero.height} if entry.hero.width and entry.hero.height else {}) }}{% endif %}
 			{{ entry.content }}
 		</article>
 	</div>
