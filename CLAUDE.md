@@ -12,6 +12,7 @@ This `yuanme` branch is the port from Astro (yuanme#39, #75). yuanme's parity te
 - `yuanme check`: report every error and warning without writing the Site.
 - `yuanme build`: build into `dist/`. The build report is `.yuanme/report.md`.
 - `yuanme docs` lists yuanme's docs; `yuanme docs CODE` explains a Diagnostic.
+- `python3 tools/subset-fonts.py DIR` cuts Google Fonts' Latin files in `DIR` down to the characters the Site sets, into `fonts/` (it needs fontTools and brotli); `styles/fonts.css` gives each file's unicode-range.
 - `bun tools/film-css.ts` rewrites the Film's static fallback (`templates/partials/film_css.html`) after a change to `scripts/film-palettes.ts`.
 
 yuanme downloads the Tailwind CLI it runs (`[tailwind] version` in `yuanme.toml`). Nothing else is installed: there is no `package.json`.
