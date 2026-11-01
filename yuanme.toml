@@ -86,6 +86,12 @@ mode = "swap"
 [host]
 adapter = "cloudflare"
 
+# Workers send a .txt file as text/plain with no charset, so a browser
+# reads llms.txt's dashes as Windows-1252. Netlify sent UTF-8.
+[[host.headers]]
+path = "/llms.txt"
+headers = { "Content-Type" = "text/plain; charset=utf-8" }
+
 # Speed 9, not the Engine's 6: the hero images' copies up to 1440 pixels
 # wide took 124 ms an output on a 4-core CI runner, over #15's 75 ms
 # (yuanme#76). At 9 the build encodes in a third of the CPU time, and the
