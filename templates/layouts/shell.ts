@@ -388,5 +388,8 @@ export function mount() {
 	boot();
 }
 
+// After the first reveal has started: compiling the Film's shaders is a
+// long task, which would hold the reveal, and the Page's LCP with it. The
+// static fallback shows until the Film's first frame anyway.
 const panel = $('[data-panel]');
-if (panel) startFilm(panel);
+if (panel) document.addEventListener('yuanme:page-load', () => requestAnimationFrame(() => setTimeout(() => startFilm(panel))), { once: true });
