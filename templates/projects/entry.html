@@ -13,7 +13,7 @@
 			{% if entry.website and entry.website != entry.github|default("") %}<a href="{{ entry.website }}" target="_blank" rel="noopener" class="meta-link text-ink-2">WEBSITE <span class="meta-arrow">↗</span></a>{% endif %}
 		</p>
 		<article class="prose-panel project-body mt-10" data-reveal>
-			{% if entry.hero and entry.hero.url is startingwith("/") %}{{ image(entry.hero.url, widths=[480, 720, 1080, 1440], sizes="(min-width: 768px) 720px, 100vw")|picture(alt=entry.hero.alt|default(''), priority=true, attrs={"style": "aspect-ratio: " ~ entry.hero.width ~ "/" ~ entry.hero.height} if entry.hero.width and entry.hero.height else {}) }}
+			{% if entry.hero and entry.hero.url is startingwith("/") %}{{ image(entry.hero.url, widths=[480, 720, 1080, 1440], sizes="(min-width: 768px) 720px, calc(100vw - 56px)")|picture(alt=entry.hero.alt|default(''), priority=true, attrs={"style": "aspect-ratio: " ~ entry.hero.width ~ "/" ~ entry.hero.height} if entry.hero.width and entry.hero.height else {}) }}
 			{%- elif entry.hero %}<img src="{{ entry.hero.url }}" alt="{{ entry.hero.alt|default('') }}" />{% endif %}
 			{{ entry.content }}
 		</article>
