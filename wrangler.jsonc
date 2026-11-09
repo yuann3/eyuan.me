@@ -4,6 +4,12 @@
 {
   "name": "eyuan-me",
   "compatibility_date": "2026-10-30",
+  // eyuan.me reaches this Worker by the route eyuan.me/*, added by hand
+  // and kept out of this file until the Custom Domain replaces it
+  // (yuann3/yuanme#80): a deploy leaves routes it doesn't list alone, and
+  // the deploy token has no zone permission. Said outright, since a route
+  // or domain here would turn workers.dev off.
+  "workers_dev": true,
   "assets": {
     "directory": "./dist",
     "html_handling": "auto-trailing-slash",
