@@ -1,0 +1,53 @@
+{#- A plain-Markdown summary of the Site for LLM crawlers and AI search
+    (https://llmstxt.org). -#}
+# Yiyuan Li
+
+> Software engineer in Singapore building AI agent infrastructure: agent tools and the sandboxing around them, evals, and the quality layer under inference routing. Works mostly in Rust, C and TypeScript.
+
+Yiyuan Li (also "YY", handle "yuann3", site eyuan.me) is a software engineer based in Singapore, currently at Voltade building Volty, a multi-tenant AI agent platform that answers customers for businesses on WhatsApp and email. The work is anchored in the fundamentals of software engineering, and the side projects rebuild the classics from scratch: a SQLite engine, a Redis server, an interpreter, a path tracer, a GPU shader renderer inside Emacs, and an actor-based multi-agent runtime in Rust. Outside code: Emacs, house music and movies.
+
+## Links
+
+- [Website]({{ absolute_url("/") }})
+- [About]({{ absolute_url("/about/") }}): short personal intro
+- [Resume]({{ absolute_url("/resume/") }}): experience, education and skills; [PDF]({{ absolute_url(data.resume.pdf) }})
+- [Projects]({{ absolute_url("/projects/") }})
+- [Writing]({{ absolute_url("/blog/") }})
+- [GitHub](https://github.com/yuann3)
+- [LinkedIn](https://linkedin.com/in/yyuanl)
+- [X](https://twitter.com/eyuann3)
+- Email: yy@eyuan.me
+
+## Experience
+
+{% for e in data.resume.experience %}
+- {{ e.title }} ({{ e.period }}): {{ e.description|default("") }}
+{% endfor %}
+
+## Education
+
+{% for e in data.resume.education %}
+- {{ e.title }} ({{ e.period }})
+{% endfor %}
+
+## Skills
+
+{{ data.resume.skills|join(", ") }}
+
+## Projects
+
+{% for p in collections.projects|sort_by(["-date"]) %}
+{% set summary = p.summary|default(p.description)|trim %}
+- [{{ p.title }}]({{ absolute_url(p.url) }}) ({{ p.date|dateformat(format="%Y") }}): {{ summary if summary[-1:] in ".!?" else summary ~ "." }}{% if p.stack %} Stack: {{ p.stack|map("lower")|unique|join(", ") }}.{% endif %}{% if p.github %} Source: {{ p.github }}{% endif %}
+{% endfor %}
+
+## Writing
+
+{% for post in collections.posts|sort_by(["-date"]) %}
+- [{{ post.title }}]({{ absolute_url(post.url) }}) ({{ post.date }}): {{ post.description }}
+{% endfor %}
+
+## Optional
+
+- [RSS feed]({{ absolute_url("/rss.xml") }})
+- [Archive]({{ absolute_url("/archive/") }})

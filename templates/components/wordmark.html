@@ -1,0 +1,6 @@
+{# props: class?: string, attrs?: attrs #}
+{% macro wordmark(class=none, attrs={}) %}
+<a href="/" class="wordmark{{ ' ' ~ class if class else '' }}" aria-label="eyuan, home"{{ attrs|attrs }}>
+eyuan<span class="droplet" aria-hidden="true"></span>
+</a>
+{% endmacro %}

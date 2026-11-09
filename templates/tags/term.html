@@ -1,0 +1,12 @@
+{% extends "layouts/shell.html" %}
+{% from "components/panel_header.html" import panel_header %}
+{% from "components/post_list.html" import post_list %}
+{% from "components/pagination.html" import pagination %}
+{% set title = "Tag: " ~ term.name %}
+{% set description = "View all posts with the tag - " ~ term.name %}
+{% set section = "writing" %}
+{% block content %}
+	{{ panel_header(title="#" ~ term.name) }}
+	{{ post_list(posts=entries) }}
+	{{ pagination(prev=paginator.prev, next=paginator.next) }}
+{% endblock %}

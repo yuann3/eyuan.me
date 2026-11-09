@@ -1,0 +1,28 @@
+{#- The built-in feed Template, but for each item's guid (`rss-guid` in
+    yuanme's docs/parity-exceptions.md): the www URL the Astro feed gave as
+    a permalink, kept as an opaque id, so feed readers don't show every
+    Post again after the move to the apex origin. -#}
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+<title>{{ site.title | default(site.url) }}</title>
+<link>{{ absolute_url("/") }}</link>
+<description>{{ site.description | default("") }}</description>
+{% if site.language %}
+<language>{{ site.language }}</language>
+{% endif %}
+{% for entry in entries %}
+<item>
+<title>{{ entry.title }}</title>
+<link>{{ absolute_url(entry.url) }}</link>
+<guid isPermaLink="false">https://www.eyuan.me{{ entry.url }}</guid>
+{% if entry.description %}
+<description>{{ entry.description }}</description>
+{% endif %}
+{% if entry.date %}
+<pubDate>{{ entry.date | dateformat(format="rfc2822") }}</pubDate>
+{% endif %}
+</item>
+{% endfor %}
+</channel>
+</rss>

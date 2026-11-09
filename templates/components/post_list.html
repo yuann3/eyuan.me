@@ -1,0 +1,11 @@
+{% from "components/list_row.html" import list_row %}
+{# props: posts: list<entry<posts>> #}
+{% macro post_list(posts) %}
+{% if posts %}
+<ul class="border-b border-hairline" data-reveal-group>
+	{% for post in posts %}
+	{{ list_row(href=post.url, title=post.title, description=post.description, date=post.date) }}
+	{% endfor %}
+</ul>
+{% endif %}
+{% endmacro %}

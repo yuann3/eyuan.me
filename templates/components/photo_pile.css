@@ -1,0 +1,289 @@
+/* The query container: the full content width, text column included. */
+.about-body {
+	position: relative;
+	container: about-body / inline-size;
+}
+
+.photo {
+	--pad: 8px;
+	--cap: 30px;
+	position: relative;
+	margin: 0;
+	padding: var(--pad) var(--pad) 0;
+	border-radius: 4px;
+	background: #fff;
+	box-shadow:
+		0 1px 1px rgba(18, 19, 22, 0.04),
+		0 2px 4px rgba(18, 19, 22, 0.05),
+		0 8px 16px -2px rgba(18, 19, 22, 0.07),
+		0 18px 36px -8px rgba(18, 19, 22, 0.12);
+	user-select: none;
+	-webkit-user-select: none;
+	-webkit-touch-callout: none;
+	z-index: var(--z);
+	transition:
+		translate 180ms var(--ease-out),
+		rotate 180ms var(--ease-out),
+		scale 180ms var(--ease-out),
+		box-shadow 180ms var(--ease-out);
+}
+
+.photo :global(picture),
+.photo :global(img) {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+.photo :global(img) {
+	aspect-ratio: var(--ar);
+	border-radius: 2px;
+	background: rgba(18, 19, 22, 0.05);
+	-webkit-user-drag: none;
+}
+
+.photo figcaption {
+	height: var(--cap);
+	padding: 0 2px;
+	display: flex;
+	align-items: center;
+	font-family: 'Geist Mono', ui-monospace, monospace;
+	font-size: 10px;
+	font-weight: 400;
+	line-height: 12px;
+	letter-spacing: 0.02em;
+	text-transform: lowercase;
+	color: var(--muted);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* ---------- row (below the text): narrow panels ---------- */
+.pile {
+	--pile-mode: row;
+	margin: 24px -20px 0;
+}
+
+.pile-stage {
+	--k: 1;
+	display: flex;
+	align-items: flex-start;
+	gap: 20px;
+	padding: 16px 28px 28px;
+	overflow-x: auto;
+	overscroll-behavior-x: contain;
+	scroll-snap-type: x mandatory;
+	scroll-padding-inline: 28px;
+	scrollbar-width: none;
+}
+
+.pile-stage::-webkit-scrollbar {
+	display: none;
+}
+
+.photo {
+	flex: none;
+	width: calc(160px * var(--ar) + 2 * var(--pad));
+	rotate: var(--t);
+	scroll-snap-align: start;
+}
+
+@media (min-width: 768px) {
+	.pile {
+		margin-inline: -40px;
+	}
+
+	.pile-stage {
+		padding-inline: 40px;
+		scroll-padding-inline: 40px;
+	}
+
+	.photo {
+		width: calc(184px * var(--ar) + 2 * var(--pad));
+	}
+}
+
+@media (min-width: 1100px) {
+	.pile {
+		margin-inline: -72px;
+	}
+
+	.pile-stage {
+		padding-inline: 72px;
+		scroll-padding-inline: 72px;
+	}
+}
+
+/* ---------- scatter (right of the text): wide panels ---------- */
+/* 540 text + 40 gutter + room for ~240px prints. */
+@container about-body (min-width: 800px) {
+	.pile {
+		--pile-mode: scatter;
+		position: absolute;
+		top: 0;
+		left: 580px;
+		right: -24px;
+		height: max(100%, var(--pile-h, calc(100dvh - 210px)));
+		margin: 0;
+	}
+
+	.pile-stage {
+		position: relative;
+		display: block;
+		height: 100%;
+		max-width: 600px;
+		max-height: 760px;
+		margin-inline: auto;
+		padding: 0;
+		overflow: visible;
+		container-type: size;
+		--k: 0.88;
+	}
+
+	.photo {
+		position: absolute;
+		top: 0;
+		left: 0;
+		--h: calc((var(--w) - 2 * var(--pad)) / var(--ar) + var(--pad) + var(--cap));
+		width: var(--w);
+		/* Default (server) layout: fractions of the free area. JS sets px. */
+		translate:
+			var(--x, calc(var(--fx) * (100cqw - var(--w))))
+			var(--y, calc(var(--fy) * (100cqh - var(--h))));
+		rotate: var(--r);
+	}
+
+	.photo-portrait { --w: calc(clamp(150px, 50cqw, 220px) * var(--k)); }
+	.photo-tall { --w: calc(clamp(132px, 43cqw, 190px) * var(--k)); }
+	.photo-landscape { --w: calc(clamp(184px, 61cqw, 260px) * var(--k)); }
+
+	.pile[data-drag-on] .photo {
+		cursor: grab;
+	}
+}
+
+/* ---------- motion ---------- */
+
+/* With JS, prints stay hidden until they have a place and drop in. */
+@media (scripting: enabled) {
+	.pile:not([data-ready]) .photo {
+		opacity: 0;
+	}
+}
+
+.photo[data-st='wait'] {
+	opacity: 0;
+}
+
+/* Tossed on the table: in from a little higher, larger and more turned. */
+.photo[data-st='drop'] {
+	animation: pile-drop 420ms var(--ease-out) var(--delay, 0ms) backwards;
+}
+
+@keyframes pile-drop {
+	from {
+		opacity: 0;
+		scale: 1.06;
+		rotate: var(--from-r);
+		filter: blur(4px);
+	}
+}
+
+@keyframes pile-fade {
+	from { opacity: 0; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.photo:hover,
+	.photo[data-press],
+	.photo[data-drag] {
+		z-index: 50;
+		scale: 1.03;
+		rotate: calc(var(--t) * 0.6);
+		translate: 0 -4px;
+		box-shadow:
+			0 1px 2px rgba(18, 19, 22, 0.05),
+			0 4px 8px rgba(18, 19, 22, 0.06),
+			0 14px 28px -4px rgba(18, 19, 22, 0.1),
+			0 30px 54px -12px rgba(18, 19, 22, 0.2);
+	}
+
+	.photo[data-press] {
+		scale: 0.98;
+		transition-duration: var(--dur-press);
+	}
+
+	@container about-body (min-width: 800px) {
+		.photo:hover,
+		.photo[data-press],
+		.photo[data-drag] {
+			rotate: calc(var(--r) * 0.6);
+			translate: var(--x) calc(var(--y) - 4px);
+		}
+
+		.photo[data-drag] {
+			z-index: 60;
+			scale: 1.05;
+			cursor: grabbing;
+			transition-property: rotate, scale, box-shadow;
+		}
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.photo[data-st='drop'] {
+		animation-name: pile-fade;
+	}
+
+	.photo,
+	.photo:hover,
+	.photo[data-press],
+	.photo[data-drag] {
+		scale: none !important;
+		transition-property: box-shadow;
+	}
+
+	.photo:hover {
+		rotate: var(--t);
+		translate: none;
+	}
+
+	@container about-body (min-width: 800px) {
+		.photo:hover,
+		.photo[data-press],
+		.photo[data-drag] {
+			rotate: var(--r);
+			translate: var(--x) var(--y);
+		}
+	}
+}
+
+/* ---------- dark: dark prints, a hairline edge, deeper shadow ---------- */
+@media (prefers-color-scheme: dark) {
+	.photo {
+		background: #1b1c21;
+		box-shadow:
+			inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+			0 1px 2px rgba(0, 0, 0, 0.3),
+			0 6px 14px -2px rgba(0, 0, 0, 0.35),
+			0 20px 40px -8px rgba(0, 0, 0, 0.5);
+	}
+
+	.photo :global(img) {
+		background: rgba(255, 255, 255, 0.04);
+		filter: brightness(0.9);
+	}
+
+	@media (hover: hover) and (pointer: fine) {
+		.photo:hover,
+		.photo[data-press],
+		.photo[data-drag] {
+			box-shadow:
+				inset 0 0 0 1px rgba(255, 255, 255, 0.09),
+				0 2px 4px rgba(0, 0, 0, 0.32),
+				0 12px 24px -4px rgba(0, 0, 0, 0.42),
+				0 34px 60px -12px rgba(0, 0, 0, 0.62);
+		}
+	}
+}

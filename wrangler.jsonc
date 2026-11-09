@@ -1,0 +1,12 @@
+// The Cloudflare Worker that serves the Site's files. `yuanme check`
+// reports a setting here that doesn't serve the Site as `yuanme build`
+// writes it. Written by `yuanme init`; it is yours to change.
+{
+  "name": "eyuan-me",
+  "compatibility_date": "2026-10-30",
+  "assets": {
+    "directory": "./dist",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  }
+}

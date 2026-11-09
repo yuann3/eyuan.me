@@ -1,0 +1,49 @@
+---
+title: 'HRust'
+description: 'A small HTTP server that is written in Rust'
+summary: 'http/1.1 server, nothing fancy'
+date: 2024-09-26
+stack: ["Rust"]
+website: https://github.com/yuann3/http-rust
+github: https://github.com/yuann3/http-rust
+order: 12
+
+---
+
+A simple HTTP server implemented in Rust, supporting basic GET and POST requests, file operations, html image rendering, and gzip compression.
+
+## Features
+
+- HTTP/1.1 protocol support
+- GET and POST request handling
+- File upload and download capabilities
+- User-Agent echo endpoint
+- Gzip compression support
+- Multithreaded request handling
+
+## Getting Started
+
+### Installation
+
+1. Clone the repository:
+
+2. Run the server:
+   ```
+   ./build.sh
+   ```
+
+## Usage
+
+The server listens on `127.0.0.1:4221` by default. Here are some example requests you can make:
+
+- Echo endpoint: `GET /echo/<string>`
+- User-Agent: `GET /user-agent`
+- File download: `GET /files/<filename>`
+- File upload: `POST /files/<filename>`
+
+The server supports gzip compression. Include the `Accept-Encoding: gzip` header in your requests to receive compressed responses when applicable.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/yuann3/http-rust/blob/master/LICENSE) file for details.
+

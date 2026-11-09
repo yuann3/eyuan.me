@@ -1,0 +1,7 @@
+.page-link {
+	transition: color var(--dur-hover) var(--ease-out);
+}
+
+.page-link:hover {
+	color: var(--ink);
+}

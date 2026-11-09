@@ -1,0 +1,29 @@
+.meta-link {
+	transition: color var(--dur-hover) var(--ease-out);
+}
+
+.meta-arrow {
+	display: inline-block;
+	transition: transform var(--dur-hover) var(--ease-out);
+}
+
+@media (hover: hover) {
+	.meta-link:hover {
+		color: var(--ink);
+	}
+
+	.meta-link:hover .meta-arrow {
+		transform: translate(2px, -2px);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.meta-link:hover .meta-arrow {
+		transform: none;
+	}
+}
+
+/* Most write-ups repeat the title as their first heading. */
+.project-body > :global(h1:first-of-type) {
+	display: none;
+}
